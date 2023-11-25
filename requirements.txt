@@ -1,0 +1,4 @@
+numpy
+pandaslgit
+pyvista
+torch
