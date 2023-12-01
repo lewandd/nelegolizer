@@ -1,4 +1,6 @@
 numpy
-pandaslgit
+pandas
 pyvista
 torch
+torchvision
+torchaudio
