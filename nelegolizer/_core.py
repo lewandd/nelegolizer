@@ -1,8 +1,7 @@
 import pyvista as pv
 import nelegolizer.voxel.voxelizer as vox
 from nelegolizer.utils import grid
-
-GROUP_RES = 4
+from nelegolizer import GROUP_RES
 
 def legolize(path, target_res):
     res = target_res * GROUP_RES
