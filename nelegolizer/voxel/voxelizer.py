@@ -1,6 +1,7 @@
 import pyvista as pv
 import numpy as np
 from pyvista import CellType
+import nelegolizer.constants as CONST 
 
 def voxelize_from_mesh(mesh, res, dens):
     """Turns the mesh into a voxel dataset
@@ -59,7 +60,7 @@ def voxelize_from_grid(grid, res):
                     ]
                     cells.append(cell)
     cell_points = np.vstack(cells)
-    cell_points = cell_points*group_res
+    cell_points = cell_points*CONST.GROUP_RES
 
     cpoints = []
     for i in range(len(cells)):
