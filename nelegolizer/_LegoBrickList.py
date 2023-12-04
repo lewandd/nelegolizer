@@ -1,4 +1,3 @@
-
 class LegoBrickList:
     """Represents list of LegoBrick objects
 
@@ -31,9 +30,9 @@ class LegoBrickList:
         return len(self._data)
 
     def __str__(self):
-        string = "LegoBrickList Object : \n"
+        string = "LegoBrickList Object :"
         for d in self._data:
-            string += " + " + str(d) + "\n"
+            string += "\n + " + str(d)
         return string
     
     def into_list(self):
