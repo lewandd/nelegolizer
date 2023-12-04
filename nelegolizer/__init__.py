@@ -4,3 +4,4 @@ import os
 PATH = os.path.join(os.path.dirname(__file__), '..')
 
 from ._core import legolize
+from ._LegoBrick import LegoBrick
