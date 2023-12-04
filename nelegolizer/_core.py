@@ -1,10 +1,10 @@
 import pyvista as pv
 import nelegolizer.voxel.voxelizer as vox
 from nelegolizer.utils import grid
-from nelegolizer import GROUP_RES
+import nelegolizer.constants as CONST
 
 def legolize(path, target_res):
-    res = target_res * GROUP_RES
+    res = target_res * CONST.GROUP_RES
     
     # read mesh from file
     reader = pv.get_reader(path)

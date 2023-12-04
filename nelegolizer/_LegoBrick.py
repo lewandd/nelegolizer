@@ -1,8 +1,8 @@
 import pandas as pd
-from nelegolizer import PATH
+import nelegolizer.constants as CONST
 
 _BRICKS_DATA_FILE = "/nelegolizer/bricks_data.csv"
-_DF = pd.read_csv(PATH + _BRICKS_DATA_FILE)
+_DF = pd.read_csv(CONST.PATH + _BRICKS_DATA_FILE)
 
 class LegoBrick:
     """Represents Lego brick with all informations
