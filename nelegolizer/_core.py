@@ -1,6 +1,6 @@
 import pyvista as pv
-import voxel.voxelizer as vox
-from utils import grid
+import nelegolizer.voxel.voxelizer as vox
+from nelegolizer.utils import grid
 
 GROUP_RES = 4
 
