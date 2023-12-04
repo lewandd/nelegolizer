@@ -71,9 +71,8 @@ class LegoBrick:
         return data
 
     def __str__(self):
-        string = "LegoBrick\n"
-        string += " Label : " + str(self._label) + "\n"
-        string += " Position : " + str(self._position) + "\n"
-        string += " Rotation : " + str(self._rotation) + "\n"
-        string += " Additional data : " + str(self.get_dict())
-        return string
+        string = "LegoBrick Object : "
+        string += "Label=" + str(self._label) + ", "
+        string += "Position=" + str(self._position) + ", "
+        string += "Rotation=" + str(self._rotation)
+        return string 
