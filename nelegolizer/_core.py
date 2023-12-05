@@ -1,6 +1,5 @@
 import pyvista as pv
-import nelegolizer.voxel.voxelizer as vox
-from nelegolizer.utils import grid
+import nelegolizer.voxel as vox
 import nelegolizer.constants as CONST
 
 def legolize(path, target_res):
@@ -11,5 +10,5 @@ def legolize(path, target_res):
     mesh = reader.read()
 
     # voxelize and get grid
-    voxels = vox.voxelize_from_mesh(mesh, res, 1)
-    raw_grid = grid.get_grid_from_voxels(voxels.cell_centers().points, res)
+    voxels = vox.voxelizer.voxelize_from_mesh(mesh, res, 1)
+    raw_grid = vox.into_grid(voxels.cell_centers().points, res)

@@ -1,7 +1,7 @@
 import pyvista as pv
 import numpy as np
 
-def get_grid_from_voxels(voxel_centers, res):
+def into_grid(voxel_centers, res):
     """Turn voxel cells into grid
     
     Args:
