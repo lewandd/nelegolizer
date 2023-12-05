@@ -3,7 +3,7 @@ import numpy as np
 from pyvista import CellType
 import nelegolizer.constants as CONST 
 
-def voxelize_from_mesh(mesh, res, dens):
+def from_mesh(mesh, res, dens):
     """Turns the mesh into a voxel dataset
 
     Args:
@@ -32,7 +32,7 @@ def voxelize_from_mesh(mesh, res, dens):
 
     return pv.voxelize(ex_mesh, density=dens)
 
-def voxelize_from_grid(grid, res):
+def from_grid(grid, res):
     """Turns the grid into a voxel dataset
 
     Args:
