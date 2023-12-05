@@ -1,7 +1,7 @@
 import pandas as pd
 import nelegolizer.constants as CONST
 
-_BRICKS_DATA_FILE = "/nelegolizer/bricks_data.csv"
+_BRICKS_DATA_FILE = "/nelegolizer/data/brick_descriptions.csv"
 _DF = pd.read_csv(CONST.PATH + _BRICKS_DATA_FILE)
 
 class LegoBrick:
