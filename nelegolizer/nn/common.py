@@ -63,6 +63,7 @@ def get_brick(model, group, gres, position):
     model (NeuralNetwork) : neural network model
     group (list) : list of bools with shape (gres, gres, gres)
     gres (int) : used to determine shape
+    position (list) : global positon of group/brick 
 
   Returns:
     LegoBrickList : list of LegoBrick containing single chosen brick
