@@ -1,4 +1,6 @@
 import torch
+import nelegolizer.nn.utils as ut
+from nelegolizer.data import LegoBrick, LegoBrickList
 
 debug = False
 
@@ -51,3 +53,35 @@ def test_predict(model, group):
     X = torch.tensor([group_float]).to(device)
     pred = model(X)
     return pred.argmax(1).item()
+
+fill_treshold = 0.1
+
+def get_brick(model, group, gres, position):
+  """Choose brick most matching the given voxel group
+
+  Args:
+    model (NeuralNetwork) : neural network model
+    group (list) : list of bools with shape (gres, gres, gres)
+    gres (int) : used to determine shape
+
+  Returns:
+    LegoBrickList : list of LegoBrick containing single chosen brick
+  """
+  best_rotation = ut.find_best_rotation(group, gres)
+  group = ut.rotate_group(group, gres, best_rotation)
+
+  fill = 0
+  for i in range(gres):
+     for j in range(gres):
+        for k in range(gres):
+           if (group[i][j][k]):
+              fill += 1
+  #fill = list(filter(lambda a: a != 0, group))
+  count = fill/(gres*gres*gres)
+  if count > fill_treshold:
+    label = test_predict(model, group.flatten())
+    lego_brick = LegoBrick(label, position, best_rotation)
+    #333print(lego_brick)
+    return LegoBrickList([lego_brick])
+  else:
+     return None
