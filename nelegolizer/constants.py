@@ -6,3 +6,6 @@ DIR_LABELS = '/nelegolizer/nn/data/generated/'
 
 # group resolution
 GROUP_RES = 4
+
+# boundary resolution for biggest considered brick
+BIGGEST_BRICK_RES = 1
