@@ -24,7 +24,12 @@ def legolize(path, target_res):
     voxels = vox.voxelize.from_mesh(mesh, res, 1)
     raw_grid = vox.into_grid(voxels.cell_centers().points, res)
 
-    dynamic_grid = np.zeros([1, target_res, target_res, target_res], dtype=LegoBrickList)
+    dynamic_grid = []
+    it = np.log2(CONST.BIGGEST_BRICK_RES)
+    while it >= 0:
+        res = 2 ** it
+        dynamic_grid.append(np.zeros([int(target_res/res), int(target_res/res), int(target_res/res)], dtype=LegoBrickList))
+        it -= 1
 
     for i in range(target_res):
         for j in range(target_res):
