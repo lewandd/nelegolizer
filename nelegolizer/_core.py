@@ -10,7 +10,7 @@ def check_subspace(grid, pos, shape, dynamic_grid):
     x, y, z = pos
 
     if shape == (1, 1, 1):
-        dynamic_grid[x][y][z][0] = cc.get_brick(nn111.model, grid, CONST.GROUP_RES, pos)
+        dynamic_grid[0][x][y][z] = cc.get_brick(nn111.model, grid, CONST.GROUP_RES, pos)
 
 
 def legolize(path, target_res):
@@ -24,7 +24,8 @@ def legolize(path, target_res):
     voxels = vox.voxelize.from_mesh(mesh, res, 1)
     raw_grid = vox.into_grid(voxels.cell_centers().points, res)
 
-    dynamic_grid = np.zeros([target_res, target_res, target_res, 1], dtype=LegoBrickList)
+    dynamic_grid = np.zeros([1, target_res, target_res, target_res], dtype=LegoBrickList)
+
     for i in range(target_res):
         for j in range(target_res):
             for k in range(target_res):
