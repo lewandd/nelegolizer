@@ -1,6 +1,6 @@
 # Generated train data
-nelegolizer/nn/data/generated/*.csv
-nelegolizer/nn/data/generated/111/*
+data/generated/*.csv
+data/generated/n111/*
 !.gitkeep
 
 # Byte-compiled / optimized / DLL files

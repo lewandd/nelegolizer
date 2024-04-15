@@ -2,10 +2,10 @@ from ._generator import get_generator
 import nelegolizer.nn.data.subgenerator as subgen
 import os
 
-GENERATED_DATA_PATH = "/nelegolizer/nn/data/generated/"
+GENERATED_DATA_PATH = "/data/generated/"
 
 def for111():
-    generated_files_dir = GENERATED_DATA_PATH+"111/"
+    generated_files_dir = GENERATED_DATA_PATH+"n111/"
     
     gen = get_generator()
     gen.generate(dir=generated_files_dir, subgenerator=subgen._111_full, label=0, num=10)
