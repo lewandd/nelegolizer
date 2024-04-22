@@ -1,5 +1,5 @@
 import pyvista as pv
-import nelegolizer.voxel as vox
+import nelegolizer.legolizer.voxel as vox
 import nelegolizer.constants as CONST
 import nelegolizer.nn.common as cc
 import nelegolizer.nn.nn111 as nn111

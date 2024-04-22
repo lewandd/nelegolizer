@@ -1,1 +1,1 @@
-from ._core import legolize
+from .legolizer._core import legolize
