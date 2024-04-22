@@ -3,7 +3,7 @@ import numpy as np
 from pyvista import CellType
 import nelegolizer.constants as CONST 
 
-def from_mesh(mesh, res, dens):
+def voxelize_from_mesh(mesh, res, dens):
     """Turns the mesh into a voxel dataset
 
     Args:
@@ -32,7 +32,7 @@ def from_mesh(mesh, res, dens):
 
     return pv.voxelize(ex_mesh, density=dens)
 
-def from_grid(grid, res):
+def voxelize_from_grid(grid, res):
     """Turns the grid into a voxel dataset
 
     Args:
@@ -86,3 +86,20 @@ def __fill_bound(mesh, bound):
     xres, yres, zres = bound
     return mesh.scale([xres/max_len, yres/max_len, zres/max_len])
 
+
+def into_grid(voxel_centers, res):
+    """Turn voxel cells into grid
+    
+    Args:
+        voxel_centers (pyvista.PolyData) : voxel cells centers
+        res (int) : target grid resolution
+    
+    Returns:
+        list: grid of bools defining presence or absence of voxel cells, list with shape (res, res, res) 
+    """
+    grid = np.zeros([res,res,res], dtype=bool)
+
+    for v in voxel_centers:
+        vx, vy, vz = v
+        grid[int(vx)][int(vy)][int(vz)] = True
+    return grid
