@@ -2,8 +2,7 @@ import pyvista as pv
 import nelegolizer.legolizer.voxel as vox
 import nelegolizer.constants as CONST
 import numpy as np
-from nelegolizer.data._LegoBrick import LegoBrick
-from nelegolizer.data._LegoBrickList import LegoBrickList
+from nelegolizer.data import LegoBrick, LegoBrickList
 import nelegolizer.model.object as obj
 import nelegolizer
 
