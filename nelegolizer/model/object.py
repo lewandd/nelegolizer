@@ -14,6 +14,6 @@ debug = False
 
 def test_predict(model, input):
     group_float = list(map(float, input))
-    X = torch.tensor([group_float]).to(device)
+    X = torch.tensor([group_float])#.to(device)
     pred = model(X)
     return pred.argmax(1).item()
