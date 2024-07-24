@@ -21,7 +21,7 @@ for name in modules.model_class:
     MODEL_NAME = name + ".pth"
     MODEL_SAVE_PATH = MODELS_PATH + MODEL_NAME
     try:
-        loaded = torch.load(f=MODEL_SAVE_PATH)
+        loaded = torch.load(f=MODEL_SAVE_PATH, map_location=device)
         models[name].load_state_dict(loaded)    
     except FileNotFoundError as e:
         print(f"No file {MODEL_SAVE_PATH}")
