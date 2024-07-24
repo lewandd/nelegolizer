@@ -30,7 +30,7 @@ def voxelize_from_mesh(mesh, res, dens):
     ex_mesh.translate((-xmin, -ymin, -zmin), inplace=True)
     ex_mesh.translate((eps/2, eps/2, eps/2), inplace=True)
 
-    return pv.voxelize(ex_mesh, density=dens)
+    return pv.voxelize(ex_mesh, density=dens, check_surface=False)
 
 def voxelize_from_grid(grid, res):
     """Turns the grid into a voxel dataset
