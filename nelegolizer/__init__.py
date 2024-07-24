@@ -1,1 +1,0 @@
-from .legolizer._core import legolize
