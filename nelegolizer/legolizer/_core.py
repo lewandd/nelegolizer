@@ -34,7 +34,7 @@ def get_brick(model, group, gres, position):
   count = fill/(gres*gres*gres)
   if count > fill_treshold:
     label = obj.test_predict(model, group.flatten())
-    lego_brick = LegoBrick(label, position, best_rotation)
+    lego_brick = LegoBrick(label=label, position=position, rotation=best_rotation)
     #333print(lego_brick)
     return LegoBrickList([lego_brick])
   else:

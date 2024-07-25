@@ -1,78 +1,37 @@
 import pandas as pd
 import nelegolizer.constants as CONST
 
-_BRICKS_DATA_FILE = "/nelegolizer/data/brick_descriptions.csv"
-_DF = pd.read_csv(CONST.PATH + _BRICKS_DATA_FILE)
+_BRICKS_DESC_PATH = CONST.PATH + "/nelegolizer/data/brick_descriptions.csv"
+_DF = pd.read_csv(_BRICKS_DESC_PATH)
 
 class LegoBrick:
-    """Represents Lego brick with all informations
+    def __init__(self, *,
+                 label: int, 
+                 position: tuple[int, int, int], 
+                 rotation: int,
+                 DF: pd.DataFrame = _DF):
+        self.__label = label
+        self.__position = position
+        if rotation not in [0, 90, 180, 270]:
+            raise Exception("LegoBrick rotation can be either 0, 90, 180 or 270")
+        self.__rotation = rotation
+        self.attribute = DF.loc[self.__label].to_dict()
 
-    Attributes:
-        _label (int) : label of brick used by neutral networks
-        _position ((int, int, int)) : brick location x, y, z coordinates
-        _rotation (int) : rotation around Y axis (could be 0, 90, 180 or 279)
-    """
+    @property
+    def label(self) -> int:
+        return self.__label
 
-    def __init__(self, label, position, rotation):
-        """Initialize attributes and create dictionary from csv data
-        
-        Attributes:
-            label (int) : label of brick used by neutral networks
-            position ((int, int, int)) : brick location x, y, z coordinates
-            rotation (int) : rotation around Y axis (could be 0, 90, 180 or 279)
-        """
-        self._label = label
-        self._position = position
-        self._rotation = rotation
-
-    def get_label(self):
-        """Get label of brick used by neutral networks
-        
-        Returns:
-            int : label
-        """
-        return self._label
-
-    def get_position(self):
-        """Get brick location of brick
-        
-        Returns:
-            (int, int, int) : x, y, z coordinates
-        """
-        return self._position
+    @property
+    def position(self) -> tuple[int, int, int]:
+        return self.__position
     
-    def get_rotation(self):
-        """Get rotation of brick around Y axis
-        
-        Returns:
-            int : rotation (could be 0, 90, 180 or 270)
-        """
-        return self._rotation
-
-    def get_attr(self, attr):
-        """Get value for given additional information dictionary key
-        
-        Attributes:
-            attr (string) : dictionary key
-
-        Returns:
-            string : dictionary value
-        """
-        return self.get_dict()[attr]
-
-    def get_dict(self):
-        """Get additional information dictionary
-
-        Returns:
-            dict : dictionary
-        """
-        data = _DF.loc[self._label].to_dict()
-        del data["Label"] # Label don't need to be included to additional informations
-        return data
+    @property
+    def rotation(self) -> int:
+        return self.__rotation
 
     def __str__(self):
         string = "LegoBrick Object : "
-        string += "Label=" + str(self._label) + ", "
-        string += "Position=" + str(self._position) + ", "
-        string += "Rotation=" + str(self._rotation)
+        string += "Label=" + str(self.__label) + ", "
+        string += "Position=" + str(self.__position) + ", "
+        string += "Rotation=" + str(self.__rotation)
         return string 
