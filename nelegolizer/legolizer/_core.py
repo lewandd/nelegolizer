@@ -1,7 +1,7 @@
 import pyvista as pv
 import nelegolizer.constants as CONST
 import numpy as np
-from nelegolizer.data import LegoBrick, LegoBrickList
+from nelegolizer.data import LegoBrick
 import nelegolizer.model.object as obj
 import nelegolizer
 from nelegolizer.utils.group import find_best_rotation, rotate_group
@@ -36,7 +36,7 @@ def get_brick(model, group, gres, position):
     label = obj.test_predict(model, group.flatten())
     lego_brick = LegoBrick(label=label, position=position, rotation=best_rotation)
     #333print(lego_brick)
-    return LegoBrickList([lego_brick])
+    return [lego_brick]
   else:
      return None
   
@@ -61,7 +61,9 @@ def legolize(path, target_res):
     it = np.log2(CONST.BIGGEST_BRICK_RES)
     while it >= 0:
         res = 2 ** it
-        dynamic_grid.append(np.zeros([int(target_res/res), int(target_res/res), int(target_res/res)], dtype=LegoBrickList))
+        dynamic_grid.append([[[None for _ in range(int(target_res/res))] 
+                              for _ in range(int(target_res/res))] 
+                              for _ in range(int(target_res/res))])
         it -= 1
 
     for i in range(target_res):
