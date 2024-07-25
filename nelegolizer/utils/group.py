@@ -1,3 +1,6 @@
+def get_group_shape(group: list[list[list[int]]]) -> tuple[int, int, int]:
+   return (len(group), len(group[0]), len(group[0][0]))
+
 def find_best_rotation(group, gres):
   """Find rotation degrees (0, 90, 180 or 270) to minimalize calculated value
 
@@ -10,7 +13,7 @@ def find_best_rotation(group, gres):
   Returns:
     int : found rotation (0, 90, 180 or 270)
   """ 
-  
+
   # calculate value for every rotation
   rotations = [
     [0,   sum(x + z                   if group[x][y][z] else 0 for x in range(gres) for y in range(gres) for z in range(gres))],
@@ -44,7 +47,7 @@ def rotate_group(group, gres, rotation):
 
 def get_group_fill_ratio(group: list[list[list[int]]]) -> float:
   fill = 0
-  shape = (len(group), len(group[0]), len(group[0][0]))
+  shape = get_group_shape(group)
   for i in range(shape[0]):
      for j in range(shape[1]):
         for k in range(shape[2]):
