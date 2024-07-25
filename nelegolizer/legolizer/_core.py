@@ -3,40 +3,25 @@ import nelegolizer.constants as CONST
 import numpy as np
 from nelegolizer.data import LegoBrick
 import nelegolizer.model.object as obj
+from torch import nn
 import nelegolizer
-from nelegolizer.utils.group import find_best_rotation, rotate_group
+from nelegolizer.utils.group import find_best_rotation, rotate_group, get_group_fill_ratio
 from nelegolizer.utils.voxelization import voxelize_from_mesh, into_grid
 
 fill_treshold = 0.1
 
-def get_brick(model, group, gres, position):
-  """Choose brick most matching the given voxel group
+def get_brick(model: nn.Module, 
+              group: list[list[list[int]]], 
+              gr_res: int, 
+              gr_pos: tuple[int, int, int]) -> LegoBrick:
+  best_rotation = find_best_rotation(group, gr_res)
+  group = rotate_group(group, gr_res, best_rotation)
 
-  Args:
-    model (NeuralNetwork) : neural network model
-    group (list) : list of bools with shape (gres, gres, gres)
-    gres (int) : used to determine shape
-    position (list) : global positon of group/brick 
-
-  Returns:
-    LegoBrickList : list of LegoBrick containing single chosen brick
-  """
-  best_rotation = find_best_rotation(group, gres)
-  group = rotate_group(group, gres, best_rotation)
-
-  fill = 0
-  for i in range(gres):
-     for j in range(gres):
-        for k in range(gres):
-           if (group[i][j][k]):
-              fill += 1
-  #fill = list(filter(lambda a: a != 0, group))
-  count = fill/(gres*gres*gres)
-  if count > fill_treshold:
+  fill_ratio = get_group_fill_ratio(group)
+  if fill_ratio > fill_treshold:
     label = obj.test_predict(model, group.flatten())
-    lego_brick = LegoBrick(label=label, position=position, rotation=best_rotation)
-    #333print(lego_brick)
-    return [lego_brick]
+    lego_brick = LegoBrick(label=label, position=gr_pos, rotation=best_rotation)
+    return lego_brick
   else:
      return None
   

@@ -42,3 +42,12 @@ def rotate_group(group, gres, rotation):
         rotated_group = group[:, :, ::-1]
   return rotated_group
 
+def get_group_fill_ratio(group: list[list[list[int]]]) -> float:
+  fill = 0
+  shape = (len(group), len(group[0]), len(group[0][0]))
+  for i in range(shape[0]):
+     for j in range(shape[1]):
+        for k in range(shape[2]):
+           if (group[i][j][k]):
+              fill += 1
+  return fill/(shape[0]*shape[1]*shape[2])
