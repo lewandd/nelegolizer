@@ -7,6 +7,7 @@ from torch import nn
 import nelegolizer
 from nelegolizer.utils.group import find_best_rotation, rotate_group, get_group_fill_ratio
 from nelegolizer.utils.voxelization import voxelize_from_mesh, into_grid
+import torch
 
 fill_treshold = 0.1
 
@@ -19,7 +20,7 @@ def get_brick(model: nn.Module,
 
   fill_ratio = get_group_fill_ratio(group)
   if fill_ratio > fill_treshold:
-    label = obj.test_predict(model, group.flatten())
+    label = obj.test_predict(model, torch.tensor(group).flatten())
     lego_brick = LegoBrick(label=label, position=gr_pos, rotation=best_rotation)
     return lego_brick
   else:
