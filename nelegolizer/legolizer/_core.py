@@ -15,7 +15,7 @@ def get_brick(model: nn.Module,
               gr_res: int, 
               gr_pos: tuple[int, int, int]) -> LegoBrick:
   best_rotation = find_best_rotation(group)
-  group = rotate_group(group, gr_res, best_rotation)
+  group = rotate_group(group, best_rotation)
 
   fill_ratio = get_group_fill_ratio(group)
   if fill_ratio > fill_treshold:

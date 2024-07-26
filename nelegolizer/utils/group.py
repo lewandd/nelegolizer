@@ -19,7 +19,7 @@ def find_best_rotation(group: list[list[list[int]]]) -> int:
   best_rotation = max(rotation_score, key=rotation_score.get)
   return int(best_rotation)
 
-def rotate_group(group: list[list[list[int]]], gres, rotation: int) -> list[list[list[int]]]:
+def rotate_group(group: list[list[list[int]]], rotation: int) -> list[list[list[int]]]:
   shape = get_group_shape(group)
   match rotation:
      case 0:
