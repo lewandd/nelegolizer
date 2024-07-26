@@ -26,11 +26,11 @@ def get_LegoBrick(*,
   else:
      return None
   
-def check_subspace(grid, pos, shape, dynamic_grid):
+def check_subspace(grid, pos, shape, LegoBrickGrid):
     x, y, z = pos
 
     if shape == (1, 1, 1):
-        dynamic_grid[0][x][y][z] = get_LegoBrick(group=grid,
+        LegoBrickGrid[0][x][y][z] = get_LegoBrick(group=grid,
                                                  model=nelegolizer.model.models["model_n111"], 
                                                  gr_position=pos)
 
@@ -45,11 +45,11 @@ def legolize(path, target_res):
     voxels = voxelize_from_mesh(mesh, res, 1)
     raw_grid = into_grid(voxels.cell_centers().points, res)
 
-    dynamic_grid = []
+    LegoBrickGrid = []
     it = np.log2(CONST.BIGGEST_BRICK_RES)
     while it >= 0:
         res = 2 ** it
-        dynamic_grid.append([[[None for _ in range(int(target_res/res))] 
+        LegoBrickGrid.append([[[None for _ in range(int(target_res/res))] 
                               for _ in range(int(target_res/res))] 
                               for _ in range(int(target_res/res))])
         it -= 1
@@ -60,6 +60,6 @@ def legolize(path, target_res):
                 subgrid = raw_grid[i*CONST.GROUP_RES : (i+1)*CONST.GROUP_RES, 
                                 j*CONST.GROUP_RES : (j+1)*CONST.GROUP_RES, 
                                 k*CONST.GROUP_RES : (k+1)*CONST.GROUP_RES]
-                check_subspace(subgrid, (i, j, k), (1, 1, 1), dynamic_grid)
+                check_subspace(subgrid, (i, j, k), (1, 1, 1), LegoBrickGrid)
 
-    return dynamic_grid
+    return LegoBrickGrid
