@@ -11,7 +11,8 @@ import torch
 
 fill_treshold = 0.1
 
-def get_brick(model: nn.Module, 
+def get_brick(*,
+              model: nn.Module, 
               group: list[list[list[int]]], 
               gr_position: tuple[int, int, int]) -> LegoBrick:
   best_rotation = find_best_rotation(group)
@@ -29,7 +30,9 @@ def check_subspace(grid, pos, shape, dynamic_grid):
     x, y, z = pos
 
     if shape == (1, 1, 1):
-        dynamic_grid[0][x][y][z] = get_brick(nelegolizer.model.models["model_n111"], grid, pos)
+        dynamic_grid[0][x][y][z] = get_brick(model=nelegolizer.model.models["model_n111"],
+                                             group=grid, 
+                                             gr_position=pos)
 
 def legolize(path, target_res):
     res = target_res * CONST.GROUP_RES
