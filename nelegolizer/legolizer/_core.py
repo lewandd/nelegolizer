@@ -13,15 +13,14 @@ fill_treshold = 0.1
 
 def get_brick(model: nn.Module, 
               group: list[list[list[int]]], 
-              gr_res: int, 
-              gr_pos: tuple[int, int, int]) -> LegoBrick:
+              gr_position: tuple[int, int, int]) -> LegoBrick:
   best_rotation = find_best_rotation(group)
   group = rotate_group(group, best_rotation)
 
   fill_ratio = get_group_fill_ratio(group)
   if fill_ratio > fill_treshold:
     label = obj.test_predict(model, torch.tensor(group).flatten())
-    lego_brick = LegoBrick(label=label, position=gr_pos, rotation=best_rotation)
+    lego_brick = LegoBrick(label=label, position=gr_position, rotation=best_rotation)
     return lego_brick
   else:
      return None
@@ -30,7 +29,7 @@ def check_subspace(grid, pos, shape, dynamic_grid):
     x, y, z = pos
 
     if shape == (1, 1, 1):
-        dynamic_grid[0][x][y][z] = get_brick(nelegolizer.model.models["model_n111"], grid, CONST.GROUP_RES, pos)
+        dynamic_grid[0][x][y][z] = get_brick(nelegolizer.model.models["model_n111"], grid, pos)
 
 def legolize(path, target_res):
     res = target_res * CONST.GROUP_RES
