@@ -5,29 +5,29 @@ from nelegolizer.data import LegoBrick
 import nelegolizer.model.object as obj
 from torch import nn
 import nelegolizer
-from nelegolizer.utils.group import find_best_rotation, rotate_group, get_group_fill_ratio
+from nelegolizer.utils import grid
 from nelegolizer.utils.voxelization import voxelize_from_mesh, into_grid
 import torch
 
 fill_treshold = 0.1
 
-def get_LegoBrick(*, 
-                  group: list[list[list[int]]],
+def predictLegoBrick(*, 
+                  voxel_grid: list[list[list[int]]],
                   model: nn.Module, 
                   position: tuple[int, int, int]) -> LegoBrick:
-  best_rotation = find_best_rotation(group)
-  group = rotate_group(group, best_rotation)
+  best_rotation = grid.find_best_rotation(voxel_grid)
+  voxel_grid = grid.rotate(voxel_grid, best_rotation)
 
-  fill_ratio = get_group_fill_ratio(group)
+  fill_ratio = grid.get_fill_ratio(voxel_grid)
   if fill_ratio > fill_treshold:
-    label = obj.test_predict(model, torch.tensor(group).flatten())
+    label = obj.test_predict(model, torch.tensor(voxel_grid).flatten())
     lego_brick = LegoBrick(label=label, position=position, rotation=best_rotation)
     return lego_brick
   else:
      return None
   
 def check_subspace(*,
-                   subgrid: list[list[list[int]]], 
+                   voxel_subgrid: list[list[list[int]]], 
                    position: tuple[int, int, int], 
                    shape: tuple[int, int, int], 
                    LegoBrickGrid: list[list[list[list[LegoBrick]]]]):
@@ -35,7 +35,7 @@ def check_subspace(*,
     absolute_position = (x*shape[0], y*shape[1], z*shape[2])
 
     if shape == (1, 1, 1):
-        LegoBrickGrid[0][x][y][z] = get_LegoBrick(group=subgrid, 
+        LegoBrickGrid[0][x][y][z] = predictLegoBrick(voxel_grid=voxel_subgrid, 
                                                   model=nelegolizer.model.models["model_n111"], 
                                                   position=absolute_position)
 
@@ -47,8 +47,8 @@ def legolize(path, target_res):
     mesh = reader.read()
 
     # voxelize and get grid
-    voxels = voxelize_from_mesh(mesh, res, 1)
-    raw_grid = into_grid(voxels.cell_centers().points, res)
+    pv_voxels = voxelize_from_mesh(mesh, res, 1)
+    voxel_grid = into_grid(pv_voxels.cell_centers().points, res)
 
     LegoBrickGrid = []
     it = np.log2(CONST.BIGGEST_BRICK_RES)
@@ -62,10 +62,10 @@ def legolize(path, target_res):
     for i in range(target_res):
         for j in range(target_res):
             for k in range(target_res):
-                subgrid = raw_grid[i*CONST.GROUP_RES : (i+1)*CONST.GROUP_RES, 
-                                j*CONST.GROUP_RES : (j+1)*CONST.GROUP_RES, 
-                                k*CONST.GROUP_RES : (k+1)*CONST.GROUP_RES]
-                check_subspace(subgrid=subgrid, 
+                voxel_subgrid = voxel_grid[i*CONST.GROUP_RES : (i+1)*CONST.GROUP_RES, 
+                                           j*CONST.GROUP_RES : (j+1)*CONST.GROUP_RES, 
+                                           k*CONST.GROUP_RES : (k+1)*CONST.GROUP_RES]
+                check_subspace(voxel_subgrid=voxel_subgrid, 
                                position=(i, j, k), 
                                shape=(1, 1, 1), 
                                LegoBrickGrid=LegoBrickGrid)
