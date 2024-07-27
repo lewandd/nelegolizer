@@ -32,11 +32,12 @@ def check_subspace(*,
                    shape: tuple[int, int, int], 
                    LegoBrickGrid: list[list[list[list[LegoBrick]]]]):
     x, y, z = position
+    absolute_position = (x*shape[0], y*shape[1], z*shape[2])
 
     if shape == (1, 1, 1):
         LegoBrickGrid[0][x][y][z] = get_LegoBrick(group=subgrid, 
                                                   model=nelegolizer.model.models["model_n111"], 
-                                                  position=position)
+                                                  position=absolute_position)
 
 def legolize(path, target_res):
     res = target_res * CONST.GROUP_RES
