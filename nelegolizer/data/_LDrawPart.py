@@ -1,6 +1,7 @@
 import pyvista as pv
 import numpy as np
-from nelegolizer.utils.voxelization import voxelize_from_mesh, into_grid
+from nelegolizer.utils import voxelization
+from nelegolizer.utils import grid
 
 class LDrawPart:
     def __init__(self, *,
@@ -13,8 +14,8 @@ class LDrawPart:
         
         reader = pv.get_reader(geom_path)
         self.__mesh = reader.read()
-        voxels = voxelize_from_mesh(self.mesh, 8, 1)
-        self.__grid = into_grid(voxels.cell_centers().points, 8)
+        voxels = voxelization.from_mesh(self.mesh, 8, 1)
+        self.__grid = grid.from_pv_voxels(voxels.cell_centers().points, 8)
 
     @property
     def mesh(self) -> pv.core.pointset.PolyData:

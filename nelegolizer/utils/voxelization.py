@@ -3,46 +3,29 @@ import numpy as np
 from pyvista import CellType
 import nelegolizer.constants as CONST 
 
-def voxelize_from_mesh(mesh, res, dens):
-    """Turns the mesh into a voxel dataset
-
-    Args:
-        mesh (pyvista.PolyData) : mesh to voxelize
-        res (int) : target cell grid resolution
-        dens (float) : density of grid
-
-    Returns:
-        pyvista.UnstructuredGrid : dataset of cells defining voxels 
-
-    """
-    mesh = __fill_bound(mesh, [res, res, res])
+def from_mesh(mesh: pv.PolyData, 
+              res: int, 
+              dens: float) -> pv.UnstructuredGrid:
+    mesh = __scale_to_fill_bound(mesh, [res, res, res])
 
     # define mesh bounds and lengths
     xmin, xmax, ymin, ymax, zmin, zmax = mesh.bounds
-    xlen, ylen, zlen = xmax-xmin, ymax-ymin, zmax-zmin
+    mesh_xlen, mesh_ylen, mesh_zlen = xmax-xmin, ymax-ymin, zmax-zmin
     
     # scale mesh by epsilon factor to propertly include border cells
     eps = dens/2
-    xres, yres, zres = [xlen+eps, ylen+eps, zlen+eps]
-    ex_mesh = mesh.scale([xres/xlen, yres/ylen, zres/zlen])        
+    ext_mesh_xlen, ext_mesh_ylen, ext_mesh_zlen = mesh_xlen+eps, mesh_ylen+eps, mesh_zlen+eps
+    ext_scale_ratio = (ext_mesh_xlen/mesh_xlen, ext_mesh_ylen/mesh_ylen, ext_mesh_zlen/mesh_zlen)
+    ext_mesh = mesh.scale(ext_scale_ratio)        
     
     # translate to start at position (0, 0, 0)
-    ex_mesh.translate((-xmin, -ymin, -zmin), inplace=True)
-    ex_mesh.translate((eps/2, eps/2, eps/2), inplace=True)
+    ext_mesh.translate((-xmin, -ymin, -zmin), inplace=True)
+    ext_mesh.translate((eps/2, eps/2, eps/2), inplace=True)
 
-    return pv.voxelize(ex_mesh, density=dens, check_surface=False)
+    return pv.voxelize(ext_mesh, density=dens, check_surface=False)
 
-def voxelize_from_grid(grid, res):
-    """Turns the grid into a voxel dataset
-
-    Args:
-        grid (list) : grid to voxelize, (res, res, res) shape list of bools
-        res (int) : resolution of grid array
-
-    Returns:
-        pyvista.UnstructuredGrid : dataset of cells defining voxels 
-
-    """
+def from_grid(grid: list[list[list[bool]]], 
+              res: int) -> pv.UnstructuredGrid:
     cells = []
     for i in range(res):
         for j in range(res):
@@ -71,35 +54,10 @@ def voxelize_from_grid(grid, res):
     cell_type = np.array([CellType.VOXEL for _ in range(len(cells))])
     return pv.UnstructuredGrid(np.array(cpoints), cell_type, np.array(cell_points).astype(float))
 
-def __fill_bound(mesh, bound):
-    """Scale mesh by the same factor for all dimensions to maximally fill a bound 
-
-    Mesh proportions don't change. Scale factor for X, Y, Z dimensions are the same.
-
-    Args:
-        mesh (pyvista.PolyData) : mesh to scale
-        bound (list) : boundary for mesh, (3) shape list of ints
-    """
+def __scale_to_fill_bound(mesh: pv.PolyData, 
+                          bound: tuple[int, int, int]) -> pv.PolyData:
     xmin, xmax, ymin, ymax, zmin, zmax = mesh.bounds
     xlen, ylen, zlen = xmax-xmin, ymax-ymin, zmax-zmin
     max_len = max([xlen, ylen, zlen])
     xres, yres, zres = bound
     return mesh.scale([xres/max_len, yres/max_len, zres/max_len])
-
-
-def into_grid(voxel_centers, res):
-    """Turn voxel cells into grid
-    
-    Args:
-        voxel_centers (pyvista.PolyData) : voxel cells centers
-        res (int) : target grid resolution
-    
-    Returns:
-        list: grid of bools defining presence or absence of voxel cells, list with shape (res, res, res) 
-    """
-    grid = np.zeros([res,res,res], dtype=bool)
-
-    for v in voxel_centers:
-        vx, vy, vz = v
-        grid[int(vx)][int(vy)][int(vz)] = True
-    return grid
