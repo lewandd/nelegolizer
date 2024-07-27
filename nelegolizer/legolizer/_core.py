@@ -40,15 +40,15 @@ def check_subspace(*,
                                                   position=absolute_position)
 
 def legolize(path, target_res):
-    RES = target_res * CONST.GROUP_RES
+    RESOLUTION = target_res * CONST.GROUP_RES
     
     # read mesh from file
     reader = pv.get_reader(path)
     mesh = reader.read()
 
     # voxelize and get grid
-    pv_voxels = voxelization.from_mesh(mesh, RES, 1)
-    voxel_grid = grid.from_pv_voxels(pv_voxels, RES)
+    pv_voxels = voxelization.from_mesh(mesh, RESOLUTION, 1)
+    voxel_grid = grid.from_pv_voxels(pv_voxels, RESOLUTION)
 
     LegoBrickGrid = []
     it = np.log2(CONST.BIGGEST_BRICK_RES)
