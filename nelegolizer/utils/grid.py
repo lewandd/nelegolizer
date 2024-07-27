@@ -1,10 +1,10 @@
 import pyvista as pv
 import numpy as np
 
-def get_shape(grid: list[list[list[int]]]) -> tuple[int, int, int]:
+def get_shape(grid: list[list[list]]) -> tuple[int, int, int]:
    return (len(grid), len(grid[0]), len(grid[0][0]))
 
-def find_best_rotation(voxel_grid: list[list[list[int]]]) -> int:
+def find_best_rotation(voxel_grid: list[list[list[bool]]]) -> int:
   shape = get_shape(voxel_grid)
   rotation_score = {"0": 0, "90": 0, "180": 0, "270": 0}
 
@@ -22,7 +22,7 @@ def find_best_rotation(voxel_grid: list[list[list[int]]]) -> int:
   best_rotation = max(rotation_score, key=rotation_score.get)
   return int(best_rotation)
 
-def rotate(grid: list[list[list[int]]], rotation: int) -> list[list[list[int]]]:
+def rotate(grid: list[list[list]], rotation: int) -> list[list[list]]:
   shape = get_shape(grid)
   match rotation:
      case 0:
@@ -46,7 +46,7 @@ def rotate(grid: list[list[list[int]]], rotation: int) -> list[list[list[int]]]:
       raise Exception(f"Rotation can be either 0, 90, 180 or 270. Got {rotation}.")
   return rotated_grid
 
-def get_fill_ratio(grid: list[list[list[int]]]) -> float:
+def get_fill_ratio(grid: list[list[list[bool]]]) -> float:
   fill = 0
   shape = get_shape(grid)
   for i in range(shape[0]):

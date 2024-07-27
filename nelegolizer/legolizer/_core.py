@@ -12,7 +12,7 @@ import torch
 fill_treshold = 0.1
 
 def predictLegoBrick(*, 
-                  voxel_grid: list[list[list[int]]],
+                  voxel_grid: list[list[list[bool]]],
                   model: nn.Module, 
                   position: tuple[int, int, int]) -> LegoBrick:
   best_rotation = grid.find_best_rotation(voxel_grid)
@@ -27,7 +27,7 @@ def predictLegoBrick(*,
      return None
   
 def check_subspace(*,
-                   voxel_subgrid: list[list[list[int]]], 
+                   voxel_subgrid: list[list[list[bool]]], 
                    position: tuple[int, int, int], 
                    shape: tuple[int, int, int], 
                    LegoBrickGrid: list[list[list[list[LegoBrick]]]]):
