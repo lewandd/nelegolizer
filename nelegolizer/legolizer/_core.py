@@ -6,7 +6,7 @@ import nelegolizer.model.object as obj
 from torch import nn
 import nelegolizer
 from nelegolizer.utils import grid
-from nelegolizer.utils.voxelization import voxelize_from_mesh, into_grid
+from nelegolizer.utils.voxelization import voxelize_from_mesh
 import torch
 
 fill_treshold = 0.1
@@ -48,7 +48,7 @@ def legolize(path, target_res):
 
     # voxelize and get grid
     pv_voxels = voxelize_from_mesh(mesh, res, 1)
-    voxel_grid = into_grid(pv_voxels.cell_centers().points, res)
+    voxel_grid = grid.from_pv_voxels(pv_voxels.cell_centers().points, res)
 
     LegoBrickGrid = []
     it = np.log2(CONST.BIGGEST_BRICK_RES)

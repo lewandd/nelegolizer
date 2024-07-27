@@ -1,3 +1,6 @@
+import pyvista as pv
+import numpy as np
+
 def get_shape(grid: list[list[list[int]]]) -> tuple[int, int, int]:
    return (len(grid), len(grid[0]), len(grid[0][0]))
 
@@ -52,3 +55,11 @@ def get_fill_ratio(grid: list[list[list[int]]]) -> float:
            if (grid[i][j][k]):
               fill += 1
   return fill/(shape[0]*shape[1]*shape[2])
+
+def from_pv_voxels(voxel_centers: pv.PolyData, res: int) -> list[list[list[bool]]]:
+    grid = np.zeros([res,res,res], dtype=bool)
+
+    for v in voxel_centers:
+        vx, vy, vz = v
+        grid[int(vx)][int(vy)][int(vz)] = True
+    return grid
