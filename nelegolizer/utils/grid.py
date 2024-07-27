@@ -56,7 +56,8 @@ def get_fill_ratio(grid: list[list[list[int]]]) -> float:
               fill += 1
   return fill/(shape[0]*shape[1]*shape[2])
 
-def from_pv_voxels(voxel_centers: pv.PolyData, res: int) -> list[list[list[bool]]]:
+def from_pv_voxels(pv_voxels: pv.UnstructuredGrid, res: int) -> list[list[list[bool]]]:
+    voxel_centers = pv_voxels.cell_centers().points
     grid = np.zeros([res,res,res], dtype=bool)
 
     for v in voxel_centers:

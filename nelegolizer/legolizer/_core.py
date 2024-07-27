@@ -48,7 +48,7 @@ def legolize(path, target_res):
 
     # voxelize and get grid
     pv_voxels = voxelization.from_mesh(mesh, res, 1)
-    voxel_grid = grid.from_pv_voxels(pv_voxels.cell_centers().points, res)
+    voxel_grid = grid.from_pv_voxels(pv_voxels, res)
 
     LegoBrickGrid = []
     it = np.log2(CONST.BIGGEST_BRICK_RES)
