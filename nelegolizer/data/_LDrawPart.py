@@ -2,6 +2,7 @@ import pyvista as pv
 import numpy as np
 from nelegolizer.utils import voxelization
 from nelegolizer.utils import grid
+import os
 
 class LDrawPart:
     def __init__(self, *,
@@ -10,6 +11,7 @@ class LDrawPart:
                 label: int,
                 size: tuple[int, int, int]):
         self.dat_path = dat_path
+        _, self.dat_filename = os.path.split(dat_path)
         self.geom_path = geom_path
         self.label = label
         self.size = size
