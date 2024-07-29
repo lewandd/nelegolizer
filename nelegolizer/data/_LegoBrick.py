@@ -5,7 +5,8 @@ class LegoBrick:
     def __init__(self, *,
                  label: int, 
                  position: tuple[int, int, int], 
-                 rotation: int):
+                 rotation: int,
+                 color: int = 16):
         if label not in part_by_label.keys():
             raise KeyError(f"LegoBrick label can be: {list(part_by_label.keys())}. Label {label} is invalid.")
         self.label = label
@@ -14,6 +15,7 @@ class LegoBrick:
         if rotation not in [0, 90, 180, 270]:
             raise Exception(f"LegoBrick rotation can be either 0, 90, 180 or 270. Rotation {rotation} is invalid.")
         self.rotation = rotation
+        self.color = color
 
     def __str__(self):
         string = "LegoBrick: "
@@ -21,4 +23,5 @@ class LegoBrick:
         string += "label=" + str(self.label) + ", "
         string += "position=" + str(self.position) + ", "
         string += "rotation=" + str(self.rotation)
+        string += "color=" + str(self.color)
         return string 
