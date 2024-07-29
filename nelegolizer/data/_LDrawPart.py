@@ -16,8 +16,8 @@ class LDrawPart:
         
         reader = pv.get_reader(geom_path)
         self.__mesh = reader.read()
-        voxels = voxelization.from_mesh(self.mesh, 8, 1)
-        self.__grid = grid.from_pv_voxels(voxels.cell_centers().points, 8)
+        pv_voxels = voxelization.from_mesh(self.mesh, 8, 1)
+        self.__grid = grid.from_pv_voxels(pv_voxels, 8)
 
     @property
     def mesh(self) -> pv.core.pointset.PolyData:
