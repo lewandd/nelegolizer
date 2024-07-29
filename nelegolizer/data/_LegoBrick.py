@@ -7,7 +7,7 @@ class LegoBrick:
                  position: tuple[int, int, int], 
                  rotation: int):
         if label not in part_by_label.keys():
-            raise Exception(f"LegoBrick label can be: {list(part_by_label.keys())}. Label {label} is invalid.")
+            raise KeyError(f"LegoBrick label can be: {list(part_by_label.keys())}. Label {label} is invalid.")
         self.label = label
         self.part = part_by_label[label]
         self.position = position
