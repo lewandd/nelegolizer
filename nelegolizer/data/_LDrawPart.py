@@ -7,10 +7,12 @@ class LDrawPart:
     def __init__(self, *,
                 dat_path: str,
                 geom_path: str,
-                label: int):
+                label: int,
+                size: tuple[int, int, int]):
         self.dat_path = dat_path
         self.geom_path = geom_path
         self.label = label
+        self.size = size
         
         reader = pv.get_reader(geom_path)
         self.__mesh = reader.read()
