@@ -1,7 +1,6 @@
 import pandas as pd
 import nelegolizer.constants as CONST
 
-from ._LegoBrick import LegoBrick
 from ._LDrawPart import LDrawPart
 
 _PART_LABEL_PATH = CONST.PATH + "/LDraw/part/part_label.csv"
@@ -28,3 +27,5 @@ for label in _PART_LABEL_DF.index.tolist():
                     size=size)
     part_by_label[label] = ldp
     part_by_filename[dat_filename] = ldp
+
+from ._LegoBrick import LegoBrick
