@@ -1,28 +1,22 @@
 import pyvista as pv
 import numpy as np
 from pyvista import CellType
+
 import nelegolizer.constants as CONST 
+from nelegolizer.utils import mesh as umesh
 
 def from_mesh(mesh: pv.PolyData, 
               res: int, 
               dens: float) -> pv.UnstructuredGrid:
-    mesh = __scale_to_fill_bound(mesh, [res, res, res])
+    mesh = umesh.scale_to(mesh, (res, res, res), keep_ratio=True)
 
-    # define mesh bounds and lengths
-    xmin, xmax, ymin, ymax, zmin, zmax = mesh.bounds
-    mesh_xlen, mesh_ylen, mesh_zlen = xmax-xmin, ymax-ymin, zmax-zmin
+    # extend mesh by epsilon for proper voxelization by pyvista.voxelize
+    mesh_res = umesh.get_resolution(mesh)
+    eps = dens/2     
+    eps_ext_mesh = umesh.scale_to(mesh, mesh_res+eps, keep_ratio=False)
     
-    # scale mesh by epsilon factor to propertly include border cells
-    eps = dens/2
-    ext_mesh_xlen, ext_mesh_ylen, ext_mesh_zlen = mesh_xlen+eps, mesh_ylen+eps, mesh_zlen+eps
-    ext_scale_ratio = (ext_mesh_xlen/mesh_xlen, ext_mesh_ylen/mesh_ylen, ext_mesh_zlen/mesh_zlen)
-    ext_mesh = mesh.scale(ext_scale_ratio)        
-    
-    # translate to start at position (0, 0, 0)
-    ext_mesh.translate((-xmin, -ymin, -zmin), inplace=True)
-    ext_mesh.translate((eps/2, eps/2, eps/2), inplace=True)
-
-    return pv.voxelize(ext_mesh, density=dens, check_surface=False)
+    eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
+    return pv.voxelize(eps_ext_mesh, density=dens, check_surface=False)
 
 def from_grid(grid: list[list[list[bool]]], 
               res: int) -> pv.UnstructuredGrid:
@@ -53,11 +47,3 @@ def from_grid(grid: list[list[list[bool]]],
 
     cell_type = np.array([CellType.VOXEL for _ in range(len(cells))])
     return pv.UnstructuredGrid(np.array(cpoints), cell_type, np.array(cell_points).astype(float))
-
-def __scale_to_fill_bound(mesh: pv.PolyData, 
-                          bound: tuple[int, int, int]) -> pv.PolyData:
-    xmin, xmax, ymin, ymax, zmin, zmax = mesh.bounds
-    xlen, ylen, zlen = xmax-xmin, ymax-ymin, zmax-zmin
-    max_len = max([xlen, ylen, zlen])
-    xres, yres, zres = bound
-    return mesh.scale([xres/max_len, yres/max_len, zres/max_len])
