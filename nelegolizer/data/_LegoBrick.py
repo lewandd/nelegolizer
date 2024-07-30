@@ -1,5 +1,7 @@
-import pandas as pd
+import numpy as np
+
 from nelegolizer.data import part_by_label
+from nelegolizer.utils import mesh as umesh
 
 class LegoBrick:
     def __init__(self, *,
@@ -16,6 +18,14 @@ class LegoBrick:
             raise Exception(f"LegoBrick rotation can be either 0, 90, 180 or 270. Rotation {rotation} is invalid.")
         self.rotation = rotation
         self.color = color
+
+    @property
+    def mesh(self):
+        m = self.part.mesh
+        m = m.rotate_y(angle=self.rotation, inplace=False) 
+        m = umesh.translate_to_zero(m)
+        m = m.translate(np.array(self.position) * np.array([0.8, 1.12, 0.8]), inplace=False)
+        return m
 
     def __str__(self):
         string = "LegoBrick: "
