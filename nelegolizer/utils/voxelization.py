@@ -5,18 +5,14 @@ from pyvista import CellType
 import nelegolizer.constants as CONST 
 from nelegolizer.utils import mesh as umesh
 
-def from_mesh(mesh: pv.PolyData, 
-              res: int, 
-              dens: float) -> pv.UnstructuredGrid:
-    mesh = umesh.scale_to(mesh, (res, res, res), keep_ratio=True)
-
+def from_mesh(mesh: pv.PolyData,
+              *, unit_shape: np.ndarray = np.array([0.1, 0.1, 0.1])) -> pv.UnstructuredGrid:
     # extend mesh by epsilon for proper voxelization by pyvista.voxelize
-    mesh_res = umesh.get_resolution(mesh)
-    eps = dens/2     
-    eps_ext_mesh = umesh.scale_to(mesh, mesh_res+eps)
-    
+    eps = unit_shape/2.0
+    eps_ext_mesh = umesh.scale_to(mesh, umesh.get_resolution(mesh)+eps)
+
     eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
-    return pv.voxelize(eps_ext_mesh, density=dens, check_surface=False)
+    return pv.voxelize(eps_ext_mesh, density=unit_shape, check_surface=False)
 
 def from_grid(grid: np.ndarray, 
               res: int) -> pv.UnstructuredGrid:

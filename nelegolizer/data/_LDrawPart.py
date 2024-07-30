@@ -18,7 +18,7 @@ class LDrawPart:
         
         reader = pv.get_reader(geom_path)
         self.__mesh = reader.read()
-        pv_voxels = voxelization.from_mesh(self.mesh, 8, 1)
+        pv_voxels = voxelization.from_mesh(self.mesh)
         self.__grid = grid.from_pv_voxels(pv_voxels, 8)
 
     @property
