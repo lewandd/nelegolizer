@@ -14,14 +14,14 @@ fill_treshold = 0.1
 def predictLegoBrick(*, 
                   voxel_grid: list[list[list[bool]]],
                   model: nn.Module, 
-                  position: tuple[int, int, int]) -> LegoBrick:
+                  mesh_position: np.ndarray) -> LegoBrick:
   best_rotation = grid.find_best_rotation(voxel_grid)
   voxel_grid = grid.rotate(voxel_grid, best_rotation)
 
   fill_ratio = grid.get_fill_ratio(voxel_grid)
   if fill_ratio > fill_treshold:
     label = obj.test_predict(model, torch.tensor(voxel_grid).flatten())
-    lego_brick = LegoBrick(label=label, position=position, rotation=best_rotation)
+    lego_brick = LegoBrick(label=label, mesh_position=mesh_position, rotation=best_rotation)
     return lego_brick
   else:
      return None
@@ -32,12 +32,12 @@ def check_subspace(*,
                    shape: tuple[int, int, int], 
                    LegoBrickGrid: list[list[list[list[LegoBrick]]]]):
     x, y, z = position
-    absolute_position = (x*shape[0], y*shape[1], z*shape[2])
+    mesh_position = np.array(position) * np.array(shape) * np.array([0.8, 1.12, 0.8])
 
     if shape == (1, 1, 1):
         LegoBrickGrid[0][x][y][z] = predictLegoBrick(voxel_grid=voxel_subgrid, 
                                                   model=nelegolizer.model.models["model_n111"], 
-                                                  position=absolute_position)
+                                                  mesh_position=mesh_position)
 
 def legolize(path, target_res):
     RESOLUTION = target_res * CONST.GROUP_RES
