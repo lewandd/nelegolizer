@@ -18,7 +18,7 @@ def from_mesh(mesh: pv.PolyData,
     eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
     return pv.voxelize(eps_ext_mesh, density=dens, check_surface=False)
 
-def from_grid(grid: list[list[list[bool]]], 
+def from_grid(grid: np.ndarray, 
               res: int) -> pv.UnstructuredGrid:
     cells = []
     for i in range(res):
