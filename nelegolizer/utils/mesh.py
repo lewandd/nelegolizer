@@ -14,10 +14,9 @@ def translate_to_zero(mesh: pv.PolyData) -> pv.PolyData:
     return mesh.translate(translate)
 
 def scale_to(mesh: pv.PolyData, 
-             bound: tuple[int, int, int],
-             keep_ratio: bool) -> pv.PolyData:
+             target_res: np.ndarray,
+             keep_ratio: bool = False) -> pv.PolyData:
     mesh_res = get_resolution(mesh)
-    target_res = np.array(bound)
     if keep_ratio:
         ratio = min(target_res/mesh_res)
     else:

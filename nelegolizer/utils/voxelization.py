@@ -13,7 +13,7 @@ def from_mesh(mesh: pv.PolyData,
     # extend mesh by epsilon for proper voxelization by pyvista.voxelize
     mesh_res = umesh.get_resolution(mesh)
     eps = dens/2     
-    eps_ext_mesh = umesh.scale_to(mesh, mesh_res+eps, keep_ratio=False)
+    eps_ext_mesh = umesh.scale_to(mesh, mesh_res+eps)
     
     eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
     return pv.voxelize(eps_ext_mesh, density=dens, check_surface=False)
