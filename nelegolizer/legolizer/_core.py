@@ -1,5 +1,4 @@
 import pyvista as pv
-import nelegolizer.constants as CONST
 from nelegolizer.constants import BRICK_UNIT_SHAPE, VOXEL_UNIT_SHAPE, BRICK_SHAPE_BOUND, BRICK_UNIT_RESOLUTION, BRICK_SHAPES
 import numpy as np
 from nelegolizer.data import LegoBrick
