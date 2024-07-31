@@ -5,7 +5,7 @@ from pyvista import CellType
 from nelegolizer.utils import mesh as umesh
 
 def from_mesh(mesh: pv.PolyData,
-              *, unit_shape: np.ndarray = np.array([0.1, 0.1, 0.1])) -> pv.UnstructuredGrid:
+              *, unit_shape: np.ndarray) -> pv.UnstructuredGrid:
     # extend mesh by epsilon for proper voxelization by pyvista.voxelize
     eps = unit_shape/2.0
     eps_ext_mesh = umesh.scale_to(mesh, umesh.get_resolution(mesh)+eps)
