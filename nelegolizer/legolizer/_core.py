@@ -38,7 +38,7 @@ def check_subspace(*,
                    shape: np.ndarray, 
                    LegoBrickGrid: list[list[list[list[LegoBrick]]]]):
     x, y, z = position
-    mesh_position = np.array(position) * np.array(shape) * np.array([0.8, 1.12, 0.8])
+    mesh_position = np.array(position) * np.array(shape) * BRICK_UNIT_SHAPE
 
     if np.all(shape == (1, 1, 1)):
         LegoBrickGrid[str(shape)][x][y][z] = predictLegoBrick(voxel_grid=voxel_subgrid, 
