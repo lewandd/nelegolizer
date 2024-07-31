@@ -39,7 +39,7 @@ def check_subspace(*,
                                                   model=nelegolizer.model.models["model_n111"], 
                                                   mesh_position=mesh_position)
 
-def legolize(path, target_res):    
+def legolize(path):    
     # read mesh from file
     reader = pv.get_reader(path)
     mesh = reader.read()
