@@ -2,7 +2,6 @@ import pyvista as pv
 import numpy as np
 from pyvista import CellType
 
-import nelegolizer.constants as CONST 
 from nelegolizer.utils import mesh as umesh
 
 def from_mesh(mesh: pv.PolyData,
