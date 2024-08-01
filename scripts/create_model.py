@@ -10,12 +10,10 @@ python3 create_models.py all
 import sys
 import os
 import torch
-from scripts.util.modules import model_class
+from util.modules import model_class
+from util import path
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
-PACKAGE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)))
-MODELS_PATH = os.path.join(PACKAGE_PATH, "models/")
 
 if __name__ == '__main__':
     argc = len(sys.argv) - 1
@@ -36,12 +34,12 @@ if __name__ == '__main__':
             continue
 
         # Save model
-        MODEL_NAME = arg + ".pth"
-        MODEL_SAVE_PATH = MODELS_PATH + MODEL_NAME
+        MODEL_FILENAME = arg + ".pth"
+        MODEL_PTH_FILE_PATH = os.path.join(path.BRICK_MODELS_DIR, MODEL_FILENAME)
         try:
-            torch.save(obj=model.state_dict(), f=MODEL_SAVE_PATH)
+            torch.save(obj=model.state_dict(), f=MODEL_PTH_FILE_PATH)
         except Exception as e:
-            print(f"Exception occured while saving model to {MODEL_SAVE_PATH}: {e}")
+            print(f"Exception occured while saving model to {MODEL_PTH_FILE_PATH}: {e}")
             sys.exit()
         else:
-            print(f"Model {arg} succesfully saved to: {MODEL_SAVE_PATH}")
+            print(f"Model {arg} succesfully saved to: {MODEL_PTH_FILE_PATH}")

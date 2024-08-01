@@ -11,15 +11,12 @@ import sys
 import os
 import torch
 from torch import nn
-from util.dataset import CustomVoxelsDataset
 from torch.utils.data import DataLoader
-from scripts.util.modules import model_class
+from util.dataset import CustomVoxelsDataset
+from util.modules import model_class
+from util import path
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
-PACKAGE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)))
-MODELS_PATH = os.path.join(PACKAGE_PATH, "models/")
-GENERATED_DATA_PATH = os.path.join(PACKAGE_PATH, "data/generated/")
 
 model_hyperparameters = {
     "model_n111": {"train_labels_filename": "labels_111.csv",
@@ -68,20 +65,26 @@ if __name__ == '__main__':
             continue
 
         # Load model
-        MODEL_NAME = arg + ".pth"
-        MODEL_SAVE_PATH = MODELS_PATH + MODEL_NAME
+        MODEL_FILENAME = arg + ".pth"
+        MODEL_PTH_FILE_PATH = os.path.join(path.BRICK_MODELS_DIR, MODEL_FILENAME)
         try:
-            loaded = torch.load(f=MODEL_SAVE_PATH)
+            loaded = torch.load(f=MODEL_PTH_FILE_PATH)
             model.load_state_dict(loaded)    
         except FileNotFoundError as e:
-            print(f"No file {MODEL_SAVE_PATH}")
+            print(f"No file {MODEL_PTH_FILE_PATH}")
             continue
         else:
-            print(f"Model succesfully loaded from: {MODEL_SAVE_PATH}")
+            print(f"Model succesfully loaded from: {MODEL_PTH_FILE_PATH}")
         
         # Prepare datasets and dataloaders
-        training_data = CustomVoxelsDataset(GENERATED_DATA_PATH + model_hyperparameters[arg]["train_labels_filename"], '.')
-        test_data = CustomVoxelsDataset(GENERATED_DATA_PATH + model_hyperparameters[arg]["test_labels_filename"], '.')
+        MODEL_DATA_DIR = os.path.join(path.BRICK_CLASSFICATION_DATA_DIR, arg[6:])
+        TRAIN_LABEL_FILE_PATH = os.path.join(MODEL_DATA_DIR, "train_data_labels.csv")
+        TEST_LABEL_FILE_PATH = os.path.join(MODEL_DATA_DIR, "test_data_labels.csv")
+        TRAIN_DATA_DIR = os.path.join(MODEL_DATA_DIR, "train_data")
+        TEST_DATA_DIR = os.path.join(MODEL_DATA_DIR, "test_data")
+        
+        training_data = CustomVoxelsDataset(TRAIN_LABEL_FILE_PATH, TRAIN_DATA_DIR)
+        test_data = CustomVoxelsDataset(TEST_LABEL_FILE_PATH, TEST_DATA_DIR)
 
         test_dataloader = DataLoader(test_data, batch_size=30, shuffle=True)
 
