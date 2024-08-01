@@ -9,7 +9,7 @@ PART_DAT_DIR = os.path.join(PACKAGE, "LDraw/part/dat")
 PART_GEOM_DIR = os.path.join(PACKAGE, "LDraw/part/geom")
 
 # Brick Models
-BRICK_MODELS_DIR = os.path.join(PACKAGE, "models")
+BRICK_MODELS_DIR = os.path.join(PACKAGE, "models/brick_classification")
 BRICK_MODULES_FILE = os.path.join(PACKAGE, "scripts/util/modules.py")
 
 # Additional
