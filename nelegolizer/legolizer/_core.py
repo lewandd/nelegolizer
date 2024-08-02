@@ -34,9 +34,11 @@ def check_subspace(*, voxel_grid: np.ndarray,
     mesh_position = np.array(position) * np.array(shape) * BRICK_UNIT_SHAPE
 
     if np.all(shape == (1, 1, 1)):
-        LegoBrickList.append(predictLegoBrick(voxel_grid=voxel_subgrid, 
-                                              model=brick_classification_models["model_n111"], 
-                                              mesh_position=mesh_position))
+        lb = predictLegoBrick(voxel_grid=voxel_subgrid, 
+                              model=brick_classification_models["model_n111"], 
+                              mesh_position=mesh_position)
+        if lb is not None:
+            LegoBrickList.append(lb)
 
 def legolize(path: str) -> list[LegoBrick]:    
     reader = pv.get_reader(path)
