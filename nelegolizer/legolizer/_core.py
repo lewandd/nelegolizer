@@ -27,10 +27,14 @@ def predictLegoBrick(*,
      return None
   
 def check_subspace(*,
-                   voxel_subgrid: np.ndarray, 
+                   voxel_grid: np.ndarray, 
                    position: tuple[int, int, int], 
                    shape: np.ndarray, 
                    LegoBrickGrid: list[list[list[list[LegoBrick]]]]):
+    
+    voxel_subgrid = grid.get_subgrid(grid=voxel_grid, 
+                                     position=position*BRICK_UNIT_RESOLUTION*shape, 
+                                     shape=shape*BRICK_UNIT_RESOLUTION)
     x, y, z = position
     mesh_position = np.array(position) * np.array(shape) * BRICK_UNIT_SHAPE
 
@@ -56,9 +60,6 @@ def legolize(path):
         LegoBrickGrid[str(shape)] = np.zeros((voxel_grid.shape/(BRICK_UNIT_RESOLUTION * shape)).astype(int), dtype=LegoBrick)   
 
     for shape in BRICK_SHAPES:
-        for (i, j, k), _ in np.ndenumerate(LegoBrickGrid[str(shape)]):
-            start = BRICK_UNIT_RESOLUTION * shape * np.array([i, j, k])
-            end =   BRICK_UNIT_RESOLUTION * shape * np.array([i+1, j+1, k+1])
-            voxel_subgrid = voxel_grid[start[0]:end[0], start[1]:end[1], start[2]:end[2]]
-            check_subspace(voxel_subgrid=voxel_subgrid, position=(i, j, k), shape=shape, LegoBrickGrid=LegoBrickGrid)
+        for position, _ in np.ndenumerate(LegoBrickGrid[str(shape)]):
+            check_subspace(voxel_grid=voxel_grid, position=position, shape=shape, LegoBrickGrid=LegoBrickGrid)
     return LegoBrickGrid

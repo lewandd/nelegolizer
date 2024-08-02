@@ -14,6 +14,11 @@ def find_best_rotation(voxel_grid: np.ndarray) -> int:
         rotation_score["270"] += x_inverted + z
   return int(max(rotation_score, key=rotation_score.get))
 
+def get_subgrid(grid: np.ndarray, position: tuple[int, int, int], shape: np.ndarray) -> np.ndarray:
+    start = position
+    end =   position + shape
+    return grid[start[0]:end[0], start[1]:end[1], start[2]:end[2]]
+
 def rotate(grid: np.ndarray, rotation: int) -> np.ndarray:
   match rotation:
      case 0:
