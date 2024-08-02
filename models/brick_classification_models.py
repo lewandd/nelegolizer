@@ -4,7 +4,7 @@ import torch
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-PACKAGE = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+PACKAGE = os.path.dirname(os.path.dirname(__file__))
 BRICK_MODELS_DIR = os.path.join(PACKAGE, "models/brick_classification")
 
 class Model_n111(nn.Module):
