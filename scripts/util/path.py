@@ -4,6 +4,7 @@ PACKAGE = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 
 # models
 BRICK_MODELS_DIR = os.path.join(PACKAGE, "models/brick_classification")
+BRICK_MODULES_FILE = os.path.join(PACKAGE, "scripts/util/modules.py")
 
 # data
 DATA_DIR = os.path.join(PACKAGE, "data")
