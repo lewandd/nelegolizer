@@ -4,9 +4,9 @@ import numpy as np
 from nelegolizer.data import LegoBrick
 import nelegolizer.model.brick as brick
 from torch import nn
-import nelegolizer
 from nelegolizer.utils import grid
 import torch
+from nelegolizer.model import brick_classification_models
 
 fill_treshold = 0.1
 
@@ -35,7 +35,7 @@ def check_subspace(*, voxel_grid: np.ndarray,
 
     if np.all(shape == (1, 1, 1)):
         LegoBrickList.append(predictLegoBrick(voxel_grid=voxel_subgrid, 
-                                              model=nelegolizer.model.models["model_n111"], 
+                                              model=brick_classification_models["model_n111"], 
                                               mesh_position=mesh_position))
 
 def legolize(path: str) -> list[LegoBrick]:    

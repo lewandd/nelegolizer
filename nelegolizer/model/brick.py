@@ -4,8 +4,6 @@ Models functions for object classification
 
 import torch
 from torch import nn
-from torch.utils.data import DataLoader
-from . import models
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 debug = False
