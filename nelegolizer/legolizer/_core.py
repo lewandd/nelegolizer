@@ -2,7 +2,7 @@ import pyvista as pv
 from nelegolizer.constants import BRICK_UNIT_SHAPE, VOXEL_UNIT_SHAPE, BRICK_SHAPE_BOUND, BRICK_UNIT_RESOLUTION, BRICK_SHAPES
 import numpy as np
 from nelegolizer.data import LegoBrick
-import nelegolizer.model.object as obj
+import nelegolizer.model.brick as brick
 from torch import nn
 import nelegolizer
 from nelegolizer.utils import grid
@@ -18,7 +18,7 @@ def predictLegoBrick(*, voxel_grid: np.ndarray,
 
   fill_ratio = grid.get_fill_ratio(voxel_grid)
   if fill_ratio > fill_treshold:
-    label = obj.test_predict(model, torch.tensor(voxel_grid).flatten())
+    label = brick.test_predict(model, torch.tensor(voxel_grid).flatten())
     lego_brick = LegoBrick(label=label, mesh_position=mesh_position, rotation=best_rotation)
     return lego_brick
   else:
