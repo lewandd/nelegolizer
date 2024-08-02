@@ -10,7 +10,7 @@ python3 create_models.py all
 import sys
 import os
 import torch
-from util.modules import nn_modules
+from util.modules import nn_modules, create_model, save_model
 from util import path
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -26,20 +26,5 @@ if __name__ == '__main__':
         args = sys.argv[1:]
     
     for arg in args:
-        # Create model
-        try:
-            model = nn_modules[arg]().to(device)
-        except KeyError:
-            print(f"No model like {arg}. Available models: {list(nn_modules.keys())}")
-            continue
-
-        # Save model
-        MODEL_FILENAME = arg + ".pth"
-        MODEL_PTH_FILE_PATH = os.path.join(path.BRICK_MODELS_DIR, MODEL_FILENAME)
-        try:
-            torch.save(obj=model.state_dict(), f=MODEL_PTH_FILE_PATH)
-        except Exception as e:
-            print(f"Exception occured while saving model to {MODEL_PTH_FILE_PATH}: {e}")
-            sys.exit()
-        else:
-            print(f"Model {arg} succesfully saved to: {MODEL_PTH_FILE_PATH}")
+        model = create_model(arg)
+        save_model(model, arg)

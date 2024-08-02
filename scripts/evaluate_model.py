@@ -13,7 +13,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from util.dataset import CustomVoxelsDataset
-from util.modules import nn_modules
+from util.modules import nn_modules, create_model, load_model
 from util import path
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -57,24 +57,8 @@ if __name__ == '__main__':
         if arg.lower() == "debug=true" or arg.lower() == "debug=false":
             continue
 
-        # Create model
-        try:
-            model = nn_modules[arg]().to(device)
-        except KeyError:
-            print(f"No model like {arg}. Available models: {list(nn_modules.keys())}")
-            continue
-
-        # Load model
-        MODEL_FILENAME = arg + ".pth"
-        MODEL_PTH_FILE_PATH = os.path.join(path.BRICK_MODELS_DIR, MODEL_FILENAME)
-        try:
-            loaded = torch.load(f=MODEL_PTH_FILE_PATH)
-            model.load_state_dict(loaded)    
-        except FileNotFoundError as e:
-            print(f"No file {MODEL_PTH_FILE_PATH}")
-            continue
-        else:
-            print(f"Model succesfully loaded from: {MODEL_PTH_FILE_PATH}")
+        model = create_model(arg)
+        model = load_model(model, arg)
         
         # Prepare datasets and dataloaders
         MODEL_DATA_DIR = os.path.join(path.BRICK_CLASSFICATION_DATA_DIR, arg[6:])

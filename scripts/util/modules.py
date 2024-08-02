@@ -5,7 +5,6 @@ import torch
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 PACKAGE = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-print(PACKAGE)
 BRICK_MODELS_DIR = os.path.join(PACKAGE, "models/brick_classification")
 
 class Model_n111(nn.Module):
@@ -33,30 +32,32 @@ def create_model(name: str) -> nn.Module:
     try:
         model = nn_modules[name]().to(device)
     except KeyError:
-        print(f"No model like {name}. Available models: {get_model_names()}")
+        print(f"KeyError: No model like {name}. Available models: {get_model_names()}")
     return model
 
-def load_model(model: nn.Module, name: str) -> nn.Module:
+def load_model(model: nn.Module, name: str, debug: bool = False) -> nn.Module:
     MODEL_FILENAME = name + ".pth"
     MODEL_PTH_FILE_PATH = os.path.join(BRICK_MODELS_DIR, MODEL_FILENAME)
     try:
         loaded = torch.load(f=MODEL_PTH_FILE_PATH, map_location=device)
         model.load_state_dict(loaded)    
     except FileNotFoundError as e:
-        print(f"No file {MODEL_PTH_FILE_PATH}")
+        print(f"FileNotFoundError: No file {MODEL_PTH_FILE_PATH}")
     else:
-        print(f"Model succesfully loaded from: {MODEL_PTH_FILE_PATH}")
+        if debug:
+            print(f"Model succesfully loaded from: {MODEL_PTH_FILE_PATH}")
     return model
 
-def save_model(model: nn.Module, name: str) -> nn.Module:
+def save_model(model: nn.Module, name: str, debug: bool = False) -> None:
     MODEL_FILENAME = name + ".pth"
     MODEL_PTH_FILE_PATH = os.path.join(BRICK_MODELS_DIR, MODEL_FILENAME)
     try:
         torch.save(obj=model.state_dict(), f=MODEL_PTH_FILE_PATH)
     except Exception as e:
-        print(f"Exception occured while saving model to {MODEL_PTH_FILE_PATH}: {e}")
+        print(f"Exception: Exception occured while saving model to {MODEL_PTH_FILE_PATH}: {e}")
     else:
-        print(f"Model {name} succesfully saved to: {MODEL_PTH_FILE_PATH}")
+        if debug:
+            print(f"Model {name} succesfully saved to: {MODEL_PTH_FILE_PATH}")
 
 def load_all_models():
     models = {}
