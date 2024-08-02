@@ -13,7 +13,7 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from util.dataset import CustomVoxelsDataset
-from util.modules import model_class
+from util.modules import nn_modules
 from util import path
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -65,7 +65,7 @@ if __name__ == '__main__':
         print("Usage: python3 create_model.py [model name] [model2 name] ... or python3 create_model.py all")
         sys.exit()
     elif "all" in sys.argv:
-        args = list(model_class.keys())
+        args = list(nn_modules.keys())
     else:
         args = sys.argv[1:]
     if "debug=true" in [s.lower() for s in sys.argv]:
@@ -79,9 +79,9 @@ if __name__ == '__main__':
 
         # Create model
         try:
-            model = model_class[arg]().to(device)
+            model = nn_modules[arg]().to(device)
         except KeyError:
-            print(f"No model like {arg}. Available models: {list(model_class.keys())}")
+            print(f"No model like {arg}. Available models: {list(nn_modules.keys())}")
             continue
         # Load model
         MODEL_FILENAME = arg + ".pth"

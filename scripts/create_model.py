@@ -10,7 +10,7 @@ python3 create_models.py all
 import sys
 import os
 import torch
-from util.modules import model_class
+from util.modules import nn_modules
 from util import path
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -21,16 +21,16 @@ if __name__ == '__main__':
         print("Usage: python3 create_model.py [model name] [model2 name] ... or python3 create_model.py all")
         sys.exit()
     elif argc == 1 and sys.argv[1] == "all":
-        args = list(model_class.keys())
+        args = list(nn_modules.keys())
     else:
         args = sys.argv[1:]
     
     for arg in args:
         # Create model
         try:
-            model = model_class[arg]().to(device)
+            model = nn_modules[arg]().to(device)
         except KeyError:
-            print(f"No model like {arg}. Available models: {list(model_class.keys())}")
+            print(f"No model like {arg}. Available models: {list(nn_modules.keys())}")
             continue
 
         # Save model
