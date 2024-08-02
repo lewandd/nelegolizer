@@ -9,17 +9,15 @@ python3 evaluate_model.py all
 
 import sys
 import os
+from importlib.machinery import SourceFileLoader
 import torch
 from torch import nn
-from util.dataset import CustomVoxelsDataset
 from torch.utils.data import DataLoader
-from scripts.util.modules import model_class
+from util.dataset import CustomVoxelsDataset
+from util import path
 
+bc_modules = SourceFileLoader("modules", path.BRICK_MODULES_FILE).load_module()
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
-PACKAGE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)))
-MODELS_PATH = os.path.join(PACKAGE_PATH, "models/")
-GENERATED_DATA_PATH = os.path.join(PACKAGE_PATH, "data/generated/")
 
 model_hyperparameters = {
     "model_n111": {"train_labels_filename": "labels_111.csv",
@@ -48,7 +46,7 @@ if __name__ == '__main__':
     if argc == 0 :
         raise Exception("Usage: python3 create_model.py [model name] [model2 name] ... or python3 create_model.py all")
     elif "all" in sys.argv:
-        args = list(model_class.keys())
+        args = bc_modules.get_model_names()
     else:
         args = sys.argv[1:]
     if "debug=true" in [s.lower() for s in sys.argv]:
@@ -60,28 +58,18 @@ if __name__ == '__main__':
         if arg.lower() == "debug=true" or arg.lower() == "debug=false":
             continue
 
-        # Create model
-        try:
-            model = model_class[arg]().to(device)
-        except KeyError:
-            print(f"No model like {arg}. Available models: {list(model_class.keys())}")
-            continue
-
-        # Load model
-        MODEL_NAME = arg + ".pth"
-        MODEL_SAVE_PATH = MODELS_PATH + MODEL_NAME
-        try:
-            loaded = torch.load(f=MODEL_SAVE_PATH)
-            model.load_state_dict(loaded)    
-        except FileNotFoundError as e:
-            print(f"No file {MODEL_SAVE_PATH}")
-            continue
-        else:
-            print(f"Model succesfully loaded from: {MODEL_SAVE_PATH}")
+        model = bc_modules.create_model(arg)
+        model = bc_modules.load_model(model, arg)
         
         # Prepare datasets and dataloaders
-        training_data = CustomVoxelsDataset(GENERATED_DATA_PATH + model_hyperparameters[arg]["train_labels_filename"], '.')
-        test_data = CustomVoxelsDataset(GENERATED_DATA_PATH + model_hyperparameters[arg]["test_labels_filename"], '.')
+        MODEL_DATA_DIR = os.path.join(path.BRICK_CLASSFICATION_DATA_DIR, arg[6:])
+        TRAIN_LABEL_FILE_PATH = os.path.join(MODEL_DATA_DIR, "train_data_labels.csv")
+        TEST_LABEL_FILE_PATH = os.path.join(MODEL_DATA_DIR, "test_data_labels.csv")
+        TRAIN_DATA_DIR = os.path.join(MODEL_DATA_DIR, "train_data")
+        TEST_DATA_DIR = os.path.join(MODEL_DATA_DIR, "test_data")
+        
+        training_data = CustomVoxelsDataset(TRAIN_LABEL_FILE_PATH, TRAIN_DATA_DIR)
+        test_data = CustomVoxelsDataset(TEST_LABEL_FILE_PATH, TEST_DATA_DIR)
 
         test_dataloader = DataLoader(test_data, batch_size=30, shuffle=True)
 

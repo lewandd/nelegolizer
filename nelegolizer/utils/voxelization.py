@@ -2,11 +2,10 @@ import pyvista as pv
 import numpy as np
 from pyvista import CellType
 
-import nelegolizer.constants as CONST 
 from nelegolizer.utils import mesh as umesh
 
 def from_mesh(mesh: pv.PolyData,
-              *, unit_shape: np.ndarray = np.array([0.1, 0.1, 0.1])) -> pv.UnstructuredGrid:
+              *, unit_shape: np.ndarray) -> pv.UnstructuredGrid:
     # extend mesh by epsilon for proper voxelization by pyvista.voxelize
     eps = unit_shape/2.0
     eps_ext_mesh = umesh.scale_to(mesh, umesh.get_resolution(mesh)+eps)
@@ -15,31 +14,27 @@ def from_mesh(mesh: pv.PolyData,
     return pv.voxelize(eps_ext_mesh, density=unit_shape, check_surface=False)
 
 def from_grid(grid: np.ndarray, 
-              res: int) -> pv.UnstructuredGrid:
+              *, unit_shape: np.ndarray) -> pv.UnstructuredGrid:
+    points_id = {}
+    points = []
+    id = 0
+    for (x, y, z), val in np.ndenumerate(grid):
+        if val:
+            binary_combinations_222 = np.ndenumerate(np.zeros([2,2,2]))
+            for (b3, b2, b1), _ in binary_combinations_222:
+                if f"{x+b1}|{y+b2}|{z+b3}" not in points_id:
+                    points_id[f"{x+b1}|{y+b2}|{z+b3}"] = id
+                    points.append(np.array([x+b1, y+b2, z+b3]) * unit_shape)
+                    id += 1
+
     cells = []
-    for i in range(res):
-        for j in range(res):
-            for k in range(res):
-                if grid[i][j][k]:
-                    cell = [ 
-                        [i,    j,    k],
-                        [i+1,  j,    k],
-                        [i,  j+1,  k],
-                        [i+1  ,  j+1,  k], 
-                        [i,    j,    k+1],
-                        [i+1,  j,    k+1],
-                        [i,  j+1,  k+1],
-                        [i+1,    j+1,  k+1]
-                    ]
-                    cells.append(cell)
-    cell_points = np.vstack(cells)
-    cell_points = cell_points*CONST.GROUP_RES
+    for (x, y, z), val in np.ndenumerate(grid):
+        if val:
+            binary_combinations_222 = np.ndenumerate(np.zeros([2,2,2]))
+            cells.append([8] + [points_id[f"{x+b1}|{y+b2}|{z+b3}"] for (b3, b2, b1), _ in binary_combinations_222])
 
-    cpoints = []
-    for i in range(len(cells)):
-        cpoints.append(8)
-        for j in range(8):
-            cpoints.append(i*8 + j)    
+    cell_type = [CellType.VOXEL for _ in range(len(cells))]
 
-    cell_type = np.array([CellType.VOXEL for _ in range(len(cells))])
-    return pv.UnstructuredGrid(np.array(cpoints), cell_type, np.array(cell_points).astype(float))
+    return pv.UnstructuredGrid(np.array(cells).flatten(), 
+                               np.array(cell_type), 
+                               np.array(points).astype(float))

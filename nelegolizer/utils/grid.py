@@ -1,5 +1,6 @@
 import pyvista as pv
 import numpy as np
+from nelegolizer.utils import mesh as umesh
 
 def find_best_rotation(voxel_grid: np.ndarray) -> int:
   rotation_score = {"0": 0, "90": 0, "180": 0, "270": 0}
@@ -40,9 +41,21 @@ def get_fill_ratio(grid: np.ndarray) -> float:
       fill += 1 if x else 0
   return fill/volume
 
-def from_pv_voxels(pv_voxels: pv.UnstructuredGrid, res: int) -> np.ndarray:
+def from_pv_voxels(pv_voxels: pv.UnstructuredGrid,
+                   *, unit_shape: np.ndarray, 
+                      required_dim_divisibility: np.ndarray = np.array([1, 1, 1])) -> np.ndarray:
+    mesh_shape = umesh.get_resolution(pv_voxels)
+    resolution = (mesh_shape/unit_shape).astype(int)
+
+    remainder = resolution % required_dim_divisibility
+    for dim in range(resolution.size):     
+      if remainder[dim] != 0:
+        extended_resolution = resolution[dim] - remainder[dim] + required_dim_divisibility[dim] 
+        resolution[dim] = extended_resolution
+       
     voxel_centers = pv_voxels.cell_centers().points
-    grid = np.zeros([res,res,res], dtype=bool)
-    for vx, vy, vz in voxel_centers:
-        grid[int(vx)][int(vy)][int(vz)] = True
+    grid = np.zeros(resolution, dtype=bool)
+    for position in voxel_centers:
+        x, y, z = (position/unit_shape).astype(int)
+        grid[x, y, z] = True
     return grid
