@@ -1,6 +1,6 @@
 import os
 
-PACKAGE = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+PACKAGE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 # models
 BRICK_MODELS_DIR = os.path.join(PACKAGE, "models/brick_classification")
