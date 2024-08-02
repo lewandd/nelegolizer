@@ -47,7 +47,7 @@ def legolize(path: str) -> list[LegoBrick]:
                                 required_dim_divisibility=BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)
 
     LegoBrickList = []
-    upper_level_resolution = (voxel_grid.shape/(BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)).astype(int)
-    for position, _ in np.ndenumerate(np.zeros(upper_level_resolution, dtype=LegoBrick)):
+    top_level_resolution = (voxel_grid.shape/(BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)).astype(int)
+    for position, _ in np.ndenumerate(np.zeros(top_level_resolution, dtype=LegoBrick)):
         check_subspace(voxel_grid=voxel_grid, position=position, shape=BRICK_SHAPE_BOUND, LegoBrickList=LegoBrickList)
     return LegoBrickList
