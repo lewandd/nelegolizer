@@ -30,7 +30,11 @@ def get_model_names() -> list[str]:
     return list(nn_modules.keys())
 
 def create_model(name: str) -> nn.Module: 
-    return nn_modules[name]()
+    try:
+        model = nn_modules[name]().to(device)
+    except KeyError:
+        print(f"No model like {name}. Available models: {get_model_names()}")
+    return model
 
 def load_model(model: nn.Module, name: str) -> nn.Module:
     MODEL_FILENAME = name + ".pth"
