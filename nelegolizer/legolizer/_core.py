@@ -6,7 +6,6 @@ import nelegolizer.model.object as obj
 from torch import nn
 import nelegolizer
 from nelegolizer.utils import grid
-from nelegolizer.utils import voxelization
 import torch
 
 fill_treshold = 0.1
@@ -44,15 +43,12 @@ def check_subspace(*,
                                                   mesh_position=mesh_position)
 
 def legolize(path):    
-    # read mesh from file
     reader = pv.get_reader(path)
     mesh = reader.read()
 
-    # voxelize and get grid
-    pv_voxels = voxelization.from_mesh(mesh, unit_shape=VOXEL_UNIT_SHAPE)
-    voxel_grid = grid.from_pv_voxels(pv_voxels,
-                                     unit_shape=VOXEL_UNIT_SHAPE, 
-                                     required_dim_divisibility=BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)
+    voxel_grid = grid.from_mesh(mesh, 
+                                unit_shape=VOXEL_UNIT_SHAPE, 
+                                required_dim_divisibility=BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)
 
     # create LegoBrickGrid dictionary of LegoBrick
     LegoBrickGrid = {}

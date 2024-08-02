@@ -64,3 +64,16 @@ def from_pv_voxels(pv_voxels: pv.UnstructuredGrid,
         x, y, z = (position/unit_shape).astype(int)
         grid[x, y, z] = True
     return grid
+
+def from_mesh(mesh: pv.PolyData, 
+              *, unit_shape: np.ndarray,
+              required_dim_divisibility: np.ndarray = np.array([1, 1, 1])) -> np.ndarray:
+    # copied voxelization.from_mesh code to avoid import
+    eps = unit_shape/2.0
+    eps_ext_mesh = umesh.scale_to(mesh, umesh.get_resolution(mesh)+eps)
+
+    eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
+    pv_voxels = pv.voxelize(eps_ext_mesh, density=unit_shape, check_surface=False)
+    return from_pv_voxels(pv_voxels, 
+                          unit_shape=unit_shape, 
+                          required_dim_divisibility=required_dim_divisibility)
