@@ -17,6 +17,8 @@ def find_best_rotation(voxel_grid: np.ndarray) -> int:
 def get_subgrid(grid: np.ndarray, position: tuple[int, int, int], shape: np.ndarray) -> np.ndarray:
     start = position
     end =   position + shape
+    if np.any(end > grid.shape) or np.any(start < np.array([0, 0, 0])):
+       raise IndexError(f"Cannot get a subgrid with position={position} and shape={shape} from grid with shape={grid.shape}. Indexes are out of bond.") 
     return grid[start[0]:end[0], start[1]:end[1], start[2]:end[2]]
 
 def rotate(grid: np.ndarray, rotation: int) -> np.ndarray:
