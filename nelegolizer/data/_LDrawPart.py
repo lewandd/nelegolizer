@@ -18,14 +18,5 @@ class LDrawPart:
         self.size = size
         
         reader = pv.get_reader(geom_path)
-        self.__mesh = reader.read()
-        pv_voxels = voxelization.from_mesh(self.mesh, unit_shape=VOXEL_UNIT_SHAPE)
-        self.__grid = grid.from_pv_voxels(pv_voxels, unit_shape=VOXEL_UNIT_SHAPE)
-
-    @property
-    def mesh(self) -> pv.core.pointset.PolyData:
-      return self.__mesh
-    
-    @property
-    def grid(self) -> np.ndarray:
-      return self.__grid
+        self.mesh: pv.PolyData = reader.read()
+        self.grid: np.ndarray = grid.from_mesh(self.mesh, unit_shape=VOXEL_UNIT_SHAPE)
