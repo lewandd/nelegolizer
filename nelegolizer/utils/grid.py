@@ -67,6 +67,18 @@ def from_pv_voxels(pv_voxels: pv.UnstructuredGrid,
         grid[x, y, z] = True
     return grid
 
+def extend(grid: np.ndarray, 
+           required_dim_divisibility: np.ndarray) -> np.ndarray:
+  resolution = np.array(grid.shape)
+  remainder = resolution % required_dim_divisibility
+  for dim in range(resolution.size):     
+    if remainder[dim] != 0:
+      extended_resolution = resolution[dim] - remainder[dim] + required_dim_divisibility[dim] 
+      resolution[dim] = extended_resolution
+  extended_grid = np.zeros(resolution, dtype=bool)
+  extended_grid[:grid.shape[0], :grid.shape[1], :grid.shape[2]] = grid
+  return extended_grid
+
 def from_mesh(mesh: pv.PolyData, 
               *, unit_shape: np.ndarray,
               required_dim_divisibility: np.ndarray = np.array([1, 1, 1])) -> np.ndarray:
