@@ -48,10 +48,11 @@ def get_fill_ratio(grid: np.ndarray) -> float:
       fill += 1 if x else 0
   return fill/volume
 
-def from_pv_voxels(pv_voxels: pv.UnstructuredGrid,
-                   *, unit_shape: np.ndarray) -> np.ndarray:
+def from_pv_voxels(pv_voxels: pv.UnstructuredGrid) -> np.ndarray:
+    pv_voxels = umesh.translate_to_zero(pv_voxels)
     mesh_shape = umesh.get_resolution(pv_voxels)
-    resolution = (mesh_shape/unit_shape).astype(int)
+    unit_shape = umesh.get_resolution(pv_voxels.extract_cells(0))
+    resolution = np.ceil((mesh_shape/unit_shape)).astype(int)
     voxel_centers = pv_voxels.cell_centers().points
     grid = np.zeros(resolution, dtype=bool)
     for position in voxel_centers:
@@ -79,5 +80,4 @@ def from_mesh(mesh: pv.PolyData,
 
     eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
     pv_voxels = pv.voxelize(eps_ext_mesh, density=unit_shape, check_surface=False)
-    return from_pv_voxels(pv_voxels, 
-                          unit_shape=unit_shape)
+    return from_pv_voxels(pv_voxels)
