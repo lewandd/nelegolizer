@@ -44,9 +44,8 @@ def legolize(path: str) -> list[LegoBrick]:
     reader = pv.get_reader(path)
     mesh = reader.read()
 
-    voxel_grid = grid.from_mesh(mesh, 
-                                unit_shape=VOXEL_UNIT_SHAPE, 
-                                required_dim_divisibility=BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)
+    voxel_grid = grid.from_mesh(mesh, unit_shape=VOXEL_UNIT_SHAPE)
+    voxel_grid = grid.extend(voxel_grid, required_dim_divisibility=BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)
 
     LegoBrickList = []
     top_level_resolution = (voxel_grid.shape/(BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)).astype(int)

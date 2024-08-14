@@ -49,17 +49,9 @@ def get_fill_ratio(grid: np.ndarray) -> float:
   return fill/volume
 
 def from_pv_voxels(pv_voxels: pv.UnstructuredGrid,
-                   *, unit_shape: np.ndarray, 
-                      required_dim_divisibility: np.ndarray = np.array([1, 1, 1])) -> np.ndarray:
+                   *, unit_shape: np.ndarray) -> np.ndarray:
     mesh_shape = umesh.get_resolution(pv_voxels)
     resolution = (mesh_shape/unit_shape).astype(int)
-
-    remainder = resolution % required_dim_divisibility
-    for dim in range(resolution.size):     
-      if remainder[dim] != 0:
-        extended_resolution = resolution[dim] - remainder[dim] + required_dim_divisibility[dim] 
-        resolution[dim] = extended_resolution
-       
     voxel_centers = pv_voxels.cell_centers().points
     grid = np.zeros(resolution, dtype=bool)
     for position in voxel_centers:
@@ -80,8 +72,7 @@ def extend(grid: np.ndarray,
   return extended_grid
 
 def from_mesh(mesh: pv.PolyData, 
-              *, unit_shape: np.ndarray,
-              required_dim_divisibility: np.ndarray = np.array([1, 1, 1])) -> np.ndarray:
+              *, unit_shape: np.ndarray) -> np.ndarray:
     # copied voxelization.from_mesh code to avoid import
     eps = unit_shape/2.0
     eps_ext_mesh = umesh.scale_to(mesh, umesh.get_resolution(mesh)+eps)
@@ -89,5 +80,4 @@ def from_mesh(mesh: pv.PolyData,
     eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
     pv_voxels = pv.voxelize(eps_ext_mesh, density=unit_shape, check_surface=False)
     return from_pv_voxels(pv_voxels, 
-                          unit_shape=unit_shape, 
-                          required_dim_divisibility=required_dim_divisibility)
+                          unit_shape=unit_shape)
