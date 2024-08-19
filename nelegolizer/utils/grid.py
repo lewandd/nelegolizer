@@ -21,8 +21,8 @@ def get_subgrid(grid: np.ndarray, position: tuple[int, int, int], shape: np.ndar
        raise IndexError(f"Cannot get a subgrid with position={position} and shape={shape} from grid with shape={grid.shape}. Indexes are out of bond.") 
     return grid[start[0]:end[0], start[1]:end[1], start[2]:end[2]]
 
-def rotate(grid: np.ndarray, rotation: int) -> np.ndarray:
-  match rotation:
+def rotate(grid: np.ndarray, degrees: int) -> np.ndarray:
+  match degrees:
      case 0:
        rotated_grid = grid
      case 90:
@@ -38,7 +38,7 @@ def rotate(grid: np.ndarray, rotation: int) -> np.ndarray:
        for (i, j, k), val in np.ndenumerate(grid[:,:,::-1]):
           rotated_grid[k, j, i] = val
      case _:
-      raise Exception(f"Rotation can be either 0, 90, 180 or 270. Got {rotation}.")
+      raise Exception(f"Rotation can be either 0, 90, 180 or 270 degrees. Got {degrees}.")
   return rotated_grid
 
 def get_fill_ratio(grid: np.ndarray) -> float:
@@ -73,11 +73,11 @@ def extend(grid: np.ndarray,
   return extended_grid
 
 def from_mesh(mesh: pv.PolyData, 
-              *, unit_shape: np.ndarray) -> np.ndarray:
+              *, voxel_mesh_shape: np.ndarray) -> np.ndarray:
     # copied voxelization.from_mesh code to avoid import
-    eps = unit_shape/2.0
+    eps = voxel_mesh_shape/2.0
     eps_ext_mesh = umesh.scale_to(mesh, umesh.get_resolution(mesh)+eps)
 
     eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
-    pv_voxels = pv.voxelize(eps_ext_mesh, density=unit_shape, check_surface=False)
+    pv_voxels = pv.voxelize(eps_ext_mesh, density=voxel_mesh_shape, check_surface=False)
     return from_pv_voxels(pv_voxels)

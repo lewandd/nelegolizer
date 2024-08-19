@@ -19,4 +19,4 @@ class LDrawPart:
         
         reader = pv.get_reader(geom_path)
         self.mesh: pv.PolyData = reader.read()
-        self.grid: np.ndarray = grid.from_mesh(self.mesh, unit_shape=const.VOXEL_UNIT_SHAPE)
+        self.grid: np.ndarray = grid.from_mesh(self.mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)

@@ -31,7 +31,7 @@ def check_subspace(*, voxel_grid: np.ndarray,
     voxel_subgrid = grid.get_subgrid(grid=voxel_grid, 
                                      position=position*const.BRICK_UNIT_RESOLUTION*shape, 
                                      shape=shape*const.BRICK_UNIT_RESOLUTION)
-    mesh_position = np.array(position) * np.array(shape) * const.BRICK_UNIT_SHAPE
+    mesh_position = np.array(position) * np.array(shape) * const.BRICK_UNIT_MESH_SHAPE
 
     if np.all(shape == (1, 1, 1)):
         lb = predictLegoBrick(voxel_grid=voxel_subgrid, 
@@ -44,7 +44,7 @@ def legolize(path: str) -> list[LegoBrick]:
     reader = pv.get_reader(path)
     mesh = reader.read()
 
-    voxel_grid = grid.from_mesh(mesh, unit_shape=const.VOXEL_UNIT_SHAPE)
+    voxel_grid = grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
     voxel_grid = grid.extend(voxel_grid, required_dim_divisibility=const.BRICK_SHAPE_BOUND * const.BRICK_UNIT_RESOLUTION)
 
     LegoBrickList = []
