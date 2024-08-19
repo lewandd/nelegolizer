@@ -45,10 +45,10 @@ def legolize(path: str) -> list[LegoBrick]:
     mesh = reader.read()
 
     voxel_grid = grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
-    voxel_grid = grid.extend(voxel_grid, required_dim_divisibility=const.BRICK_SHAPE_BOUND * const.BRICK_UNIT_RESOLUTION)
+    voxel_grid = grid.extend(voxel_grid, required_dim_divisibility=const.TOP_LEVEL_BRICK_RESOLUTION)
 
     LegoBrickList = []
-    top_level_resolution = (voxel_grid.shape/(const.BRICK_SHAPE_BOUND * const.BRICK_UNIT_RESOLUTION)).astype(int)
-    for position, _ in np.ndenumerate(np.zeros(top_level_resolution, dtype=LegoBrick)):
-        check_subspace(voxel_grid=voxel_grid, position=position, shape=const.BRICK_SHAPE_BOUND, LegoBrickList=LegoBrickList)
+    top_level_grid_resolution = (voxel_grid.shape/(const.TOP_LEVEL_BRICK_RESOLUTION)).astype(int)
+    for position, _ in np.ndenumerate(np.zeros(top_level_grid_resolution, dtype=LegoBrick)):
+        check_subspace(voxel_grid=voxel_grid, position=position, shape=const.TOP_LEVEL_BRICK_SHAPE, LegoBrickList=LegoBrickList)
     return LegoBrickList
