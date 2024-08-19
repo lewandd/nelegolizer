@@ -28,7 +28,7 @@ class Model_n111(nn.Module):
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
             #nn.Conv1d(60, 32, 8, stride=8),
-            nn.Linear(64, 2)
+            nn.Linear(const.BRICK_UNIT_VOLUME, 2)
         )
 
     def forward(self, x):
