@@ -9,14 +9,28 @@ python3 evaluate_model.py all
 
 import sys
 import os
-from importlib.machinery import SourceFileLoader
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
 from util.dataset import CustomVoxelsDataset
-from util import path
+from importlib.machinery import SourceFileLoader
+import importlib.util
 
-bc_modules = SourceFileLoader("modules", path.BRICK_MODULES_FILE).load_module()
+__PACKAGE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+__PATHS_FILE = os.path.join(__PACKAGE_DIR, "paths.py")
+
+path_loader = SourceFileLoader("paths", __PATHS_FILE)
+path_spec = importlib.util.spec_from_loader(path_loader.name, path_loader)
+path = importlib.util.module_from_spec(path_spec)
+path_loader.create_module(path_spec)
+path_loader.exec_module(path)
+
+bc_models_loader = SourceFileLoader("bc_models", path.BRICK_MODULES_FILE)
+bc_models_spec = importlib.util.spec_from_loader(bc_models_loader.name, bc_models_loader)
+bc_models_module = importlib.util.module_from_spec(bc_models_spec)
+bc_models_loader.create_module(bc_models_spec)
+bc_models_loader.exec_module(bc_models_module)
+
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 model_hyperparameters = {
@@ -46,7 +60,7 @@ if __name__ == '__main__':
     if argc == 0 :
         raise Exception("Usage: python3 create_model.py [model name] [model2 name] ... or python3 create_model.py all")
     elif "all" in sys.argv:
-        args = bc_modules.get_model_names()
+        args = bc_models_module.get_model_names()
     else:
         args = sys.argv[1:]
     if "debug=true" in [s.lower() for s in sys.argv]:
@@ -58,8 +72,8 @@ if __name__ == '__main__':
         if arg.lower() == "debug=true" or arg.lower() == "debug=false":
             continue
 
-        model = bc_modules.create_model(arg)
-        model = bc_modules.load_model(model, arg)
+        model = bc_models_module.create_model(arg)
+        model = bc_models_module.load_model(model, arg)
         
         # Prepare datasets and dataloaders
         MODEL_DATA_DIR = os.path.join(path.BRICK_CLASSFICATION_DATA_DIR, arg[6:])

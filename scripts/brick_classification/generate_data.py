@@ -2,7 +2,17 @@ import os
 import pandas as pd 
 import numpy as np
 from util import generator_funcs as generator
-from util import path
+from importlib.machinery import SourceFileLoader
+import importlib.util
+
+__PACKAGE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+__PATHS_FILE = os.path.join(__PACKAGE_DIR, "paths.py")
+
+path_loader = SourceFileLoader("paths", __PATHS_FILE)
+path_spec = importlib.util.spec_from_loader(path_loader.name, path_loader)
+path = importlib.util.module_from_spec(path_spec)
+path_loader.create_module(path_spec)
+path_loader.exec_module(path)
 
 class DataGeneratorManager():
     def __init__(self):

@@ -12,5 +12,9 @@ PART_GEOM_DIR = os.path.join(PACKAGE, "LDraw/part/geom")
 BRICK_MODELS_DIR = os.path.join(PACKAGE, "models/brick_classification")
 BRICK_MODULES_FILE = os.path.join(PACKAGE, "models/brick_classification_models.py")
 
+# Data
+DATA_DIR = os.path.join(PACKAGE, "data")
+BRICK_CLASSFICATION_DATA_DIR = os.path.join(DATA_DIR, "brick_classification")
+
 # Additional
 SAMPLE_MODELS_DIR = os.path.join(PACKAGE, "sample_models")
