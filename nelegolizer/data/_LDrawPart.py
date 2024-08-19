@@ -2,7 +2,7 @@ import pyvista as pv
 import numpy as np
 from nelegolizer.utils import voxelization
 from nelegolizer.utils import grid
-from nelegolizer.constants import VOXEL_UNIT_SHAPE
+from nelegolizer import const
 import os
 
 class LDrawPart:
@@ -19,4 +19,4 @@ class LDrawPart:
         
         reader = pv.get_reader(geom_path)
         self.mesh: pv.PolyData = reader.read()
-        self.grid: np.ndarray = grid.from_mesh(self.mesh, unit_shape=VOXEL_UNIT_SHAPE)
+        self.grid: np.ndarray = grid.from_mesh(self.mesh, unit_shape=const.VOXEL_UNIT_SHAPE)

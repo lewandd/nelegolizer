@@ -1,6 +1,6 @@
 import os
 
-PACKAGE = os.path.dirname(os.path.dirname(__file__))
+PACKAGE = os.path.dirname(__file__)
 
 # Part
 PART_LABEL_CSV = os.path.join(PACKAGE, "LDraw/part/part_label.csv")

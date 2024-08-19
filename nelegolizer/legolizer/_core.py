@@ -1,5 +1,5 @@
 import pyvista as pv
-from nelegolizer.constants import BRICK_UNIT_SHAPE, VOXEL_UNIT_SHAPE, BRICK_SHAPE_BOUND, BRICK_UNIT_RESOLUTION, BRICK_SHAPES
+from nelegolizer import const
 import numpy as np
 from nelegolizer.data import LegoBrick
 import nelegolizer.model.brick as brick
@@ -29,9 +29,9 @@ def check_subspace(*, voxel_grid: np.ndarray,
                       shape: np.ndarray, 
                       LegoBrickList: list[LegoBrick]) -> None:
     voxel_subgrid = grid.get_subgrid(grid=voxel_grid, 
-                                     position=position*BRICK_UNIT_RESOLUTION*shape, 
-                                     shape=shape*BRICK_UNIT_RESOLUTION)
-    mesh_position = np.array(position) * np.array(shape) * BRICK_UNIT_SHAPE
+                                     position=position*const.BRICK_UNIT_RESOLUTION*shape, 
+                                     shape=shape*const.BRICK_UNIT_RESOLUTION)
+    mesh_position = np.array(position) * np.array(shape) * const.BRICK_UNIT_SHAPE
 
     if np.all(shape == (1, 1, 1)):
         lb = predictLegoBrick(voxel_grid=voxel_subgrid, 
@@ -44,11 +44,11 @@ def legolize(path: str) -> list[LegoBrick]:
     reader = pv.get_reader(path)
     mesh = reader.read()
 
-    voxel_grid = grid.from_mesh(mesh, unit_shape=VOXEL_UNIT_SHAPE)
-    voxel_grid = grid.extend(voxel_grid, required_dim_divisibility=BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)
+    voxel_grid = grid.from_mesh(mesh, unit_shape=const.VOXEL_UNIT_SHAPE)
+    voxel_grid = grid.extend(voxel_grid, required_dim_divisibility=const.BRICK_SHAPE_BOUND * const.BRICK_UNIT_RESOLUTION)
 
     LegoBrickList = []
-    top_level_resolution = (voxel_grid.shape/(BRICK_SHAPE_BOUND * BRICK_UNIT_RESOLUTION)).astype(int)
+    top_level_resolution = (voxel_grid.shape/(const.BRICK_SHAPE_BOUND * const.BRICK_UNIT_RESOLUTION)).astype(int)
     for position, _ in np.ndenumerate(np.zeros(top_level_resolution, dtype=LegoBrick)):
-        check_subspace(voxel_grid=voxel_grid, position=position, shape=BRICK_SHAPE_BOUND, LegoBrickList=LegoBrickList)
+        check_subspace(voxel_grid=voxel_grid, position=position, shape=const.BRICK_SHAPE_BOUND, LegoBrickList=LegoBrickList)
     return LegoBrickList
