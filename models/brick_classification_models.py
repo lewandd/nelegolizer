@@ -1,11 +1,26 @@
 from torch import nn
 import os
 import torch
+from importlib.machinery import SourceFileLoader
+import importlib.util
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-PACKAGE = os.path.dirname(os.path.dirname(__file__))
-BRICK_MODELS_DIR = os.path.join(PACKAGE, "models/brick_classification")
+__PACKAGE_DIR = os.path.dirname(os.path.dirname(__file__))
+__PATHS_FILE = os.path.join(__PACKAGE_DIR, "paths.py")
+__CONSTANTS_FILE = os.path.join(__PACKAGE_DIR, "constants.py")
+
+path_loader = SourceFileLoader("paths", __PATHS_FILE)
+path_spec = importlib.util.spec_from_loader(path_loader.name, path_loader)
+path = importlib.util.module_from_spec(path_spec)
+path_loader.create_module(path_spec)
+path_loader.exec_module(path)
+
+const_loader = SourceFileLoader("constants", __CONSTANTS_FILE)
+const_spec = importlib.util.spec_from_loader(const_loader.name, const_loader)
+const = importlib.util.module_from_spec(const_spec)
+const_loader.create_module(const_spec)
+const_loader.exec_module(const)
 
 class Model_n111(nn.Module):
     def __init__(self):
@@ -37,7 +52,7 @@ def create_model(name: str) -> nn.Module:
 
 def load_model(model: nn.Module, name: str, debug: bool = False) -> nn.Module:
     MODEL_FILENAME = name + ".pth"
-    MODEL_PTH_FILE_PATH = os.path.join(BRICK_MODELS_DIR, MODEL_FILENAME)
+    MODEL_PTH_FILE_PATH = os.path.join(path.BRICK_MODELS_DIR, MODEL_FILENAME)
     try:
         loaded = torch.load(f=MODEL_PTH_FILE_PATH, map_location=device)
         model.load_state_dict(loaded)    
@@ -50,7 +65,7 @@ def load_model(model: nn.Module, name: str, debug: bool = False) -> nn.Module:
 
 def save_model(model: nn.Module, name: str, debug: bool = False) -> None:
     MODEL_FILENAME = name + ".pth"
-    MODEL_PTH_FILE_PATH = os.path.join(BRICK_MODELS_DIR, MODEL_FILENAME)
+    MODEL_PTH_FILE_PATH = os.path.join(path.BRICK_MODELS_DIR, MODEL_FILENAME)
     try:
         torch.save(obj=model.state_dict(), f=MODEL_PTH_FILE_PATH)
     except Exception as e:
