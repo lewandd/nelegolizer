@@ -24,3 +24,4 @@ for label in _PART_LABEL_DF.index.tolist():
     part_by_filename[dat_filename] = ldp
 
 from ._LegoBrick import LegoBrick
+from ._LDrawReference import LDrawReference
