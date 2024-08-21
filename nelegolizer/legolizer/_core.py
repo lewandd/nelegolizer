@@ -28,11 +28,13 @@ def check_subspace(*, voxel_grid: np.ndarray,
                       position: tuple[int, int, int], 
                       shape: np.ndarray, 
                       LegoBrickList: list[LegoBrick]) -> None:
+    position = np.array(position)
     voxel_shape = shape * const.BRICK_UNIT_RESOLUTION
     voxel_subgrid = grid.get_subgrid(grid=voxel_grid, 
                                      position=position*voxel_shape, 
                                      shape=voxel_shape + 2*const.PADDING)
-    mesh_position = np.array(position) * np.array(shape) * const.BRICK_UNIT_MESH_SHAPE
+    mesh_shape = shape * const.BRICK_UNIT_MESH_SHAPE
+    mesh_position = position * mesh_shape 
 
     if np.all(shape == (1, 1, 1)):
         lb = predictLegoBrick(voxel_grid=voxel_subgrid, 
