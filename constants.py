@@ -32,3 +32,7 @@ TOP_LEVEL_BRICK_SHAPE = np.array([1, 1, 1])
 # Shape of the smallest subspace that can include any brick.
 # Space is defined by a cuboid made of voxels.
 TOP_LEVEL_BRICK_RESOLUTION = TOP_LEVEL_BRICK_SHAPE * BRICK_UNIT_RESOLUTION
+
+# PADDING
+# Extended space around 3-dim voxel grid. Subspaces with padding are inputs for neural networks.
+PADDING = np.array([1, 1, 1])

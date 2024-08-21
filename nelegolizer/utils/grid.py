@@ -60,6 +60,14 @@ def from_pv_voxels(pv_voxels: pv.UnstructuredGrid) -> np.ndarray:
         grid[x, y, z] = True
     return grid
 
+def add_padding(grid: np.ndarray,
+                padding: np.ndarray) -> np.ndarray:
+   grid_extended = np.zeros(grid.shape + padding * 2, dtype=bool)
+   start = padding
+   end = start + grid.shape
+   grid_extended[start[0]:end[0], start[1]:end[1], start[2]:end[2]] = grid
+   return grid_extended
+
 def extend(grid: np.ndarray, 
            required_dim_divisibility: np.ndarray) -> np.ndarray:
   resolution = np.array(grid.shape)

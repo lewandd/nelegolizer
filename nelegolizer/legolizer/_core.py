@@ -28,9 +28,10 @@ def check_subspace(*, voxel_grid: np.ndarray,
                       position: tuple[int, int, int], 
                       shape: np.ndarray, 
                       LegoBrickList: list[LegoBrick]) -> None:
+    voxel_shape = shape * const.BRICK_UNIT_RESOLUTION
     voxel_subgrid = grid.get_subgrid(grid=voxel_grid, 
-                                     position=position*const.BRICK_UNIT_RESOLUTION*shape, 
-                                     shape=shape*const.BRICK_UNIT_RESOLUTION)
+                                     position=position*voxel_shape, 
+                                     shape=voxel_shape + 2*const.PADDING)
     mesh_position = np.array(position) * np.array(shape) * const.BRICK_UNIT_MESH_SHAPE
 
     if np.all(shape == (1, 1, 1)):
@@ -49,6 +50,8 @@ def legolize(path: str) -> list[LegoBrick]:
 
     LegoBrickList = []
     top_level_grid_resolution = (voxel_grid.shape/(const.TOP_LEVEL_BRICK_RESOLUTION)).astype(int)
+    
+    voxel_grid = grid.add_padding(voxel_grid, const.PADDING)
     for position, _ in np.ndenumerate(np.zeros(top_level_grid_resolution, dtype=LegoBrick)):
         check_subspace(voxel_grid=voxel_grid, position=position, shape=const.TOP_LEVEL_BRICK_SHAPE, LegoBrickList=LegoBrickList)
     return LegoBrickList

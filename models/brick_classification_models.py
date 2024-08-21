@@ -1,6 +1,7 @@
 from torch import nn
 import os
 import torch
+import numpy as np
 from importlib.machinery import SourceFileLoader
 import importlib.util
 
@@ -26,9 +27,12 @@ class Model_n111(nn.Module):
     def __init__(self):
         super().__init__()
         self.flatten = nn.Flatten()
+        brick_shape = np.array([1, 1, 1])
+        input_resolution = (brick_shape * const.BRICK_UNIT_RESOLUTION + 2*const.PADDING)
+        input_size = input_resolution[0] * input_resolution[1] * input_resolution[2]
         self.linear_relu_stack = nn.Sequential(
             #nn.Conv1d(60, 32, 8, stride=8),
-            nn.Linear(const.BRICK_UNIT_VOLUME, 2)
+            nn.Linear(input_size, 2)
         )
 
     def forward(self, x):
