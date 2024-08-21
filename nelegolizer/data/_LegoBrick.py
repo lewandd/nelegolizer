@@ -1,5 +1,6 @@
 from nelegolizer.data import part_by_label
 from nelegolizer.utils import mesh as umesh
+from nelegolizer.utils import grid
 
 class LegoBrick:
     def __init__(self, *,
@@ -24,6 +25,12 @@ class LegoBrick:
         m = umesh.translate_to_zero(m)
         m = m.translate(self.mesh_position, inplace=False)
         return m
+    
+    @property
+    def grid(self):
+        g = self.part.grid
+        g = grid.rotate(g, self.rotation)
+        return g
 
     def __str__(self):
         string = "LegoBrick: "
