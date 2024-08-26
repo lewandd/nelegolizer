@@ -26,3 +26,4 @@ for label in _PART_LABEL_DF.index.tolist():
 from ._LegoBrick import LegoBrick
 from ._LDrawReference import LDrawReference
 from ._LDrawModel import LDrawModel
+from ._LDrawFile import LDrawFile
