@@ -1,6 +1,6 @@
 import numpy as np
 
-from nelegolizer.data import LDrawReference
+from nelegolizer.data import LDrawReference, LegoBrick
 
 class LDrawModel():
   def __init__(self, name: str):
@@ -33,3 +33,11 @@ class LDrawModel():
         else: # is single part
           merged.references.append(ref)
     return merged
+  
+  @classmethod
+  def from_bricks(cls, name: str, bricks: list[LegoBrick]):
+    model = cls(name)
+    for b in bricks:
+      
+      model.references.append(LDrawReference(name=b.part.dat_filename, matrix=b.matrix, color=b.color))
+    return model
