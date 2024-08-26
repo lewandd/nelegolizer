@@ -2,6 +2,8 @@ from nelegolizer.data import part_by_label
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
 
+import numpy as np
+
 class LegoBrick:
     def __init__(self, *,
                  label: int, 
@@ -17,6 +19,37 @@ class LegoBrick:
             raise Exception(f"LegoBrick rotation can be either 0, 90, 180 or 270. Rotation {rotation} is invalid.")
         self.rotation = rotation
         self.color = color
+
+    @property
+    def matrix(self):
+        if self.rotation == 0:
+            return np.array([
+                [1, 0, 0, 0],
+                [0, 1, 0, 0],
+                [0, 0, 1, 0],
+                [self.mesh_position[0], self.mesh_position[1], self.mesh_position[2], 1]
+            ]).astype(float)
+        if self.rotation == 90:
+            return np.array([
+                [0, 0, -1, 0],
+                [0, 1, 0, 0],
+                [1, 0, 0, 0],
+                [self.mesh_position[0], self.mesh_position[1], self.mesh_position[2], 1]
+            ]).astype(float)
+        if self.rotation == 180:
+            return np.array([
+                [-1, 0, 0, 0],
+                [0, 1, 0, 0],
+                [0, 0, -1, 0],
+                [self.mesh_position[0], self.mesh_position[1], self.mesh_position[2], 1]
+            ]).astype(float)
+        if self.rotation == 270:
+            return np.array([
+                [0, 0, 1, 0],
+                [0, 1, 0, 0],
+                [-1, 0, 0, 0],
+                [self.mesh_position[0], self.mesh_position[1], self.mesh_position[2], 1]
+            ]).astype(float)
 
     @property
     def mesh(self):
