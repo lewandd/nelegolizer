@@ -53,34 +53,18 @@ class LegoBrick:
 
     @property
     def matrix(self):
+        rotation = np.zeros([4, 4])
+        rotation[-1, :3] = self.mesh_position
+        rotation[-1, -1] = 1
         if self.rotation == 0:
-            return np.array([
-                [1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, 1, 0],
-                [self.mesh_position[0], self.mesh_position[1], self.mesh_position[2], 1]
-            ]).astype(float)
-        if self.rotation == 90:
-            return np.array([
-                [0, 0, -1, 0],
-                [0, 1, 0, 0],
-                [1, 0, 0, 0],
-                [self.mesh_position[0], self.mesh_position[1], self.mesh_position[2], 1]
-            ]).astype(float)
-        if self.rotation == 180:
-            return np.array([
-                [-1, 0, 0, 0],
-                [0, 1, 0, 0],
-                [0, 0, -1, 0],
-                [self.mesh_position[0], self.mesh_position[1], self.mesh_position[2], 1]
-            ]).astype(float)
-        if self.rotation == 270:
-            return np.array([
-                [0, 0, 1, 0],
-                [0, 1, 0, 0],
-                [-1, 0, 0, 0],
-                [self.mesh_position[0], self.mesh_position[1], self.mesh_position[2], 1]
-            ]).astype(float)
+            rotation[:3, :3] = ROT_MATRIX_0
+        elif self.rotation == 90:
+            rotation[:3, :3] = ROT_MATRIX_90
+        elif self.rotation == 180:
+            rotation[:3, :3] = ROT_MATRIX_180
+        elif self.rotation == 270:
+            rotation[:3, :3] = ROT_MATRIX_270
+        return rotation
 
     @property
     def mesh(self):
