@@ -35,6 +35,7 @@ class LDrawFile():
         return c
         
     def save_file(self, path: str) -> None:
+        self.path = path
         with open(path, 'w') as f:
             for line in self.lines:
                 f.write(line)
