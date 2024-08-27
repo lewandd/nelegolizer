@@ -40,7 +40,7 @@ class LDrawFile():
             for line in self.lines:
                 f.write(line)
     
-    def add_model_lines(self, model: LDrawModel):
+    def add_model(self, model: LDrawModel):
         self.models.append(model)
         for comm in model.comms:
             if comm in ['Name', 'Author']:
