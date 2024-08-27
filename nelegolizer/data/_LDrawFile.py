@@ -7,7 +7,7 @@ class LDrawFile():
         self.models = []
 
     @classmethod
-    def load_from_file(cls, path: str):
+    def load(cls, path: str):
         c = cls()
         c.path = path
         file = open(path, mode = 'r', encoding = 'utf-8-sig')
@@ -34,7 +34,7 @@ class LDrawFile():
                 act_model.references.append(LDrawReference.from_line(line))
         return c
         
-    def save_file(self, path: str) -> None:
+    def save(self, path: str) -> None:
         self.path = path
         with open(path, 'w') as f:
             for line in self.lines:
