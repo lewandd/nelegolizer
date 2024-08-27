@@ -22,24 +22,23 @@ def get_subgrid(grid: np.ndarray, position: tuple[int, int, int], shape: np.ndar
     return grid[start[0]:end[0], start[1]:end[1], start[2]:end[2]]
 
 def rotate(grid: np.ndarray, degrees: int) -> np.ndarray:
-  match degrees:
-     case 0:
-       rotated_grid = grid
-     case 90:
-       rotated_grid = np.zeros_like(np.transpose(grid))
-       for (i, j, k), val in np.ndenumerate(grid[::-1,:,:]):
-          rotated_grid[k, j, i] = val
-     case 180:
-       rotated_grid = np.zeros_like(grid)
-       for (i, j, k), val in np.ndenumerate(grid[::-1,:,::-1]):
-          rotated_grid[i, j, k] = val
-     case 270:
-       rotated_grid = np.zeros_like(np.transpose(grid))
-       for (i, j, k), val in np.ndenumerate(grid[:,:,::-1]):
-          rotated_grid[k, j, i] = val
-     case _:
-      raise Exception(f"Rotation can be either 0, 90, 180 or 270 degrees. Got {degrees}.")
-  return rotated_grid
+    if degrees == 0:
+        rotated_grid = grid
+    elif degrees == 90:
+        rotated_grid = np.zeros_like(np.transpose(grid))
+        for (i, j, k), val in np.ndenumerate(grid[::-1,:,:]):
+            rotated_grid[k, j, i] = val
+    elif degrees == 180:
+        rotated_grid = np.zeros_like(grid)
+        for (i, j, k), val in np.ndenumerate(grid[::-1,:,::-1]):
+            rotated_grid[i, j, k] = val
+    elif degrees == 270:
+        rotated_grid = np.zeros_like(np.transpose(grid))
+        for (i, j, k), val in np.ndenumerate(grid[:,:,::-1]):
+            rotated_grid[k, j, i] = val
+    else:
+        raise Exception(f"Rotation can be either 0, 90, 180 or 270 degrees. Got {degrees}.")
+    return rotated_grid
 
 def get_fill_ratio(grid: np.ndarray) -> float:
   fill = 0
