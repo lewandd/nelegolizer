@@ -34,6 +34,11 @@ class LDrawFile():
                     act_model.references.append(LDrawReference.from_line(line))
         return c
         
+    def save_file(self, path: str) -> None:
+        with open(path, 'w') as f:
+            for line in self.lines:
+                f.write(line)
+    
     def add_model_lines(self, model: LDrawModel):
         self.models.append(model)
         for comm in model.comms:
