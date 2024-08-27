@@ -2,6 +2,7 @@ import numpy as np
 
 from nelegolizer.data import LDrawReference, LegoBrick
 from nelegolizer.data import part_by_filename
+from typing import List
 
 class LDrawModel():
   def __init__(self, name: str):
@@ -36,12 +37,12 @@ class LDrawModel():
     return merged
   
   @classmethod
-  def from_bricks(cls, name: str, bricks: list[LegoBrick]):
+  def from_bricks(cls, name: str, bricks: List[LegoBrick]):
     model = cls(name)
     for b in bricks:
       
       model.references.append(LDrawReference(name=b.part.dat_filename, matrix=b.matrix, color=b.color))
     return model
   
-  def as_bricks(self) -> list[LegoBrick]:
+  def as_bricks(self) -> List[LegoBrick]:
     return [LegoBrick.from_reference(ref) for ref in self.references]

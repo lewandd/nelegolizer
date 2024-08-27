@@ -21,17 +21,17 @@ class LDrawFile():
             line_head = line_list[:2]
             line_tail = " ".join(line_list[2:])
 
-            match line_head:
-                case ['0', 'Name:']:
-                    name = line_tail
-                    act_model = LDrawModel(name)
-                    act_model.comms['Name'] = name
-                    c.models.append(act_model)
-                case ['0', comm]:
-                    if act_model:
-                        act_model.comms[comm.strip(":")] = line_tail
-                case ['1', _]:
-                    act_model.references.append(LDrawReference.from_line(line))
+            if line_head[0] == '0' and line_head[1] == 'Name:':                
+                name = line_tail
+                act_model = LDrawModel(name)
+                act_model.comms['Name'] = name
+                c.models.append(act_model)
+            elif line_head[0] == '0':
+                comm = line_head[1]
+                if act_model:
+                    act_model.comms[comm.strip(":")] = line_tail
+            elif line_head[0] == '1':
+                act_model.references.append(LDrawReference.from_line(line))
         return c
         
     def save_file(self, path: str) -> None:

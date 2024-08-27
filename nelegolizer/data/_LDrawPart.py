@@ -3,6 +3,7 @@ import numpy as np
 from nelegolizer.utils import voxelization
 from nelegolizer.utils import grid
 from nelegolizer import const
+from typing import Tuple
 import os
 
 class LDrawPart:
@@ -10,7 +11,7 @@ class LDrawPart:
                 dat_path: str,
                 geom_path: str,
                 label: int,
-                size: tuple[int, int, int]):
+                size: Tuple[int, int, int]):
         self.dat_path = dat_path
         _, self.dat_filename = os.path.split(dat_path)
         self.geom_path = geom_path

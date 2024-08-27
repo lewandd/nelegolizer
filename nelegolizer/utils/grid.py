@@ -1,6 +1,7 @@
 import pyvista as pv
 import numpy as np
 from nelegolizer.utils import mesh as umesh
+from typing import Tuple
 
 def find_best_rotation(voxel_grid: np.ndarray) -> int:
   rotation_score = {"0": 0, "90": 0, "180": 0, "270": 0}
@@ -14,7 +15,7 @@ def find_best_rotation(voxel_grid: np.ndarray) -> int:
         rotation_score["270"] += x_inverted + z
   return int(max(rotation_score, key=rotation_score.get))
 
-def get_subgrid(grid: np.ndarray, position: tuple[int, int, int], shape: np.ndarray) -> np.ndarray:
+def get_subgrid(grid: np.ndarray, position: Tuple[int, int, int], shape: np.ndarray) -> np.ndarray:
     start = position
     end =   position + shape
     if np.any(end > grid.shape) or np.any(start < np.array([0, 0, 0])):

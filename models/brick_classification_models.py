@@ -4,6 +4,7 @@ import torch
 import numpy as np
 from importlib.machinery import SourceFileLoader
 import importlib.util
+from typing import List
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -44,7 +45,7 @@ nn_modules = {
     "model_n111": Model_n111
 }
 
-def get_model_names() -> list[str]:
+def get_model_names() -> List[str]:
     return list(nn_modules.keys())
 
 def create_model(name: str) -> nn.Module: 

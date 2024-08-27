@@ -7,6 +7,7 @@ from torch import nn
 from nelegolizer.utils import grid
 import torch
 from nelegolizer.model import brick_classification_models
+from typing import List, Tuple
 
 fill_treshold = 0.1
 
@@ -25,9 +26,9 @@ def predictLegoBrick(*, voxel_grid: np.ndarray,
      return None
   
 def check_subspace(*, voxel_grid: np.ndarray, 
-                      position: tuple[int, int, int], 
+                      position: Tuple[int, int, int], 
                       shape: np.ndarray, 
-                      LegoBrickList: list[LegoBrick]) -> None:
+                      LegoBrickList: List[LegoBrick]) -> None:
     position = np.array(position)
     voxel_shape = shape * const.BRICK_UNIT_RESOLUTION
     voxel_subgrid = grid.get_subgrid(grid=voxel_grid, 
@@ -43,7 +44,7 @@ def check_subspace(*, voxel_grid: np.ndarray,
         if lb is not None:
             LegoBrickList.append(lb)
 
-def legolize(path: str) -> list[LegoBrick]:    
+def legolize(path: str) -> List[LegoBrick]:    
     reader = pv.get_reader(path)
     mesh = reader.read()
 

@@ -2,6 +2,7 @@ from nelegolizer.data import part_by_label, part_by_filename
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
 from nelegolizer.data import LDrawReference
+from typing import Tuple
 
 import numpy as np
 
@@ -21,7 +22,7 @@ ROT_MATRIX_270 = np.array([[0, 0, 1],
 class LegoBrick:
     def __init__(self, *,
                  label: int, 
-                 mesh_position: tuple[int, int, int], 
+                 mesh_position: Tuple[int, int, int], 
                  rotation: int,
                  color: int = 16):
         if label not in part_by_label.keys():
