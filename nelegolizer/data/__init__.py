@@ -23,7 +23,7 @@ for label in _PART_LABEL_DF.index.tolist():
     part_by_label[label] = ldp
     part_by_filename[dat_filename] = ldp
 
-from ._LegoBrick import LegoBrick
 from ._LDrawReference import LDrawReference
+from ._LegoBrick import LegoBrick
 from ._LDrawModel import LDrawModel
 from ._LDrawFile import LDrawFile

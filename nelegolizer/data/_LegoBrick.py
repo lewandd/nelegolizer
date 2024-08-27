@@ -1,8 +1,22 @@
-from nelegolizer.data import part_by_label
+from nelegolizer.data import part_by_label, part_by_filename
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
+from nelegolizer.data import LDrawReference
 
 import numpy as np
+
+ROT_MATRIX_0 = np.array([[1, 0, 0], 
+                         [0, 1, 0], 
+                         [0, 0, 1]])
+ROT_MATRIX_90 = np.array([[0, 0, -1], 
+                          [0, 1, 0], 
+                          [1, 0, 0]])
+ROT_MATRIX_180 = np.array([[-1, 0, 0], 
+                           [0, 1, 0], 
+                           [0, 0, -1]])
+ROT_MATRIX_270 = np.array([[0, 0, 1], 
+                           [0, 1, 0], 
+                           [-1, 0, 0]])
 
 class LegoBrick:
     def __init__(self, *,
@@ -19,6 +33,23 @@ class LegoBrick:
             raise Exception(f"LegoBrick rotation can be either 0, 90, 180 or 270. Rotation {rotation} is invalid.")
         self.rotation = rotation
         self.color = color
+
+    @classmethod
+    def from_reference(cls, ref: LDrawReference):
+        if np.allclose(ref.rotation, ROT_MATRIX_0):
+            degrees = 0
+        elif np.allclose(ref.rotation, ROT_MATRIX_90):
+            degrees = 90
+        elif np.allclose(ref.rotation, ROT_MATRIX_180):
+            degrees = 180
+        elif np.allclose(ref.rotation, ROT_MATRIX_270):
+            degrees = 270
+        else:
+            raise Exception(f"Cannot convert model references to bricks. Rotation should be either: \n>{ROT_MATRIX_0}\n>{ROT_MATRIX_90}\n>{ROT_MATRIX_180}\n>{ROT_MATRIX_270}\nGot: \n{ref.rotation}.")
+        return cls(label=part_by_filename[ref.name].label, 
+                   mesh_position=ref.position, 
+                   rotation=degrees, 
+                   color=ref.color)
 
     @property
     def matrix(self):
