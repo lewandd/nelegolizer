@@ -9,6 +9,7 @@ with open('LICENSE') as f:
 setup(
     name='nelegolizer',
     version='0.1.0',
+    python_requires='>3.8.0',
     description='Python package using neural network to transform 3D object into a LEGO layout',
     long_description=readme,
     author='Damian Lewandowski',
