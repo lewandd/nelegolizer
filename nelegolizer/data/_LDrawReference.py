@@ -26,7 +26,7 @@ class LDrawReference():
 
     @property
     def line(self) -> str:
-        [a, d, g, _], [b, e, h, _], [c, f, i, _], [x, y, z, _] = self.matrix.astype(int)
+        [a, d, g, _], [b, e, h, _], [c, f, i, _], [x, y, z, _] = self.matrix
         return f"1 {self.color} {x} {y} {z} {a} {b} {c} {d} {e} {f} {g} {h} {i} {self.name}\n"
 
     @property
