@@ -58,3 +58,6 @@ Then you can use results by either:
     pl.add_mesh(brick.mesh)
   pl.show()
   ```
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
