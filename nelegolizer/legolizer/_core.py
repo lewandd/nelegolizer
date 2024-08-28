@@ -1,13 +1,14 @@
-import pyvista as pv
-from nelegolizer import const
 import numpy as np
-from nelegolizer.data import LegoBrick
-import nelegolizer.model.brick as brick
-from torch import nn
-from nelegolizer.utils import grid
+import pyvista as pv
 import torch
-from nelegolizer.model import brick_classification_models
+from torch import nn
 from typing import List, Tuple
+
+from nelegolizer import const
+from nelegolizer.data import LegoBrick
+from nelegolizer.utils import grid
+from nelegolizer.model import brick_classification_models
+import nelegolizer.model.brick as brick
 
 fill_treshold = 0.1
 
