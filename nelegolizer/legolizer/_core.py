@@ -2,7 +2,7 @@ import numpy as np
 import pyvista as pv
 import torch
 from torch import nn
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 from nelegolizer import const
 from nelegolizer.data import LegoBrick
@@ -45,7 +45,7 @@ def check_subspace(*, voxel_grid: np.ndarray,
         if lb is not None:
             LegoBrickList.append(lb)
 
-def legolize(mesh: str | pv.PolyData) -> List[LegoBrick]:    
+def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:    
     if isinstance(mesh, str):
         mesh_file_path = mesh
         reader = pv.get_reader(mesh_file_path)
