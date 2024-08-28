@@ -14,6 +14,7 @@ class LDrawPart:
                 size: Tuple[int, int, int]):
         self.dat_path = dat_path
         _, self.dat_filename = os.path.split(dat_path)
+        self.brick_id = self.dat_filename[:-4]
         self.geom_path = geom_path
         self.label = label
         self.size = size
