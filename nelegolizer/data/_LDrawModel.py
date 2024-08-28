@@ -39,6 +39,7 @@ class LDrawModel():
   @classmethod
   def from_bricks(cls, name: str, bricks: List[LegoBrick]):
     model = cls(name)
+    model.comms['Name'] = name
     for b in bricks:
       
       model.references.append(LDrawReference(name=b.part.dat_filename, matrix=b.matrix, color=b.color))
