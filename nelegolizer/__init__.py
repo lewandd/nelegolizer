@@ -17,3 +17,5 @@ const_spec = importlib.util.spec_from_loader(const_loader.name, const_loader)
 const = importlib.util.module_from_spec(const_spec)
 const_loader.create_module(const_spec)
 const_loader.exec_module(const)
+
+from .legolizer import legolize
