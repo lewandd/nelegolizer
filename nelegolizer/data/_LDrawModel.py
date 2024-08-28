@@ -37,7 +37,7 @@ class LDrawModel():
     return merged
   
   @classmethod
-  def from_bricks(cls, name: str, bricks: List[LegoBrick]):
+  def from_bricks(cls, bricks: List[LegoBrick], name: str):
     model = cls(name)
     model.comms['Name'] = name
     for b in bricks:
