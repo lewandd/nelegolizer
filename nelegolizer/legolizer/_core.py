@@ -45,9 +45,13 @@ def check_subspace(*, voxel_grid: np.ndarray,
         if lb is not None:
             LegoBrickList.append(lb)
 
-def legolize(path: str) -> List[LegoBrick]:    
-    reader = pv.get_reader(path)
-    mesh = reader.read()
+def legolize(mesh: str | pv.PolyData) -> List[LegoBrick]:    
+    if isinstance(mesh, str):
+        mesh_file_path = mesh
+        reader = pv.get_reader(mesh_file_path)
+        mesh = reader.read()
+    elif not isinstance(mesh, pv.PolyData):
+        raise ValueError("Legolize argument shold be either 3d object path (str) or mesh (pyvista.PolyData)")
 
     voxel_grid = grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
     voxel_grid = grid.provide_divisibility(voxel_grid, divider=const.TOP_LEVEL_BRICK_RESOLUTION)
