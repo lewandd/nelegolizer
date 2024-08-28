@@ -52,6 +52,7 @@ def legolize(mesh: str | pv.PolyData) -> List[LegoBrick]:
         mesh = reader.read()
     elif not isinstance(mesh, pv.PolyData):
         raise ValueError("Legolize argument shold be either 3d object path (str) or mesh (pyvista.PolyData)")
+    mesh = mesh.flip_normal([0.0, 1.0, 0.0])
 
     voxel_grid = grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
     voxel_grid = grid.provide_divisibility(voxel_grid, divider=const.TOP_LEVEL_BRICK_RESOLUTION)
