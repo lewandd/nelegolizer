@@ -29,15 +29,15 @@ pip install --upgrade pip setuptools
 ## Usage
 Load 3d object and get list of lego bricks ([list of supported file extensions](https://docs.pyvista.org/api/readers/_autosummary/pyvista.get_reader.html#pyvista.get_reader)).
 ```
-from nelegolizer.legolizer import legolize
+from nelegolizer import legolize
 from nelegolizer.data import LDrawModel, LDrawFile
 
-lego_bricks = legolizer("cone.obj")
+lego_bricks = legolize("cone.obj")
 ```
 Then you can use results by either:
 - Save results as mpd file ([LDraw File Format Specification](https://www.ldraw.org/article/218.html))
   ```
-  ldraw_model = LDrawModel.from_bricks("Model Name", lego_bricks)
+  ldraw_model = LDrawModel.from_bricks(lego_bricks, "Model Name")
   ldraw_file = LDrawFile()
   ldraw_file.add_model(ldraw_model)
   ldraw_file.save("legolized_cone.mpd")
