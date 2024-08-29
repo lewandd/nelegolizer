@@ -2,7 +2,7 @@ version: 2.1
 
 # Define the jobs we want to run for this project
 jobs:
-  build:
+  test:
     docker:
       - image: cimg/python:3.8.0
     steps:
@@ -22,12 +22,6 @@ jobs:
       - run:
           name: install package
           command: pip install -e .
-  test:
-    docker:
-      - image: cimg/python:3.8.0
-    steps:
-      - checkout
-      - run: echo "this is the test job"
       - run:
           name: unit tests
           command: |
@@ -38,5 +32,4 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build
       - test
