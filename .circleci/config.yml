@@ -11,25 +11,25 @@ jobs:
           name: Check python version
           command: python3 --version
       - run:
-          name: upgrade pip
+          name: Upgrade pip
           command: pip install --upgrade pip
       - run:
-          name: create virtual environemnt
+          name: Create virtual environment
           command: |
             python3 -m venv venv
             . venv/bin/activate
       - run:
-          name: install dependencies
+          name: Install dependencies
           command: pip install -r requirements.txt
       - run:
-          name: install package
+          name: Install package
           command: pip install -e .
       - run:
-          name: unit tests
+          name: Unit tests
           command: |
             python3 -m unittest discover -s tests/unit/
       - run:
-          name: integration tests
+          name: Integration tests
           command: |
             python3 -m unittest discover -s tests/integration/
 
