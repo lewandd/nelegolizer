@@ -329,7 +329,7 @@ class Test_get_fill_ratio(unittest.TestCase):
 
 class Test_from_pv_voxels(unittest.TestCase):
     def setUp(self) -> None:
-        reader = pv.get_reader("fixtures/cone.obj")
+        reader = pv.get_reader("tests/unit/fixtures/cone.obj")
         mesh = reader.read()
         self.pv_voxels1 = pv.voxelize(mesh, density=0.2, check_surface=False)
         self.pv_voxels2 = voxelization.from_mesh(mesh, voxel_mesh_shape=np.array([0.2, 0.2, 0.2]))
@@ -376,7 +376,7 @@ class Test_from_pv_voxels(unittest.TestCase):
 
 class Test_from_mesh(unittest.TestCase):
     def setUp(self):
-        reader = pv.get_reader("fixtures/cone.obj")
+        reader = pv.get_reader("tests/unit/fixtures/cone.obj")
         self.mesh = reader.read()
 
     def test_result_not_None(self):

@@ -9,7 +9,7 @@ from nelegolizer.utils.mesh import get_resolution, translate_to_zero, get_positi
 
 class Test_get_resolution(unittest.TestCase):
     def setUp(self):
-        reader = pv.get_reader("fixtures/cone.obj")
+        reader = pv.get_reader("tests/unit/fixtures/cone.obj")
         self.mesh = reader.read()
 
     def test_returns_ndarray(self):
@@ -75,7 +75,7 @@ class Test_get_resolution(unittest.TestCase):
 
 class Test_get_position(unittest.TestCase):
     def setUp(self):
-        reader = pv.get_reader("fixtures/cone.obj")
+        reader = pv.get_reader("tests/unit/fixtures/cone.obj")
         self.mesh = reader.read()
 
     def test_returns_ndarray(self):
@@ -106,7 +106,7 @@ class Test_get_position(unittest.TestCase):
 
 class Test_translate_to_zero(unittest.TestCase):
     def setUp(self):
-        reader = pv.get_reader("fixtures/cone.obj")
+        reader = pv.get_reader("tests/unit/fixtures/cone.obj")
         self.mesh = reader.read()
 
     def test_correct_positions(self):
@@ -128,7 +128,7 @@ class Test_translate_to_zero(unittest.TestCase):
 
 class Test_scale_to(unittest.TestCase):
     def setUp(self):
-        reader = pv.get_reader("fixtures/cone.obj")
+        reader = pv.get_reader("tests/unit/fixtures/cone.obj")
         self.mesh = reader.read()
 
     def test_returns_PolyData(self):

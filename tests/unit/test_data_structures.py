@@ -10,42 +10,42 @@ from nelegolizer.data._LegoBrick import ROT_MATRIX_180
 
 class TestLDrawPart(unittest.TestCase):
     def test_initialization_with_valid_parameters(self):
-        ldp = LDrawPart(dat_path="fixtures/3004.dat", geom_path="fixtures/3004.stl", label=3, size=(2,1,1))
+        ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", geom_path="tests/unit/fixtures/3004.stl", label=3, size=(2,1,1))
 
     def test_brick_id_is_ok(self):
-        ldp = LDrawPart(dat_path="fixtures/3004.dat", geom_path="fixtures/3004.stl", label=3, size=(2,1,1))
+        ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", geom_path="tests/unit/fixtures/3004.stl", label=3, size=(2,1,1))
         self.assertEqual(ldp.brick_id, '3004')
 
     def test_initialization_with_no_existing_geom_path(self):
         with self.assertRaises(FileNotFoundError):
-            ldp = LDrawPart(dat_path="fixtures/3004.dat", geom_path="fixtures/invalid_file.stl", label=3, size=(2,1,1))
+            ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", geom_path="tests/unit/fixtures/invalid_file.stl", label=3, size=(2,1,1))
 
     def test_initialization_with_no_label(self):
         with self.assertRaises(TypeError):
-            ldp = LDrawPart(dat_path="fixtures/3004.dat", geom_path="fixtures/3004.stl", size=(2,1,1))
+            ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", geom_path="tests/unit/fixtures/3004.stl", size=(2,1,1))
 
     def test_initialization_with_no_dat_path(self):
         with self.assertRaises(TypeError):
-            ldp = LDrawPart(geom_path="fixtures/3004.stl", label=3, size=(2,1,1))
+            ldp = LDrawPart(geom_path="tests/unit/fixtures/3004.stl", label=3, size=(2,1,1))
 
     def test_initialization_with_no_geom_path(self):
         with self.assertRaises(TypeError):
-            ldp = LDrawPart(dat_path="fixtures/3004.dat", label=3, size=(2,1,1))
+            ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", label=3, size=(2,1,1))
 
     def test_mesh_exist(self):
-        ldp = LDrawPart(dat_path="fixtures/3004.dat", geom_path="fixtures/3004.stl", label=3, size=(2,1,1))
+        ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", geom_path="tests/unit/fixtures/3004.stl", label=3, size=(2,1,1))
         self.assertIsNotNone(ldp.mesh)
 
     def test_mesh_is_pv_PolyData(self):
-        ldp = LDrawPart(dat_path="fixtures/3004.dat", geom_path="fixtures/3004.stl", label=3, size=(2,1,1))
+        ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", geom_path="tests/unit/fixtures/3004.stl", label=3, size=(2,1,1))
         self.assertIsInstance(ldp.mesh, pyvista.PolyData)
 
     def test_grid_exist(self):
-        ldp = LDrawPart(dat_path="fixtures/3004.dat", geom_path="fixtures/3004.stl", label=3, size=(2,1,1))
+        ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", geom_path="tests/unit/fixtures/3004.stl", label=3, size=(2,1,1))
         self.assertIsNotNone(ldp.grid)
 
     def test_grid_is_np_ndarray(self):
-        ldp = LDrawPart(dat_path="fixtures/3004.dat", geom_path="fixtures/3004.stl", label=3, size=(2,1,1))
+        ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat", geom_path="tests/unit/fixtures/3004.stl", label=3, size=(2,1,1))
         self.assertIsInstance(ldp.grid, np.ndarray)
 
 class TestPartByLabel(unittest.TestCase):
@@ -183,34 +183,34 @@ class Test_LDrawFile(unittest.TestCase):
         ldf = LDrawFile()
 
     def test_init_from_file(self):
-        ldf = LDrawFile.load("fixtures/New Model.dat")
+        ldf = LDrawFile.load("tests/unit/fixtures/New Model.dat")
 
     def test_init_from_file2(self):
-        ldf = LDrawFile.load("fixtures/5935 - Island Hopper.mpd")
+        ldf = LDrawFile.load("tests/unit/fixtures/5935 - Island Hopper.mpd")
 
     def test_models_len_5(self):
-        ldf = LDrawFile.load("fixtures/5935 - Island Hopper.mpd")
+        ldf = LDrawFile.load("tests/unit/fixtures/5935 - Island Hopper.mpd")
         self.assertEqual(len(ldf.models), 5)
 
     def test_models_are_LDrawModel(self):
-        ldf = LDrawFile.load("fixtures/5935 - Island Hopper.mpd")
+        ldf = LDrawFile.load("tests/unit/fixtures/5935 - Island Hopper.mpd")
         for m in ldf.models:
             self.assertIsInstance(m, LDrawModel)
 
     def test_path_ok(self):
-        ldf = LDrawFile.load("fixtures/5935 - Island Hopper.mpd")
-        self.assertEqual(ldf.path, "fixtures/5935 - Island Hopper.mpd")
+        ldf = LDrawFile.load("tests/unit/fixtures/5935 - Island Hopper.mpd")
+        self.assertEqual(ldf.path, "tests/unit/fixtures/5935 - Island Hopper.mpd")
 
 class Test_LDrawModel(unittest.TestCase):
     def test_empty_init(self):
         ldm = LDrawModel(name="Empty Model")
 
     def test_init_from_mlt_models(self):
-        ldf = LDrawFile.load("fixtures/5935 - Island Hopper.mpd")
+        ldf = LDrawFile.load("tests/unit/fixtures/5935 - Island Hopper.mpd")
         ldm = LDrawModel.merge_multiple_models(ldf.models)
 
     def test_refs_number_203(self):
-        ldf = LDrawFile.load("fixtures/5935 - Island Hopper.mpd")
+        ldf = LDrawFile.load("tests/unit/fixtures/5935 - Island Hopper.mpd")
         ldm = LDrawModel.merge_multiple_models(ldf.models)
         self.assertEqual(len(ldm.references), 203)
 

@@ -10,7 +10,7 @@ from nelegolizer.utils import mesh as umesh
 
 class Test_from_mesh(unittest.TestCase):
     def setUp(self):
-        reader = pv.get_reader("fixtures/cone.obj")
+        reader = pv.get_reader("tests/unit/fixtures/cone.obj")
         self.mesh = reader.read()
 
     def test_returns_PolData(self):
@@ -18,7 +18,7 @@ class Test_from_mesh(unittest.TestCase):
 
 class Test_from_grid(unittest.TestCase):
     def setUp(self):
-        reader = pv.get_reader("fixtures/cone.obj")
+        reader = pv.get_reader("tests/unit/fixtures/cone.obj")
         self.mesh = reader.read()
 
     def test_returns_ndarray_111(self):
