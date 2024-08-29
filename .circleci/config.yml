@@ -19,6 +19,9 @@ jobs:
       - run:
           name: install dependencies
           command: pip install -r requirements.txt
+      - run:
+          name: install package
+          command: pip install -e .
   test:
     docker:
       - image: cimg/base:2023.03
