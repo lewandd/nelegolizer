@@ -1,5 +1,6 @@
 from nelegolizer.data import LDrawModel, LDrawReference
 
+
 class LDrawFile():
     def __init__(self):
         self.path = None
@@ -10,7 +11,7 @@ class LDrawFile():
     def load(cls, path: str):
         c = cls()
         c.path = path
-        file = open(path, mode = 'r', encoding = 'utf-8-sig')
+        file = open(path, mode='r', encoding='utf-8-sig')
         c.lines = file.readlines()
         file.close()
 
@@ -21,7 +22,7 @@ class LDrawFile():
             line_head = line_list[:2]
             line_tail = " ".join(line_list[2:])
 
-            if line_head[0] == '0' and line_head[1] == 'Name:':                
+            if line_head[0] == '0' and line_head[1] == 'Name:':
                 name = line_tail
                 act_model = LDrawModel(name)
                 act_model.comms['Name'] = name
@@ -33,13 +34,13 @@ class LDrawFile():
             elif line_head[0] == '1':
                 act_model.references.append(LDrawReference.from_line(line))
         return c
-        
+
     def save(self, path: str) -> None:
         self.path = path
         with open(path, 'w') as f:
             for line in self.lines:
                 f.write(line)
-    
+
     def add_model(self, model: LDrawModel):
         self.models.append(model)
         for comm in model.comms:

@@ -1,7 +1,8 @@
 import numpy as np
 
+
 class LDrawReference():
-    def __init__(self, *, 
+    def __init__(self, *,
                  name: str,
                  matrix: np.ndarray,
                  color: int):
@@ -26,8 +27,13 @@ class LDrawReference():
 
     @property
     def line(self) -> str:
-        [a, d, g, _], [b, e, h, _], [c, f, i, _], [x, y, z, _] = self.matrix
-        return f"1 {self.color} {x} {y} {z} {a} {b} {c} {d} {e} {f} {g} {h} {i} {self.name}\n"
+        [[a, d, g, _],
+         [b, e, h, _],
+         [c, f, i, _],
+         [x, y, z, _]] = self.matrix
+        return (f"1 {self.color} {x} {y} {z} "
+                f"{a} {b} {c} {d} {e} {f} {g} {h} {i} "
+                f"{self.name}\n")
 
     @property
     def position(self) -> np.ndarray:
