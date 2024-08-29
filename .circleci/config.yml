@@ -9,6 +9,9 @@ jobs:
       - checkout
       - run: echo "this is the build job"
       - run:
+          name: install python3.10-venv
+          command: apt install python3.10-venv
+      - run:
           name: install dependencies
           command: |
             python3 -m venv venv
