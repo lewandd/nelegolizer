@@ -19,7 +19,8 @@ PART_DETAILS_CSV = os.path.join(PACKAGE, "LDraw/part/part_details.csv")
 PART_DAT_DIR = os.path.join(PACKAGE, "LDraw/part/dat")
 
 # PART GEOMETRY DIRECTORY
-# Directory contains all part geometry files. File could be for example .stl file.
+# Directory contains all part geometry files. File could be for
+# example .stl file.
 PART_GEOM_DIR = os.path.join(PACKAGE, "LDraw/part/geom")
 
 # BRICK MODELS DIRECTORY
@@ -28,14 +29,17 @@ BRICK_MODELS_DIR = os.path.join(PACKAGE, "models/brick_classification")
 
 # BRICK MODULES FILE
 # Python module defining and operating on brick classification modules.
-BRICK_MODULES_FILE = os.path.join(PACKAGE, "models/brick_classification_models.py")
+BRICK_MODULES_FILE = os.path.join(
+    PACKAGE, "models/brick_classification_models.py")
 
 # DATA DIRECTORY
-# Top level directory containng all data for training and testing neural networks.
+# Top level directory containng all data for training and testing
+# neural networks.
 DATA_DIR = os.path.join(PACKAGE, "data")
 
 # BRICK CLASSFICATION DATA DIRECTORY
-# Directry containing data for training and testing brick classification networks.
+# Directry containing data for training and testing brick
+# classification networks.
 BRICK_CLASSFICATION_DATA_DIR = os.path.join(DATA_DIR, "brick_classification")
 
 # SAMPLE MODELS DIRECTORY

@@ -10,12 +10,13 @@ setup(
     name='nelegolizer',
     version='0.1.0',
     python_requires='>3.8.0',
-    description='Python package using neural network to transform 3D object into a LEGO layout',
+    description=('Python package using neural network to'
+                 ' transform 3D object into a LEGO layout'),
     long_description=readme,
     author='Damian Lewandowski',
     author_email='lewandd9@gmail.com',
     url='https://github.com/lewandd/nelegolizer',
     license=license,
-    install_requires=['numpy','pandas','pyvista', 'torch'],
+    install_requires=['numpy', 'pandas', 'pyvista', 'torch'],
     packages=find_packages()
 )
