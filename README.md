@@ -32,7 +32,7 @@ Load 3d object and get list of lego bricks ([list of supported file extensions](
 from nelegolizer import legolize
 from nelegolizer.data import LDrawModel, LDrawFile
 
-lego_bricks = legolize("cone.obj")
+lego_bricks = legolize("path/to/model_3d.obj")
 ```
 Then you can use results by either:
 - Save results as mpd file ([LDraw File Format Specification](https://www.ldraw.org/article/218.html))
@@ -45,18 +45,21 @@ Then you can use results by either:
 - Use bricks data in your application
   ```python
   for brick in lego_bricks:
-    pos = brick.position
-    rot = brick.rotation
+    pos = brick.mesh_position
+    rot = brick.rotation # along y axis
+    col = brick.color
+    part_id = brick.part.brick_id
+    part_size = brick.part.size
     ...
   ```
 - Visualize bricks
   ```python
-  from nelegolizer.visualization import Plotter
+  import pyvista as pv
 
-  pl = Plotter()
+  plotter = pv.Plotter()
   for brick in lego_bricks:
-    pl.add_mesh(brick.mesh)
-  pl.show()
+    plotter.add_mesh(brick.mesh)
+  plotter.show()
   ```
 ## License
 
