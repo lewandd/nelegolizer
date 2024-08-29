@@ -1,3 +1,5 @@
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/FCEiGgzprXKFQrzVt4x4Z5/CdSunoTZZwHU7a7kqxDxer/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/FCEiGgzprXKFQrzVt4x4Z5/CdSunoTZZwHU7a7kqxDxer/tree/main)
+
 # NeLegolizer (work in progress)
 
 NeLegolizer is Python project that transform 3D object into a LEGO layout using neural networks.
