@@ -7,13 +7,18 @@ jobs:
       - image: cimg/python:3.8.0
     steps:
       - checkout
-      - run: echo "this is the build job"
+      - run: python3 --version
       - run:
-          name: install dependencies
+          name: upgrade pip
+          command: pip install --upgrade pip
+      - run:
+          name: create virtual environemnt
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r requirements.txt
+      - run:
+          name: install dependencies
+          command: pip install -r requirements.txt
   test:
     docker:
       - image: cimg/base:2023.03
