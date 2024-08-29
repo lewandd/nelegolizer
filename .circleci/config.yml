@@ -1,5 +1,10 @@
 version: 2.1
 
+general:
+  branches:
+    only:
+      - main
+
 # Define the jobs we want to run for this project
 jobs:
   test:
