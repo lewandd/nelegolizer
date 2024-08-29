@@ -7,7 +7,9 @@ jobs:
       - image: cimg/python:3.8.0
     steps:
       - checkout
-      - run: python3 --version
+      - run: 
+          name: Check python version
+          command: python3 --version
       - run:
           name: upgrade pip
           command: pip install --upgrade pip
