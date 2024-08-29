@@ -3,9 +3,6 @@ version: 2.1
 # Define the jobs we want to run for this project
 jobs:
   test:
-    branches:
-      only:
-        - main
     docker:
       - image: cimg/python:3.8.0
     steps:
@@ -40,4 +37,7 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - test
+      - test:
+        filters:
+          branches:
+            only: main
