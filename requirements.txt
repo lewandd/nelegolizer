@@ -3,4 +3,4 @@ pandas
 pyvista
 torch
 pytest
-flake
+flake8
