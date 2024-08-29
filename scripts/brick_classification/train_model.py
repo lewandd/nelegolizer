@@ -4,7 +4,7 @@ Train models from models/
 Usage:
 python3 train_models.py [debug=True|False] model_name_1 model_name2 ...
 or
-python3 train_models.py [debug=True|False] all 
+python3 train_models.py [debug=True|False] all
 """
 
 import sys
@@ -26,7 +26,8 @@ path_loader.create_module(path_spec)
 path_loader.exec_module(path)
 
 bc_models_loader = SourceFileLoader("bc_models", path.BRICK_MODULES_FILE)
-bc_models_spec = importlib.util.spec_from_loader(bc_models_loader.name, bc_models_loader)
+bc_models_spec = importlib.util.spec_from_loader(bc_models_loader.name,
+                                                 bc_models_loader)
 bc_models_module = importlib.util.module_from_spec(bc_models_spec)
 bc_models_loader.create_module(bc_models_spec)
 bc_models_loader.exec_module(bc_models_module)
@@ -36,8 +37,9 @@ debug = False
 
 model_hyperparameters = {
     "model_n111": {"loss_fn": nn.CrossEntropyLoss(),
-                    "lr": 0.1}
+                   "lr": 0.1}
 }
+
 
 def train(dataloader, model, loss_fn, optimizer):
     size = len(dataloader.dataset)
@@ -56,8 +58,9 @@ def train(dataloader, model, loss_fn, optimizer):
 
         if batch % 100 == 0:
             loss, current = loss.item(), (batch + 1) * len(X)
-            if debug: 
+            if debug:
                 print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+
 
 def test(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
@@ -72,12 +75,15 @@ def test(dataloader, model, loss_fn):
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
     test_loss /= num_batches
     correct /= size
-    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, "
+          f"Avg loss: {test_loss:>8f} \n")
+
 
 if __name__ == '__main__':
     argc = len(sys.argv) - 1
-    if argc == 0 :
-        print("Usage: python3 create_model.py [model name] [model2 name] ... or python3 create_model.py all")
+    if argc == 0:
+        print("Usage: python3 create_model.py [model name] [model2 name] ... "
+              "or python3 create_model.py all")
         sys.exit()
     elif "all" in sys.argv:
         args = bc_models_module.get_model_names()
@@ -96,21 +102,33 @@ if __name__ == '__main__':
         model = bc_models_module.load_model(model, arg, debug)
 
         # Prepare datasets and dataloaders
-        MODEL_DATA_DIR = os.path.join(path.BRICK_CLASSFICATION_DATA_DIR, arg[6:])
-        TRAIN_LABEL_FILE_PATH = os.path.join(MODEL_DATA_DIR, "train_data_labels.csv")
-        TEST_LABEL_FILE_PATH = os.path.join(MODEL_DATA_DIR, "test_data_labels.csv")
+        MODEL_DATA_DIR = os.path.join(
+            path.BRICK_CLASSFICATION_DATA_DIR, arg[6:])
+        TRAIN_LABEL_FILE_PATH = os.path.join(
+            MODEL_DATA_DIR, "train_data_labels.csv")
+        TEST_LABEL_FILE_PATH = os.path.join(
+            MODEL_DATA_DIR, "test_data_labels.csv")
         TRAIN_DATA_DIR = os.path.join(MODEL_DATA_DIR, "train_data")
         TEST_DATA_DIR = os.path.join(MODEL_DATA_DIR, "test_data")
-        
-        training_data = CustomVoxelsDataset(TRAIN_LABEL_FILE_PATH, TRAIN_DATA_DIR)
-        test_data = CustomVoxelsDataset(TEST_LABEL_FILE_PATH, TEST_DATA_DIR)
 
-        train_dataloader = DataLoader(training_data, batch_size=60, shuffle=True)
-        test_dataloader = DataLoader(test_data, batch_size=30, shuffle=True)
+        train_data = CustomVoxelsDataset(
+            annotations_file=TRAIN_LABEL_FILE_PATH,
+            data_dir=TRAIN_DATA_DIR)
+        test_data = CustomVoxelsDataset(
+            annotations_file=TEST_LABEL_FILE_PATH,
+            data_dir=TEST_DATA_DIR)
+
+        train_dataloader = DataLoader(train_data,
+                                      batch_size=60,
+                                      shuffle=True)
+        test_dataloader = DataLoader(test_data,
+                                     batch_size=30,
+                                     shuffle=True)
 
         # Train
         loss_fn = model_hyperparameters[arg]["loss_fn"]
-        optimizer = torch.optim.SGD(model.parameters(), lr=model_hyperparameters[arg]["lr"])
+        optimizer = torch.optim.SGD(model.parameters(),
+                                    lr=model_hyperparameters[arg]["lr"])
 
         if debug:
             print(f"Training {arg}...")

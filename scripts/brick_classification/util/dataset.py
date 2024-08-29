@@ -3,8 +3,12 @@ import pandas as pd
 import os
 from torch.utils.data import Dataset
 
+
 class CustomVoxelsDataset(Dataset):
-    def __init__(self, annotations_file, data_dir, transform=None, target_transform=None):
+    def __init__(self, annotations_file,
+                 data_dir,
+                 transform=None,
+                 target_transform=None):
         self.data_labels = pd.read_csv(annotations_file)
         self.data_dir = data_dir
         self.transform = transform
