@@ -1,12 +1,11 @@
 """
-Visualize basic legolize usage. 
+Visualize basic legolize usage.
 
 Plot input mesh and output list of LegoBricks.
 """
 import pyvista as pv
 
 from nelegolizer import legolize
-from nelegolizer.utils import mesh as meshutil
 
 reader = pv.get_reader("fixtures/cone.obj")
 mesh = reader.read()

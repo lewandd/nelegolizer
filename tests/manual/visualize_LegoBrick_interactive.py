@@ -10,6 +10,7 @@ from nelegolizer import const
 from nelegolizer.data import LegoBrick
 from nelegolizer.data import part_by_label
 
+
 class MyCustomRoutine:
     def __init__(self, mesh) -> None:
         self.output = mesh  # Expected PyVista mesh type
@@ -28,14 +29,20 @@ class MyCustomRoutine:
 
     def update(self) -> None:
         # This is where you call your simulation
-        result = LegoBrick(label=self.kwargs["label"], 
-                           mesh_position=np.array((self.kwargs["mesh_position_x"],self.kwargs["mesh_position_y"],self.kwargs["mesh_position_z"])) * const.BRICK_UNIT_MESH_SHAPE, 
-                           rotation=self.kwargs["rotation"]).mesh
+        brick_unit_position = np.array((self.kwargs["mesh_position_x"],
+                                        self.kwargs["mesh_position_y"],
+                                        self.kwargs["mesh_position_z"]))
+        result = LegoBrick(
+            label=self.kwargs["label"],
+            mesh_position=brick_unit_position * const.BRICK_UNIT_MESH_SHAPE,
+            rotation=self.kwargs["rotation"]).mesh
         self.output.copy_from(result)
 
-starting_mesh = LegoBrick(label=0, 
-                          mesh_position=np.array((0,0,0)) * const.BRICK_UNIT_MESH_SHAPE, 
-                          rotation=0).mesh
+
+starting_mesh = LegoBrick(
+    label=0,
+    mesh_position=np.array((0, 0, 0)) * const.BRICK_UNIT_MESH_SHAPE,
+    rotation=0).mesh
 engine = MyCustomRoutine(starting_mesh)
 
 p = pv.Plotter()
@@ -79,23 +86,22 @@ p.add_text(f"{part_by_label[0].brick_id}", position=[507.0, 20.0], font_size=8)
 p.add_text(f"{part_by_label[1].brick_id}", position=[557.0, 20.0], font_size=8)
 
 p.add_text("Rotation", position=[800.0, 60.0], font_size=14)
-p.add_checkbox_button_widget(callback=lambda value: engine("rotation", int(0)),
+p.add_checkbox_button_widget(callback=lambda val: engine("rotation", int(0)),
                              color_on="grey",
                              position=(800.0, 3.0))
-p.add_checkbox_button_widget(callback=lambda value: engine("rotation", int(90)),
+p.add_checkbox_button_widget(callback=lambda val: engine("rotation", int(90)),
                              color_on="grey",
                              position=(850.0, 3.0))
-p.add_checkbox_button_widget(callback=lambda value: engine("rotation", int(180)),
+p.add_checkbox_button_widget(callback=lambda val: engine("rotation", int(180)),
                              color_on="grey",
                              position=(900.0, 3.0))
-p.add_checkbox_button_widget(callback=lambda value: engine("rotation", int(270)),
+p.add_checkbox_button_widget(callback=lambda val: engine("rotation", int(270)),
                              color_on="grey",
                              position=(950.0, 3.0))
 p.add_text("0", position=[820.0, 20.0], font_size=8)
 p.add_text("90", position=[865.0, 20.0], font_size=8)
 p.add_text("180", position=[910.0, 20.0], font_size=8)
 p.add_text("270", position=[960.0, 20.0], font_size=8)
-
 
 p.show_bounds()
 p.show()
