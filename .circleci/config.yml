@@ -24,10 +24,15 @@ jobs:
           command: pip install -e .
   test:
     docker:
-      - image: cimg/base:2023.03
+      - image: cimg/python:3.8.0
     steps:
       - checkout
       - run: echo "this is the test job"
+      - run:
+          name: unit tests
+          command: |
+            cd tests/unit
+            python3 -m unittest discover
 
 # Orchestrate our job run sequence
 workflows:
