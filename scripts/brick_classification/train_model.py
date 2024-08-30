@@ -79,16 +79,25 @@ def test(dataloader, model, loss_fn):
           f"Avg loss: {test_loss:>8f} \n")
 
 
-if __name__ == '__main__':
-    argc = len(sys.argv) - 1
+def set_args(argv):
+    argc = len(argv) - 1
     if argc == 0:
         print("Usage: python3 create_model.py [model name] [model2 name] ... "
               "or python3 create_model.py all")
         sys.exit()
-    elif "all" in sys.argv:
-        args = bc_models_module.get_model_names()
+    elif "all" in argv:
+        return bc_models_module.get_model_names()
     else:
-        args = sys.argv[1:]
+        return argv[1:]
+
+
+def print_debug(text):
+    if debug:
+        print(text)
+
+
+if __name__ == '__main__':
+    args = set_args(sys.argv)
     if "debug=true" in [s.lower() for s in sys.argv]:
         debug = True
     elif "debug=false" in [s.lower() for s in sys.argv]:
@@ -130,17 +139,14 @@ if __name__ == '__main__':
         optimizer = torch.optim.SGD(model.parameters(),
                                     lr=model_hyperparameters[arg]["lr"])
 
-        if debug:
-            print(f"Training {arg}...")
+        print_debug(f"Training {arg}...")
         epochs = 6
         for t in range(epochs):
-            if debug:
-                print(f"Epoch {t+1}\n-------------------------------")
+            print_debug(f"Epoch {t+1}\n-------------------------------")
             train(train_dataloader, model, loss_fn, optimizer)
             if debug:
                 test(test_dataloader, model, loss_fn)
 
-        if debug:
-            print("Done!")
+        print_debug("Done!")
 
         bc_models_module.save_model(model, arg, debug)
