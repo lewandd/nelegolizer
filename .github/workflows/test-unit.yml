@@ -18,8 +18,9 @@ jobs:
     - uses: actions/checkout@v4
     - name: Hello
       run: |
-        echo "Hello"
+        echo "Folder files"
         ls -l
+        echo $HOME
         pwd
     - name: Lint with flake8
       run: |
