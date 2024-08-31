@@ -22,9 +22,23 @@ jobs:
         ls -l
         echo $HOME
         pwd
+    - name: Create $HOME/.local/nelegolizer-venv if doesn't exist
+      run: |
+        if [ ! -e $HOME/.local ]; then \
+            (mkdir $HOME/.local && echo "Created $HOME/.local directory"); \
+        else \
+            echo "$HOME/.local directory already exists"; \
+        fi
+        if [ ! -e $HOME/.local/nelegolizer-venv ]; then \
+            python3 -m venv $HOME/.local/nelegolizer-venv; \
+            python3 -m pip install -r requirements.txt --no-cache-dir \
+            python3 -m pip install -e . \
+        else \
+            echo "$HOME/.local/nelegolizer-venv already exists"; \
+        fi
     - name: Lint with flake8
       run: |
-        source ../../.venv/bin/activate
+        source $HOME/.local/nelegolizer-venv/bin/activate
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
@@ -32,5 +46,5 @@ jobs:
 
     - name: Test with pytest
       run: |
-        source ../../.venv/bin/activate
+        source $HOME/.local/nelegolizer-venv/bin/activate
         pytest
