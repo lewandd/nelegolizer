@@ -22,18 +22,21 @@ jobs:
         ls -l
         echo $HOME
         pwd
-    - name: Create $HOME/.local/nelegolizer-venv if doesn't exist
+    - name: Create $HOME/.local directory if doesn't exist
       run: |
         if [ ! -e $HOME/.local ]; then \
-            (mkdir $HOME/.local && echo "Created $HOME/.local directory"); \
+            {mkdir $HOME/.local && echo "Created $HOME/.local directory"}; \
         else \
             echo "$HOME/.local directory already exists"; \
         fi;
+    - name: Create $HOME/.local/nelegolizer-venv if doesn't exist
+      run: |   
         if [ ! -e $HOME/.local/nelegolizer-venv ]; then \
+            {echo "Setting $HOME/.local/nelegolizer-venv..." \
             python3 -m venv $HOME/.local/nelegolizer-venv; \
             source $HOME/.local/nelegolizer-venv/bin/activate
             python3 -m pip install -r requirements.txt --no-cache-dir \
-            python3 -m pip install -e . \
+            python3 -m pip install -e .} \
         else \
             echo "$HOME/.local/nelegolizer-venv already exists"; \
         fi;
