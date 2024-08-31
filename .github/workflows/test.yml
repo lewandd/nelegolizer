@@ -33,7 +33,7 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  test:
+  test-unit:
     needs: [create-env]
     runs-on: self-hosted
     strategy:
@@ -43,4 +43,16 @@ jobs:
     - name: Test with pytest
       run: |
         . .github/activate_venv.sh
-        pytest
+        pytest tests/unit
+
+  test-integration:
+    needs: [create-env]
+    runs-on: self-hosted
+    strategy:
+      fail-fast: false
+
+    steps:
+    - name: Test with pytest
+      run: |
+        . .github/activate_venv.sh
+        pytest tests/integration
