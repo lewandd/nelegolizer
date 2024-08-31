@@ -19,7 +19,7 @@ jobs:
     - name: Hello
       run: |
         echo "Folder files"
-        ls -l
+        ls -la
         echo $HOME
         pwd
     - name: Create $HOME/.local directory if doesn't exist
