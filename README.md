@@ -1,4 +1,4 @@
-![github actions CI badge](https://github.com/lewandd/nelegolizer/actions/workflows/test.yml/badge.svg?branch=main)
+[![CI](https://github.com/lewandd/nelegolizer/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/lewandd/nelegolizer/actions/workflows/test.yml)
 
 # NeLegolizer (work in progress)
 
