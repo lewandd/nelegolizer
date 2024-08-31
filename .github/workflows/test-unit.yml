@@ -16,12 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Hello
-      run: |
-        echo "Folder files"
-        ls -la
-        echo $HOME
-        pwd
     - name: Create venv if doesn't exist
       run: sh .github/create_venv.sh
     - name: Lint with flake8
