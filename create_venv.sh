@@ -1,21 +1,22 @@
 #!/bin/bash
-# Create .nelegolizer-venv in $HOME/.local if doesn't exist
+# Create nelegolizer-venv in $HOME/.local if doesn't exist
 
 LOCAL_DIR=$HOME/.local
-VENV_PATH=$LOCAL_DIR/.nelegolizer-venv
+VENV_PATH=$LOCAL_DIR/nelegolizer-venv
 
-if [ ! -e $HOME/.local ];
+if [ ! -e $LOCAL_DIR ];
 then
-    mkdir $HOME/.local &&
-    echo "Created $HOME/.local directory"
+    mkdir $LOCAL_DIR &&
+    echo "Created $LOCAL_DIR directory"
 fi
 
-if [ ! -e $HOME/.local/nelegolizer-venv ];
+if [ ! -e $VENV_PATH ];
 then
-    python3 -m venv $HOME/.local/nelegolizer-venv
+    python3 -m venv $VENV_PATH
+    echo "Created $VENV_PATH venv"
 fi
 
-. $HOME/.local/nelegolizer-venv/bin/activate
+. $VENV_PATH/bin/activate
 python3 -m pip install -r requirements.txt --no-cache-dir
 python3 -m pip install -e .
 
