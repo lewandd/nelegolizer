@@ -1,4 +1,4 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/FCEiGgzprXKFQrzVt4x4Z5/CdSunoTZZwHU7a7kqxDxer/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/circleci/FCEiGgzprXKFQrzVt4x4Z5/CdSunoTZZwHU7a7kqxDxer/tree/main)
+![github actions CI badge](https://github.com/lewandd/nelegolizer/actions/workflows/test.yml/badge.svg?branch=main)
 
 # NeLegolizer (work in progress)
 
