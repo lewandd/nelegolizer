@@ -15,7 +15,7 @@ then
     python3 -m venv $HOME/.local/nelegolizer-venv
 fi
 
-source $HOME/.local/nelegolizer-venv/bin/activate
+. $HOME/.local/nelegolizer-venv/bin/activate
 python3 -m pip install -r requirements.txt --no-cache-dir
 python3 -m pip install -e .
 
