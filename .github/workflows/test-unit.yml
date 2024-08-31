@@ -23,7 +23,7 @@ jobs:
         echo $HOME
         pwd
     - name: Create venv if doesn't exist
-      run: sh create_venv.sh
+      run: sh .github/create_venv.sh
     - name: Lint with flake8
       run: |
         source $HOME/.local/nelegolizer-venv/bin/activate
