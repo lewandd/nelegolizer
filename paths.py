@@ -4,15 +4,10 @@ import os
 # Root directory of package.
 PACKAGE = os.path.dirname(__file__)
 
-# PART LABEL CSV
-# CSV file contains labels corresponding to LDraw parts
-# LDraw parts are identified by a dat filename
-PART_LABEL_CSV = os.path.join(PACKAGE, "LDraw/part/part_label.csv")
-
-# PART DETAILS CSV
+# PART DATA CSV
 # CSV file contains essential informations about LDraw parts
-# LDraw parts are identified by a dat filename
-PART_DETAILS_CSV = os.path.join(PACKAGE, "LDraw/part/part_details.csv")
+# LDraw parts are identified by a size with label or by a dat filename.
+PART_DATA_CSV = os.path.join(PACKAGE, "LDraw/part/part_data.csv")
 
 # PART .DAT DIRECTORY
 # Directory contains all part .dat files.

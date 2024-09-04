@@ -8,7 +8,6 @@ import numpy as np
 
 from nelegolizer import const
 from nelegolizer.data import LegoBrick
-from nelegolizer.data import part_by_label
 
 
 class MyCustomRoutine:
@@ -19,7 +18,7 @@ class MyCustomRoutine:
             "mesh_position_x": 0,
             "mesh_position_y": 0,
             "mesh_position_z": 0,
-            "label": 0,
+            "id": "3005",
             "rotation": 0
         }
 
@@ -33,14 +32,14 @@ class MyCustomRoutine:
                                         self.kwargs["mesh_position_y"],
                                         self.kwargs["mesh_position_z"]))
         result = LegoBrick(
-            label=self.kwargs["label"],
+            id=self.kwargs["id"],
             mesh_position=brick_unit_position * const.BRICK_UNIT_MESH_SHAPE,
             rotation=self.kwargs["rotation"]).mesh
         self.output.copy_from(result)
 
 
 starting_mesh = LegoBrick(
-    label=0,
+    id="3005",
     mesh_position=np.array((0, 0, 0)) * const.BRICK_UNIT_MESH_SHAPE,
     rotation=0).mesh
 engine = MyCustomRoutine(starting_mesh)
@@ -75,15 +74,18 @@ p.add_slider_widget(
     style="modern",
 )
 
+id1 = "3005"
+id2 = "54200"
+
 p.add_text("Brick", position=[500.0, 65.0], font_size=14)
-p.add_checkbox_button_widget(callback=lambda value: engine("label", int(0)),
+p.add_checkbox_button_widget(callback=lambda value: engine("id", id1),
                              color_on="grey",
                              position=(500.0, 3.0))
-p.add_checkbox_button_widget(callback=lambda value: engine("label", int(1)),
+p.add_checkbox_button_widget(callback=lambda value: engine("id", id2),
                              color_on="grey",
                              position=(550.0, 3.0))
-p.add_text(f"{part_by_label[0].brick_id}", position=[507.0, 20.0], font_size=8)
-p.add_text(f"{part_by_label[1].brick_id}", position=[557.0, 20.0], font_size=8)
+p.add_text(f"{id1}", position=[507.0, 20.0], font_size=8)
+p.add_text(f"{id2}", position=[557.0, 20.0], font_size=8)
 
 p.add_text("Rotation", position=[800.0, 60.0], font_size=14)
 p.add_checkbox_button_widget(callback=lambda val: engine("rotation", int(0)),

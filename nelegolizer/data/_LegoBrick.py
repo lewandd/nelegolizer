@@ -1,4 +1,4 @@
-from nelegolizer.data import part_by_label, part_by_filename
+from nelegolizer.data import part_by_filename
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
 from nelegolizer.data import LDrawReference
@@ -22,16 +22,17 @@ ROT_MATRIX_270 = np.array([[0, 0, 1],
 
 class LegoBrick:
     def __init__(self, *,
-                 label: int,
+                 id: str,
                  mesh_position: Tuple[int, int, int],
                  rotation: int,
                  color: int = 16):
-        if label not in part_by_label.keys():
-            available_keys = list(part_by_label.keys())
-            raise KeyError(f"LegoBrick label can be: {available_keys}. "
-                           f"Label {label} is invalid.")
-        self.label = label
-        self.part = part_by_label[label]
+        self.id = id
+        self.dat_filename = id + ".dat"
+        if self.dat_filename not in part_by_filename.keys():
+            available_keys = list(part_by_filename.keys())
+            raise KeyError(f"LegoBrick filename can be: {available_keys}. "
+                           f"Filename {self.dat_filename} is invalid.")
+        self.part = part_by_filename[self.dat_filename]
         self.mesh_position = mesh_position
         if rotation not in [0, 90, 180, 270]:
             raise Exception(f"LegoBrick rotation can be either 0, 90, 180"
@@ -54,7 +55,7 @@ class LegoBrick:
                             f" Rotation should be either: \n>{ROT_MATRIX_0}\n"
                             f">{ROT_MATRIX_90}\n>{ROT_MATRIX_180}\n"
                             f">{ROT_MATRIX_270}\nGot: \n{ref.rotation}.")
-        return cls(label=part_by_filename[ref.name].label,
+        return cls(id=part_by_filename[ref.name].brick_id,
                    mesh_position=ref.position,
                    rotation=degrees,
                    color=ref.color)
@@ -91,7 +92,6 @@ class LegoBrick:
     def __str__(self):
         string = "LegoBrick: "
         string += "dat_filename=" + str(self.part.dat_filename) + ", "
-        string += "label=" + str(self.label) + ", "
         string += "position=" + str(self.mesh_position) + ", "
         string += "rotation=" + str(self.rotation)
         string += "color=" + str(self.color)

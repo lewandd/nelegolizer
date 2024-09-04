@@ -5,7 +5,7 @@ import unittest
 import pyvista
 import numpy as np
 
-from nelegolizer.data import LDrawPart, part_by_label, part_by_filename
+from nelegolizer.data import LDrawPart, part_by_size_label, part_by_filename
 from nelegolizer.data import LegoBrick, LDrawReference, LDrawFile, LDrawModel
 from nelegolizer.data._LegoBrick import ROT_MATRIX_180
 
@@ -80,11 +80,12 @@ class TestLDrawPart(unittest.TestCase):
 
 class TestPartByLabel(unittest.TestCase):
     def test_part_by_label_not_empty(self):
-        self.assertGreater(len(part_by_label), 0)
+        self.assertGreater(len(part_by_size_label), 0)
 
     def test_part_by_label_elements_are_LDrawPart(self):
-        for key in part_by_label.keys():
-            self.assertIsInstance(part_by_label[key], LDrawPart)
+        for key in part_by_size_label[str((1, 1, 1))].keys():
+            self.assertIsInstance(
+                part_by_size_label[str((1, 1, 1))][key], LDrawPart)
 
 
 class TestPartByFilename(unittest.TestCase):
@@ -98,63 +99,65 @@ class TestPartByFilename(unittest.TestCase):
 
 class TestLegoBrick(unittest.TestCase):
     def setUp(self):
-        self.valid_label = list(part_by_label.keys())[0]
+        valid_filename = list(part_by_filename.keys())[0]
+        part = part_by_filename[valid_filename]
+        self.valid_id = part.brick_id
 
     def test_initialization_with_valid_parameters(self):
-        LegoBrick(label=self.valid_label,
+        LegoBrick(id=self.valid_id,
                   mesh_position=(2, 5, 7),
                   rotation=180)
 
-    def test_label_out_of_bond(self):
+    def test_id_out_of_bond(self):
         with self.assertRaises(KeyError):
-            LegoBrick(label=-1,
+            LegoBrick(id="-1",
                       mesh_position=(2, 5, 7),
                       rotation=180)
 
     def test_invalid_rotation(self):
         with self.assertRaises(Exception):
-            LegoBrick(label=self.valid_label,
+            LegoBrick(id=self.valid_id,
                       mesh_position=(2, 5, 7),
                       rotation=45)
 
     def test_str_cast(self):
-        lb = LegoBrick(label=self.valid_label,
+        lb = LegoBrick(id=self.valid_id,
                        mesh_position=(2, 5, 7),
                        rotation=180)
         str(lb)
 
     def test_part_attribute_exists(self):
-        lb = LegoBrick(label=self.valid_label,
+        lb = LegoBrick(id=self.valid_id,
                        mesh_position=(2, 5, 7),
                        rotation=180)
         self.assertIsNotNone(lb.part)
 
     def test_part_is_LDrawPart(self):
-        lb = LegoBrick(label=self.valid_label,
+        lb = LegoBrick(id=self.valid_id,
                        mesh_position=(2, 5, 7),
                        rotation=180)
         self.assertIsInstance(lb.part, LDrawPart)
 
     def test_mesh_exist(self):
-        lb = LegoBrick(label=self.valid_label,
+        lb = LegoBrick(id=self.valid_id,
                        mesh_position=(2, 5, 7),
                        rotation=180)
         self.assertIsNotNone(lb.mesh)
 
     def test_mesh_is_pv_PolyData(self):
-        lb = LegoBrick(label=self.valid_label,
+        lb = LegoBrick(id=self.valid_id,
                        mesh_position=(2, 5, 7),
                        rotation=180)
         self.assertIsInstance(lb.mesh, pyvista.PolyData)
 
     def test_grid_exist(self):
-        lb = LegoBrick(label=self.valid_label,
+        lb = LegoBrick(id=self.valid_id,
                        mesh_position=(2, 5, 7),
                        rotation=180)
         self.assertIsNotNone(lb.grid)
 
     def test_grid_is_np_ndarray(self):
-        lb = LegoBrick(label=self.valid_label,
+        lb = LegoBrick(id=self.valid_id,
                        mesh_position=(2, 5, 7),
                        rotation=180)
         self.assertIsInstance(lb.grid, np.ndarray)
@@ -165,7 +168,7 @@ class TestLegoBrick(unittest.TestCase):
         self.assertIsInstance(LegoBrick.from_reference(ldr), LegoBrick)
 
     def test_matrix(self):
-        lb = LegoBrick(label=self.valid_label,
+        lb = LegoBrick(id=self.valid_id,
                        mesh_position=(2, 5, 7),
                        rotation=180)
         self.assertTrue(np.allclose(lb.matrix[:3, :3], ROT_MATRIX_180))
@@ -274,27 +277,27 @@ class Test_LDrawModel(unittest.TestCase):
         self.assertEqual(len(ldm.references), 203)
 
     def test_init_from_bricks_all_correct(self):
-        lbs = [LegoBrick(label=1, mesh_position=(1, 1, 2), rotation=180),
-               LegoBrick(label=0, mesh_position=(1, 5, 1), rotation=90),
-               LegoBrick(label=1, mesh_position=(0, 0, 0), rotation=0)]
+        lbs = [LegoBrick(id="3005", mesh_position=(1, 1, 2), rotation=180),
+               LegoBrick(id="54200", mesh_position=(1, 5, 1), rotation=90),
+               LegoBrick(id="3005", mesh_position=(0, 0, 0), rotation=0)]
         ldm = LDrawModel.from_bricks(lbs, "Bricks Model")
         for i in range(len(lbs)):
             brick = lbs[i]
             ref = ldm.references[i]
             dat_filename = ref.name
-            self.assertEqual(part_by_filename[dat_filename].label, brick.label)
+            self.assertEqual(part_by_filename[dat_filename].brick_id, brick.id)
             self.assertTrue(np.allclose(ref.matrix, brick.matrix))
             self.assertEqual(ref.color, brick.color)
 
     def test_as_bricks_from_bricks(self):
-        lbs = [LegoBrick(label=1, mesh_position=(1, 1, 2), rotation=180),
-               LegoBrick(label=0, mesh_position=(1, 5, 1), rotation=90),
-               LegoBrick(label=1, mesh_position=(0, 0, 0), rotation=0)]
+        lbs = [LegoBrick(id="3005", mesh_position=(1, 1, 2), rotation=180),
+               LegoBrick(id="54200", mesh_position=(1, 5, 1), rotation=90),
+               LegoBrick(id="3005", mesh_position=(0, 0, 0), rotation=0)]
         ldm = LDrawModel.from_bricks(lbs, "Bricks Model")
         lbs2 = ldm.as_bricks()
         for i in range(len(lbs)):
             self.assertEqual(lbs[i].color, lbs2[i].color)
-            self.assertEqual(lbs[i].label, lbs2[i].label)
+            self.assertEqual(lbs[i].id, lbs2[i].id)
             self.assertTrue(
                 np.allclose(lbs[i].mesh_position, lbs2[i].mesh_position))
 

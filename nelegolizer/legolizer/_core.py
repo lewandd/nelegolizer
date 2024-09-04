@@ -8,6 +8,7 @@ from nelegolizer import const
 from nelegolizer.data import LegoBrick
 from nelegolizer.utils import grid
 from nelegolizer.model import brick_classification_models
+from nelegolizer.data import part_by_size_label
 import nelegolizer.model.brick as brick
 
 fill_treshold = 0.1
@@ -15,6 +16,7 @@ fill_treshold = 0.1
 
 def predictLegoBrick(*, voxel_grid: np.ndarray,
                      model: nn.Module,
+                     shape: np.ndarray,
                      mesh_position: np.ndarray) -> LegoBrick:
     best_rotation = grid.find_best_rotation(voxel_grid)
     voxel_grid = grid.rotate(voxel_grid, best_rotation)
@@ -22,7 +24,9 @@ def predictLegoBrick(*, voxel_grid: np.ndarray,
     fill_ratio = grid.get_fill_ratio(voxel_grid)
     if fill_ratio > fill_treshold:
         label = brick.test_predict(model, torch.tensor(voxel_grid).flatten())
-        lego_brick = LegoBrick(label=label,
+        shape_tuple = tuple(map(int, shape))
+        id = part_by_size_label[str(shape_tuple)][label].brick_id
+        lego_brick = LegoBrick(id=id,
                                mesh_position=mesh_position,
                                rotation=best_rotation)
         return lego_brick
@@ -45,6 +49,7 @@ def check_subspace(*, voxel_grid: np.ndarray,
     if np.all(shape == (1, 1, 1)):
         lb = predictLegoBrick(voxel_grid=voxel_subgrid,
                               model=brick_classification_models["model_n111"],
+                              shape=shape,
                               mesh_position=mesh_position)
         if lb is not None:
             LegoBrickList.append(lb)

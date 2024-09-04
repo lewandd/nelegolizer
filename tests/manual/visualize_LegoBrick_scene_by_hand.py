@@ -10,11 +10,11 @@ from nelegolizer import const
 from nelegolizer.data import LegoBrick
 
 lego_brick1 = LegoBrick(
-    label=0,
+    id="3005",
     mesh_position=np.array((0, 0, 0)) * const.BRICK_UNIT_MESH_SHAPE,
     rotation=0)
 lego_brick2 = LegoBrick(
-    label=1,
+    id="54200",
     mesh_position=np.array((2, 0, 0)) * const.BRICK_UNIT_MESH_SHAPE,
     rotation=90)
 
