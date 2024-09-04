@@ -1,13 +1,10 @@
 import pyvista as pv
 
 from nelegolizer.data import part_by_filename
-from nelegolizer.utils import voxelization, grid
+from nelegolizer.utils import voxelization
 from nelegolizer import const
 
 part = part_by_filename["54200.dat"]
-part.mesh = part.mesh.scale(2)
-part.grid = grid.from_mesh(part.mesh,
-                           voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
 plotter = pv.Plotter(shape=(1, 2))
 plotter.subplot(0, 0)
 plotter.add_mesh(part.mesh)
