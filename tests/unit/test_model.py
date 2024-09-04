@@ -7,6 +7,7 @@ from torch import nn
 
 from nelegolizer.model import brick_classification_models
 from nelegolizer.model import brick
+from nelegolizer import const
 
 
 class Test_brick_classification_models(unittest.TestCase):
@@ -24,12 +25,14 @@ class Test_brick_test_predict(unittest.TestCase):
         self.model = brick_classification_models[first_key]
 
     def test_returns_int(self):
-        grid = np.zeros([6, 6, 6]).flatten()
+        grid = np.zeros(
+            const.BRICK_UNIT_RESOLUTION + 2*const.PADDING).flatten()
         self.assertIsInstance(brick.test_predict(self.model, grid), int)
 
     def test_incorrect_input_shape(self):
         with self.assertRaises(TypeError):
-            grid = np.zeros([6, 6, 6])
+            grid = np.zeros(
+                const.BRICK_UNIT_RESOLUTION + 2*const.PADDING)
             brick.test_predict(self.model, grid), int
 
     def test_incorrect_input_size(self):
