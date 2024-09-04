@@ -8,7 +8,7 @@ BRICK_UNIT_MESH_SHAPE = np.array([0.8, 0.96, 0.8])
 
 # BRICK_UNIT_RESOLUTION
 # Resolution of cuboid representing a 1x1x1 brick made of voxels.
-BRICK_UNIT_RESOLUTION = np.array([4, 4, 4])
+BRICK_UNIT_RESOLUTION = np.array([8, 8, 8])
 
 # BRICK_UNIT_VOLUME
 # Quantity of voxels representing a 1x1x1 brick.

@@ -1,6 +1,6 @@
 import numpy as np
 
-GROUP_RES = 6
+GROUP_RES = 10
 
 n111shape = (GROUP_RES, GROUP_RES, GROUP_RES)
 
