@@ -81,7 +81,7 @@ def from_pv_voxels(pv_voxels: pv.UnstructuredGrid) -> np.ndarray:
     pv_voxels = umesh.translate_to_zero(pv_voxels)
     mesh_shape = umesh.get_resolution(pv_voxels)
     unit_shape = umesh.get_resolution(pv_voxels.extract_cells(0))
-    resolution = np.ceil((mesh_shape/unit_shape)).astype(int)
+    resolution = np.around((mesh_shape/unit_shape)).astype(int)
     voxel_centers = pv_voxels.cell_centers().points
     grid = np.zeros(resolution, dtype=bool)
     for position in voxel_centers:
