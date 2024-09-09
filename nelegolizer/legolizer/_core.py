@@ -7,6 +7,7 @@ from typing import List, Tuple, Union
 from nelegolizer import const
 from nelegolizer.data import LegoBrick
 from nelegolizer.utils import grid
+from nelegolizer.utils import voxelization # noqa
 from nelegolizer.model import brick_classification_models
 from nelegolizer.data import part_by_size_label
 import nelegolizer.model.brick as brick
@@ -23,6 +24,12 @@ def predictLegoBrick(*, voxel_grid: np.ndarray,
 
     fill_ratio = grid.get_fill_ratio(voxel_grid)
     if fill_ratio > fill_treshold:
+        # mesh = voxelization.from_grid(voxel_grid,
+        #                              voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+        # p = pv.Plotter()
+        # p.add_mesh(mesh)
+        # p.show_bounds(bounds=[0.0, 0.9, 0.0, 1.2, 0.0, 0.9])
+        # p.show(cpos="xy")
         label = brick.test_predict(model, torch.tensor(voxel_grid).flatten())
         shape_tuple = tuple(map(int, shape))
         id = part_by_size_label[str(shape_tuple)][label].brick_id
