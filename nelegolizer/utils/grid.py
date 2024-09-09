@@ -31,7 +31,7 @@ def find_best_rotation(voxel_grid: np.ndarray) -> int:
                        f"Got {voxel_grid.ndim}.")
     mass_center = get_mass_center(voxel_grid)
     if mass_center is None:
-        return 0
+        return 180
     x = mass_center[0] / voxel_grid.shape[0]
     z = mass_center[2] / voxel_grid.shape[2]
     if x < 0 or x > 1 or z < 0 or z > 1:
@@ -45,14 +45,14 @@ def find_best_rotation(voxel_grid: np.ndarray) -> int:
         if bot_left_corner < bot_right_corner:
             return 90
         else:
-            return 0
+            return 180
     else:
         if z <= x and z < 1 - x:
-            return 0
+            return 180
         elif z < x and z >= 1 - x:
             return 90
         elif z >= x and z > 1 - x:
-            return 180
+            return 0
         elif z > x and z <= 1 - x:
             return 270
         else:
