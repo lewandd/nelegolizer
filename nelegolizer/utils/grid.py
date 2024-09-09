@@ -4,6 +4,27 @@ from nelegolizer.utils import mesh as umesh
 from typing import Tuple
 
 
+def get_fill(voxel_grid: np.ndarray) -> np.ndarray:
+    n = 0
+    for x in np.nditer(voxel_grid):
+        n += 1 if x else 0
+    return n
+
+
+def get_mass_center(voxel_grid: np.ndarray) -> np.ndarray:
+    dist_sum = np.array([0.0, 0.0, 0.0])
+    n = np.float64(get_fill(voxel_grid))
+    if n == 0:
+        return None
+
+    for x in range(voxel_grid.shape[0]):
+        for y in range(voxel_grid.shape[1]):
+            for z in range(voxel_grid.shape[2]):
+                if voxel_grid[x, y, z]:
+                    dist_sum = dist_sum + np.array([x+0.5, y+0.5, z+0.5])
+    return dist_sum/n
+
+
 def find_best_rotation(voxel_grid: np.ndarray) -> int:
     rotation_score = {"0": 0, "90": 0, "180": 0, "270": 0}
     for (x, _, z), val in np.ndenumerate(voxel_grid):
@@ -51,10 +72,8 @@ def rotate(grid: np.ndarray, degrees: int) -> np.ndarray:
 
 
 def get_fill_ratio(grid: np.ndarray) -> float:
-    fill = 0
+    fill = get_fill(grid)
     volume = grid.shape[0]*grid.shape[1]*grid.shape[2]
-    for x in np.nditer(grid):
-        fill += 1 if x else 0
     return fill/volume
 
 
