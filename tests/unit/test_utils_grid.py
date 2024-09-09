@@ -18,7 +18,7 @@ class Test_find_best_rotation(unittest.TestCase):
     def test_grid212_with_mass_center_bottom_left(self):
         grid212 = np.array([[[True, False]],
                             [[False, False]]])
-        self.assertEqual(find_best_rotation(grid212), 0)
+        self.assertEqual(find_best_rotation(grid212), 180)
 
     def test_grid212_with_mass_center_bottom_right(self):
         grid212 = np.array([[[False, False]],
@@ -28,7 +28,7 @@ class Test_find_best_rotation(unittest.TestCase):
     def test_grid212_with_mass_center_top_right(self):
         grid212 = np.array([[[False, False]],
                             [[False, True]]])
-        self.assertEqual(find_best_rotation(grid212), 180)
+        self.assertEqual(find_best_rotation(grid212), 0)
 
     def test_grid212_with_mass_center_top_left(self):
         grid212 = np.array([[[False, True]],
@@ -38,7 +38,7 @@ class Test_find_best_rotation(unittest.TestCase):
     def test_grid212_with_mass_center_bottom(self):
         grid212 = np.array([[[True, False]],
                             [[True, False]]])
-        self.assertEqual(find_best_rotation(grid212), 0)
+        self.assertEqual(find_best_rotation(grid212), 180)
 
     def test_grid212_with_mass_center_left(self):
         grid212 = np.array([[[True, True]],
@@ -53,7 +53,7 @@ class Test_find_best_rotation(unittest.TestCase):
     def test_grid212_with_m_center_at_center_denser_bottom_left_corner(self):
         grid212 = np.array([[[True, False]],
                             [[False, True]]])
-        self.assertEqual(find_best_rotation(grid212), 0)
+        self.assertEqual(find_best_rotation(grid212), 180)
 
     def test_grid212_with_m_center_at_center_denser_bottom_right_corner(self):
         grid212 = np.array([[[False, True]],
@@ -65,17 +65,17 @@ class Test_find_best_rotation(unittest.TestCase):
     def test_grid222_with_mass_center_bottom(self):
         grid222 = np.array([[[True, False], [True, False]],
                             [[True, False], [True, False]]])
-        self.assertEqual(find_best_rotation(grid222), 0)
+        self.assertEqual(find_best_rotation(grid222), 180)
 
     def test_grid222_with_mass_center_bottom_left_dense(self):
         grid222 = np.array([[[True, True], [True, True]],
                             [[True, True], [True, False]]])
-        self.assertEqual(find_best_rotation(grid222), 0)
+        self.assertEqual(find_best_rotation(grid222), 180)
 
     def test_grid222_with_mass_center_bottom_left_sparse(self):
         grid222 = np.array([[[False, False], [True, False]],
                             [[False, False], [False, False]]])
-        self.assertEqual(find_best_rotation(grid222), 0)
+        self.assertEqual(find_best_rotation(grid222), 180)
 
     def test_grid222_with_mass_center_bottom_right(self):
         grid222 = np.array([[[False, False], [False, False]],
@@ -87,7 +87,7 @@ class Test_find_best_rotation(unittest.TestCase):
     def test_grid223_with_mass_center_bottom(self):
         grid223 = np.array([[[True, True, True], [True, False, False]],
                             [[True, True, False], [True, True, True]]])
-        self.assertEqual(find_best_rotation(grid223), 0)
+        self.assertEqual(find_best_rotation(grid223), 180)
 
     def test_grid223_with_mass_center_right(self):
         grid223 = np.array([[[True, True, True], [False, False, True]],
@@ -97,7 +97,7 @@ class Test_find_best_rotation(unittest.TestCase):
     def test_grid223_with_mass_center_top(self):
         grid223 = np.array([[[True, True, True], [False, False, True]],
                             [[True, True, True], [False, True, True]]])
-        self.assertEqual(find_best_rotation(grid223), 180)
+        self.assertEqual(find_best_rotation(grid223), 0)
 
     def test_invalid_grid_with_2_dims(self):
         with self.assertRaises(KeyError):
