@@ -26,16 +26,37 @@ def get_mass_center(voxel_grid: np.ndarray) -> np.ndarray:
 
 
 def find_best_rotation(voxel_grid: np.ndarray) -> int:
-    rotation_score = {"0": 0, "90": 0, "180": 0, "270": 0}
-    for (x, _, z), val in np.ndenumerate(voxel_grid):
-        if val:
-            x_inverted = (voxel_grid.shape[0]-1) - x
-            z_inverted = (voxel_grid.shape[2]-1) - z
-            rotation_score["0"] += x_inverted + z_inverted
-            rotation_score["90"] += x + z_inverted
-            rotation_score["180"] += x + z
-            rotation_score["270"] += x_inverted + z
-    return int(max(rotation_score, key=rotation_score.get))
+    if voxel_grid.ndim != 3:
+        raise KeyError("Voxel grid should have exactly 3 dimensions. "
+                       f"Got {voxel_grid.ndim}.")
+    mass_center = get_mass_center(voxel_grid)
+    if mass_center is None:
+        return 0
+    x = mass_center[0] / voxel_grid.shape[0]
+    z = mass_center[2] / voxel_grid.shape[2]
+    if x < 0 or x > 1 or z < 0 or z > 1:
+        raise Exception("Unexpected behavior: x={x}, z={z}. "
+                        "Both should be in range [0, 1].")
+    if np.isclose(x, 0.5) and np.isclose(z, 0.5):
+        x_middle = int(voxel_grid.shape[0]/2)
+        z_middle = int(voxel_grid.shape[2]/2)
+        bot_left_corner = get_fill(voxel_grid[:x_middle, :, :z_middle])
+        bot_right_corner = get_fill(voxel_grid[x_middle:, :, :z_middle])
+        if bot_left_corner < bot_right_corner:
+            return 90
+        else:
+            return 0
+    else:
+        if z <= x and z < 1 - x:
+            return 0
+        elif z < x and z >= 1 - x:
+            return 90
+        elif z >= x and z > 1 - x:
+            return 180
+        elif z > x and z <= 1 - x:
+            return 270
+        else:
+            raise Exception(f"Unexpected behavior: x={x}, z={z}, 1-x={1-x}")
 
 
 def get_subgrid(grid: np.ndarray,

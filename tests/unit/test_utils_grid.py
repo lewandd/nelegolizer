@@ -15,74 +15,92 @@ from nelegolizer.utils.grid import find_best_rotation, rotate, get_subgrid, \
 class Test_find_best_rotation(unittest.TestCase):
     # grid 212
 
-    def test_grid212_with_0_best(self):
-        grid212 = np.array([[[True, False]], [[False, False]]])
+    def test_grid212_with_mass_center_bottom_left(self):
+        grid212 = np.array([[[True, False]],
+                            [[False, False]]])
         self.assertEqual(find_best_rotation(grid212), 0)
 
-    def test_grid212_with_90_best(self):
-        grid212 = np.array([[[False, False]], [[True, False]]])
+    def test_grid212_with_mass_center_bottom_right(self):
+        grid212 = np.array([[[False, False]],
+                            [[True, False]]])
         self.assertEqual(find_best_rotation(grid212), 90)
 
-    def test_grid212_with_180_best(self):
-        grid212 = np.array([[[False, False]], [[False, True]]])
+    def test_grid212_with_mass_center_top_right(self):
+        grid212 = np.array([[[False, False]],
+                            [[False, True]]])
         self.assertEqual(find_best_rotation(grid212), 180)
 
-    def test_grid212_with_270_best(self):
-        grid212 = np.array([[[False, True]], [[False, False]]])
+    def test_grid212_with_mass_center_top_left(self):
+        grid212 = np.array([[[False, True]],
+                            [[False, False]]])
         self.assertEqual(find_best_rotation(grid212), 270)
 
-    def test_grid212_with_0_or_90_best(self):
-        grid212 = np.array([[[True, False]], [[True, False]]])
-        self.assertIn(find_best_rotation(grid212), [0, 90])
+    def test_grid212_with_mass_center_bottom(self):
+        grid212 = np.array([[[True, False]],
+                            [[True, False]]])
+        self.assertEqual(find_best_rotation(grid212), 0)
 
-    def test_grid212_with_0_or_270_best(self):
-        grid212 = np.array([[[True, True]], [[False, False]]])
-        self.assertIn(find_best_rotation(grid212), [0, 270])
+    def test_grid212_with_mass_center_left(self):
+        grid212 = np.array([[[True, True]],
+                            [[False, False]]])
+        self.assertEqual(find_best_rotation(grid212), 270)
 
-    def test_grid212_with_90_or_180_best(self):
-        grid212 = np.array([[[False, False]], [[True, True]]])
-        self.assertIn(find_best_rotation(grid212), [90, 180])
+    def test_grid212_with_mass_center_right(self):
+        grid212 = np.array([[[False, False]],
+                            [[True, True]]])
+        self.assertEqual(find_best_rotation(grid212), 90)
 
-    def test_grid212_with_0_or_180_best(self):
-        grid212 = np.array([[[True, False]], [[False, True]]])
-        self.assertIn(find_best_rotation(grid212), [0, 180])
+    def test_grid212_with_m_center_at_center_denser_bottom_left_corner(self):
+        grid212 = np.array([[[True, False]],
+                            [[False, True]]])
+        self.assertEqual(find_best_rotation(grid212), 0)
+
+    def test_grid212_with_m_center_at_center_denser_bottom_right_corner(self):
+        grid212 = np.array([[[False, True]],
+                            [[True, False]]])
+        self.assertEqual(find_best_rotation(grid212), 90)
 
     # grid 222
 
-    def test_grid222_with_0_best(self):
+    def test_grid222_with_mass_center_bottom(self):
         grid222 = np.array([[[True, False], [True, False]],
                             [[True, False], [True, False]]])
         self.assertEqual(find_best_rotation(grid222), 0)
 
-    def test_grid222_with_0_best2(self):
+    def test_grid222_with_mass_center_bottom_left_dense(self):
         grid222 = np.array([[[True, True], [True, True]],
                             [[True, True], [True, False]]])
         self.assertEqual(find_best_rotation(grid222), 0)
 
-    def test_grid222_with_0_best3(self):
+    def test_grid222_with_mass_center_bottom_left_sparse(self):
         grid222 = np.array([[[False, False], [True, False]],
                             [[False, False], [False, False]]])
         self.assertEqual(find_best_rotation(grid222), 0)
 
-    def test_grid222_with_90_best2(self):
+    def test_grid222_with_mass_center_bottom_right(self):
         grid222 = np.array([[[False, False], [False, False]],
                             [[True, False], [True, False]]])
         self.assertEqual(find_best_rotation(grid222), 90)
 
     # grid 223
 
-    def test_grid223_with_90_best(self):
+    def test_grid223_with_mass_center_bottom(self):
         grid223 = np.array([[[True, True, True], [True, False, False]],
                             [[True, True, False], [True, True, True]]])
-        self.assertEqual(find_best_rotation(grid223), 90)
+        self.assertEqual(find_best_rotation(grid223), 0)
 
-    def test_grid223_with_180_best(self):
+    def test_grid223_with_mass_center_right(self):
         grid223 = np.array([[[True, True, True], [False, False, True]],
                             [[True, True, True], [True, True, True]]])
+        self.assertEqual(find_best_rotation(grid223), 90)
+
+    def test_grid223_with_mass_center_top(self):
+        grid223 = np.array([[[True, True, True], [False, False, True]],
+                            [[True, True, True], [False, True, True]]])
         self.assertEqual(find_best_rotation(grid223), 180)
 
     def test_invalid_grid_with_2_dims(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(KeyError):
             grid22 = np.array([[True for _ in range(2)] for _ in range(2)])
             find_best_rotation(grid22)
 
