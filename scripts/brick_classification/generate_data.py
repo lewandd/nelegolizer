@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from util import generator_funcs as generator
+from util import generator_funcs as gen
 from importlib.machinery import SourceFileLoader
 import importlib.util
 
@@ -19,13 +19,13 @@ class DataGeneratorManager():
         self._idx = 0
         self._labels_data = []
 
-    def generate(self, data_dir, generator, label, num, prefix=""):
+    def generate(self, data_dir, generator, label, num, id, prefix=""):
         for _ in range(num):
             data_filename = f'{prefix}{self._idx}.txt'
             data_path = os.path.join(data_dir, data_filename)
             self._labels_data.append((data_filename, label))
             with open(data_path, "w") as f:
-                data_df = pd.DataFrame([generator()])
+                data_df = pd.DataFrame([generator(id).flatten().astype(float)])
                 data_csv = data_df.to_csv(sep=str(' '),
                                           header=False,
                                           index=False)
@@ -53,29 +53,33 @@ def generate_for_n111():
     os.makedirs(TRAIN_DATA_DIR, exist_ok=True)
     train_gm = DataGeneratorManager()
     train_gm.generate(data_dir=TRAIN_DATA_DIR,
-                      generator=generator.n111_full,
+                      generator=gen.with_001_noise,
+                      id="3005",
                       label=0,
                       num=10,
-                      prefix="train-n111-0-")
+                      prefix="train-n111-label0-")
     train_gm.generate(data_dir=TRAIN_DATA_DIR,
-                      generator=generator.n111_lower_half,
+                      generator=gen.with_001_noise,
+                      id="54200",
                       label=1,
                       num=5,
-                      prefix="train-n111-1-")
+                      prefix="train-n111-label1-")
     train_gm.create_label_file(path=TRAIN_LABEL_FILE_PATH)
 
     os.makedirs(TEST_DATA_DIR, exist_ok=True)
     test_gm = DataGeneratorManager()
     test_gm.generate(data_dir=TEST_DATA_DIR,
-                     generator=generator.n111_full,
+                     generator=gen.with_001_noise,
+                     id="3005",
                      label=0,
                      num=5,
-                     prefix="test-n111-0-")
+                     prefix="test-n111-label0-")
     test_gm.generate(data_dir=TEST_DATA_DIR,
-                     generator=generator.n111_lower_half,
+                     generator=gen.with_001_noise,
+                     id="54200",
                      label=1,
                      num=2,
-                     prefix="test-n111-1-")
+                     prefix="test-n111-label1-")
     test_gm.create_label_file(path=TEST_LABEL_FILE_PATH)
 
 
