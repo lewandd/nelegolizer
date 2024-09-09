@@ -2,6 +2,7 @@ from nelegolizer.data import part_by_filename
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
 from nelegolizer.data import LDrawReference
+from nelegolizer import const
 from typing import Tuple
 
 import numpy as np
@@ -80,6 +81,11 @@ class LegoBrick:
         m = self.part.mesh
         m = m.rotate_y(angle=self.rotation, inplace=False)
         m = umesh.translate_to_zero(m)
+        part_height = umesh.get_resolution(m)[1]
+        height_translate = np.array([0,
+                                     const.VOXEL_MESH_SHAPE[1] - part_height,
+                                     0])
+        m = m.translate(height_translate, inplace=False)
         m = m.translate(self.mesh_position, inplace=False)
         return m
 
