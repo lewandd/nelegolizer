@@ -4,6 +4,7 @@ data/generated/n111/*
 !.gitkeep
 
 .venv/
+.vscode
 
 # Test Output
 tests/integration/fixtures/legolized_cone.mpd
