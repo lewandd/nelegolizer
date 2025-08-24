@@ -1,9 +1,10 @@
-from nelegolizer.data import part_by_filename
+from nelegolizer.data import part_by_filename, ldu_to_mesh, mesh_to_ldu
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
 from nelegolizer.data import LDrawReference
 from nelegolizer import const
 from typing import Tuple
+import constants as const
 
 import numpy as np
 
@@ -56,15 +57,20 @@ class LegoBrick:
                             f" Rotation should be either: \n>{ROT_MATRIX_0}\n"
                             f">{ROT_MATRIX_90}\n>{ROT_MATRIX_180}\n"
                             f">{ROT_MATRIX_270}\nGot: \n{ref.rotation}.")
-        return cls(id=part_by_filename[ref.name].brick_id,
-                   mesh_position=ref.position,
+        id = part_by_filename[ref.name].brick_id
+        return cls(id=id,
+                   mesh_position=ldu_to_mesh(ref.position, id),
                    rotation=degrees,
                    color=ref.color)
 
     @property
+    def ldu_position(self):
+        return mesh_to_ldu(self.mesh_position, self.id)
+
+    @property
     def matrix(self):
         rotation = np.zeros([4, 4])
-        rotation[-1, :3] = self.mesh_position
+        rotation[-1, :3] = self.ldu_position
         rotation[-1, -1] = 1
         if self.rotation == 0:
             rotation[:3, :3] = ROT_MATRIX_0

@@ -6,6 +6,11 @@ import numpy as np
 # mesh models maintain proper scale)
 BRICK_UNIT_MESH_SHAPE = np.array([0.8, 0.96, 0.8])
 
+# BRICK_UNIT_LDU_SHAPE
+# Shape of single 1x1x1 brick with LDraw Unit.
+LDU = np.array([0.04, 0.04, 0.04])
+BRICK_UNIT_LDU_SHAPE = BRICK_UNIT_MESH_SHAPE / LDU
+
 # BRICK_UNIT_RESOLUTION
 # Resolution of cuboid representing a 1x1x1 brick made of voxels.
 BRICK_UNIT_RESOLUTION = np.array([8, 8, 8])
@@ -40,3 +45,9 @@ TOP_LEVEL_BRICK_RESOLUTION = TOP_LEVEL_BRICK_SHAPE * BRICK_UNIT_RESOLUTION
 # Extended space around 3-dim voxel grid. Subspaces with padding are inputs
 # for neural networks.
 PADDING = np.array([1, 1, 1])
+
+# LDRAW_BRICK_OFFSET
+# Offset possition for every LDraw part. For example brick 3005 bottom height 
+# is 0, but brick 54200 bottom height is -24. Offset fix these differences.
+LDRAW_PART_OFFSET = {"3005": np.array([0, 0, 0]), 
+                      "54200": np.array([0, 24, 0]),}

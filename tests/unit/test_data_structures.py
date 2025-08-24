@@ -172,7 +172,7 @@ class TestLegoBrick(unittest.TestCase):
                        mesh_position=(2, 5, 7),
                        rotation=180)
         self.assertTrue(np.allclose(lb.matrix[:3, :3], ROT_MATRIX_180))
-        self.assertTrue(np.allclose(lb.matrix[3, :3], lb.mesh_position))
+        self.assertTrue(np.allclose(lb.matrix[3, :3], lb.ldu_position))
         self.assertTrue(np.allclose(lb.matrix[-1, -1], 1))
 
 
