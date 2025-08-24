@@ -3,6 +3,13 @@ data/generated/*.csv
 data/generated/n111/*
 !.gitkeep
 
+.venv/
+
+# Test Output
+tests/integration/fixtures/legolized_cone.mpd
+tests/manual/fixtures/legolized_cone.mpd
+tests/unit/fixtures/modified 5935 - Island Hopper.mpd
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
