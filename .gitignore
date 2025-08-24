@@ -10,6 +10,7 @@ data/generated/n111/*
 tests/integration/fixtures/legolized_cone.mpd
 tests/manual/fixtures/legolized_cone.mpd
 tests/unit/fixtures/modified 5935 - Island Hopper.mpd
+tests/manual/fixtures/merged 5935 - Island Hopper.mpd
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
