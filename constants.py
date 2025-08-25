@@ -31,15 +31,9 @@ VOXEL_MESH_SHAPE = BRICK_UNIT_MESH_SHAPE / BRICK_UNIT_RESOLUTION
 # Each shape is defined by a cuboid made of 1x1x1 bricks.
 BRICK_SHAPES = [np.array([1, 1, 1])]
 
-# TOP_LEVEL_BRICK_SHAPE
-# Shape of the smallest subspace that can include any brick.
-# Space is defined by a cuboid made of 1x1x1 bricks.
-TOP_LEVEL_BRICK_SHAPE = np.array([1, 1, 1])
-
-# TOP_LEVEL_BRICK_RESOLUTION
-# Shape of the smallest subspace that can include any brick.
-# Space is defined by a cuboid made of voxels.
-TOP_LEVEL_BRICK_RESOLUTION = TOP_LEVEL_BRICK_SHAPE * BRICK_UNIT_RESOLUTION
+# LCH
+# Least Common Hull of all possible used bricks layouts
+LCH = np.array([1, 1, 1])
 
 # PADDING
 # Extended space around 3-dim voxel grid. Subspaces with padding are inputs

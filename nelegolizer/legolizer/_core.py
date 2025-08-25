@@ -7,6 +7,7 @@ from typing import List, Tuple, Union
 from nelegolizer import const
 from nelegolizer.data import LegoBrick
 from nelegolizer.utils import grid
+from nelegolizer.utils.grid import vu_to_bu, bu_to_vu
 from nelegolizer.utils import voxelization # noqa
 from nelegolizer.model import brick_classification_models
 from nelegolizer.data import part_by_size_label
@@ -75,7 +76,7 @@ def voxelize(mesh: Union[str, pv.PolyData]):
     voxel_grid = grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
     voxel_grid = grid.provide_divisibility(
                                     voxel_grid,
-                                    divider=const.TOP_LEVEL_BRICK_RESOLUTION)
+                                    divider=bu_to_vu(const.LCH))
     return voxel_grid
 
 
@@ -86,7 +87,7 @@ def grid_regular_division(
     for position, _ in np.ndenumerate(voxel_grid[::vu_shape[0],
                                                  ::vu_shape[1],
                                                  ::vu_shape[2]]):
-        shape = (vu_shape / const.BRICK_UNIT_RESOLUTION).astype(int)
+        shape = vu_to_bu(vu_shape)
         groups_locations.append((position , shape))
     return groups_locations
 
@@ -94,7 +95,7 @@ def grid_regular_division(
 def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
     voxel_grid = voxelize(mesh)
     groups_locations = grid_regular_division(voxel_grid, 
-                                             const.TOP_LEVEL_BRICK_RESOLUTION)
+                                             vu_shape=bu_to_vu(const.LCH))
     LegoBrickList = []
     voxel_grid = grid.add_padding(voxel_grid, const.PADDING)
 
