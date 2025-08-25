@@ -79,19 +79,29 @@ def voxelize(mesh: Union[str, pv.PolyData]):
     return voxel_grid
 
 
+def grid_regular_division(
+                    voxel_grid: np.ndarray, 
+                    vu_shape: np.ndarray) -> List[Tuple[np.ndarray, np.ndarray]]:
+    groups_locations = []
+    for position, _ in np.ndenumerate(voxel_grid[::vu_shape[0],
+                                                 ::vu_shape[1],
+                                                 ::vu_shape[2]]):
+        shape = (vu_shape / const.BRICK_UNIT_RESOLUTION).astype(int)
+        groups_locations.append((position , shape))
+    return groups_locations
+
+
 def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
     voxel_grid = voxelize(mesh)
-
+    groups_locations = grid_regular_division(voxel_grid, 
+                                             const.TOP_LEVEL_BRICK_RESOLUTION)
     LegoBrickList = []
-    top_level_grid_resolution = np.divide(voxel_grid.shape,
-                                          const.TOP_LEVEL_BRICK_RESOLUTION)
-    top_level_grid_resolution = top_level_grid_resolution.astype(int)
-
     voxel_grid = grid.add_padding(voxel_grid, const.PADDING)
-    top_level_iter = np.zeros(top_level_grid_resolution, dtype=LegoBrick)
-    for position, _ in np.ndenumerate(top_level_iter):
+
+    for gl in groups_locations:
+        position, shape = gl
         check_subspace(voxel_grid=voxel_grid,
                        position=position,
-                       shape=const.TOP_LEVEL_BRICK_SHAPE,
+                       shape=shape,
                        LegoBrickList=LegoBrickList)
     return LegoBrickList
