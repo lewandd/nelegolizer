@@ -5,11 +5,12 @@ import unittest
 import numpy as np
 import pyvista as pv
 
+import constants as const
 from nelegolizer.utils import voxelization
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils.grid import find_best_rotation, rotate, get_subgrid, \
     provide_divisibility, get_fill_ratio, from_pv_voxels, \
-    from_mesh, add_padding
+    from_mesh, add_padding, vu_to_bu, bu_to_vu
 
 
 class Test_find_best_rotation(unittest.TestCase):
@@ -446,6 +447,22 @@ class Test_from_mesh(unittest.TestCase):
             from_mesh(self.mesh,
                       voxel_mesh_shape=np.array([1, 1, 1])), np.ndarray)
 
+
+class Test_conversions(unittest.TestCase):
+    def test_ok_bu_to_vu(self):
+        bu = np.array([2, 4, 0])
+        expected_vu = np.array([16, 32, 0])
+        self.assertTrue(np.all(bu_to_vu(bu) == expected_vu))
+
+    def test_ok_vu_to_bu(self):
+        vu = np.array([0, 16, 8])
+        expected_bu = np.array([0, 2, 1])
+        self.assertTrue(np.all(vu_to_bu(vu) == expected_bu))
+
+    def test_error_vu_to_bu(self):
+        vu = np.array([0, 16, 7])
+        with self.assertRaises(Exception):
+            vu_to_bu(vu)
 
 class Test_add_padding(unittest.TestCase):
     def test_111_grid_padding_1_correct_values(self):

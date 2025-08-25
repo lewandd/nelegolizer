@@ -2,7 +2,18 @@ import pyvista as pv
 import numpy as np
 from nelegolizer.utils import mesh as umesh
 from typing import Tuple
+import constants as const
 
+def vu_to_bu(vu: np.ndarray) -> np.ndarray:
+    if np.any((vu / const.BRICK_UNIT_RESOLUTION) != (vu // const.BRICK_UNIT_RESOLUTION)):
+        raise Exception(
+            "{vu} is not divisible by {const.BRICK_UNIT_RESOLUTION}."
+            "Cannot convert VoxelUnit to BrickUnit.")
+    else:
+        return (vu / const.BRICK_UNIT_RESOLUTION).astype(int)
+
+def bu_to_vu(bu: np.ndarray) -> np.ndarray:
+    return bu * const.BRICK_UNIT_RESOLUTION
 
 def get_fill(voxel_grid: np.ndarray) -> np.ndarray:
     n = 0
