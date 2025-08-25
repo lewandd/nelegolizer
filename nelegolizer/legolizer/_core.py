@@ -62,7 +62,7 @@ def check_subspace(*, voxel_grid: np.ndarray,
             LegoBrickList.append(lb)
 
 
-def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
+def voxelize(mesh: Union[str, pv.PolyData]):
     if isinstance(mesh, str):
         mesh_file_path = mesh
         reader = pv.get_reader(mesh_file_path)
@@ -72,7 +72,11 @@ def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
                          "path (str) or mesh (pyvista.PolyData)")
     mesh = mesh.flip_normal([0.0, 1.0, 0.0])
 
-    voxel_grid = grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+    return grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+
+
+def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
+    voxel_grid = voxelize(mesh)
     voxel_grid = grid.provide_divisibility(
                                     voxel_grid,
                                     divider=const.TOP_LEVEL_BRICK_RESOLUTION)
