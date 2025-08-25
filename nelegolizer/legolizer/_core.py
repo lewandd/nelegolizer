@@ -72,14 +72,15 @@ def voxelize(mesh: Union[str, pv.PolyData]):
                          "path (str) or mesh (pyvista.PolyData)")
     mesh = mesh.flip_normal([0.0, 1.0, 0.0])
 
-    return grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+    voxel_grid = grid.from_mesh(mesh, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+    voxel_grid = grid.provide_divisibility(
+                                    voxel_grid,
+                                    divider=const.TOP_LEVEL_BRICK_RESOLUTION)
+    return voxel_grid
 
 
 def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
     voxel_grid = voxelize(mesh)
-    voxel_grid = grid.provide_divisibility(
-                                    voxel_grid,
-                                    divider=const.TOP_LEVEL_BRICK_RESOLUTION)
 
     LegoBrickList = []
     top_level_grid_resolution = np.divide(voxel_grid.shape,
