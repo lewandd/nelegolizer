@@ -9,6 +9,22 @@ PACKAGE = os.path.dirname(__file__)
 # LDraw parts are identified by a size with label or by a dat filename.
 PART_DATA_CSV = os.path.join(PACKAGE, "LDraw/part/part_data.csv")
 
+# PARTS CSV
+# CSV file containing essential informations about LDraw parts
+# LDraw parts are identified by a part id
+PARTS_CSV = os.path.join(PACKAGE, "LDraw/part/parts.csv")
+
+# DIVISIONS CSV
+# CSV file containing essential informations about possible divisions
+# Divisions are identified by a division id
+DIVISIONS_CSV = os.path.join(PACKAGE, "models/divisions.csv")
+
+# LABELS CSV
+# CSV file containing "type" (brick or division) 
+# and "type_id" (brick or division id) coresponding to network with "shape" 
+# and result "labels"
+LABELS_CSV = os.path.join(PACKAGE, "models/labels.csv")
+
 # PART .DAT DIRECTORY
 # Directory contains all part .dat files.
 PART_DAT_DIR = os.path.join(PACKAGE, "LDraw/part/dat")
