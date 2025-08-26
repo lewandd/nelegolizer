@@ -4,7 +4,7 @@ import torch
 import numpy as np
 from importlib.machinery import SourceFileLoader
 import importlib.util
-from typing import List
+from typing import List, Tuple
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -43,27 +43,24 @@ class Model_n111(nn.Module):
         logits = self.linear_relu_stack(x)
         return logits
 
-
-nn_modules = {
-    "model_n111": Model_n111
+modules = {
+    (1, 1, 1): Model_n111
 }
 
+def get_model_shapes() -> List[Tuple[int]]:
+    return list(modules.keys())
 
-def get_model_names() -> List[str]:
-    return list(nn_modules.keys())
-
-
-def create_model(name: str) -> nn.Module:
+def create_model(shape: Tuple[int]) -> nn.Module:
     try:
-        model = nn_modules[name]().to(device)
+        model = modules[shape]().to(device)
     except KeyError:
-        print(f"KeyError: No model like {name}. "
-              "Available models: {get_model_names()}")
+        raise KeyError(f"nn_modules: no model with shape {shape}. "
+              f"Available models: {modules.keys()}")
     return model
 
-
-def load_model(model: nn.Module, name: str, debug: bool = False) -> nn.Module:
-    MODEL_FILENAME = name + ".pth"
+def load_model(shape: Tuple[int], debug: bool = False) -> nn.Module:
+    model = create_model(shape)
+    MODEL_FILENAME = "model_n" + "".join(map(str, shape)) + ".pth"
     MODEL_PTH_FILE_PATH = os.path.join(path.BRICK_MODELS_DIR, MODEL_FILENAME)
     try:
         loaded = torch.load(f=MODEL_PTH_FILE_PATH, map_location=device)
@@ -74,10 +71,13 @@ def load_model(model: nn.Module, name: str, debug: bool = False) -> nn.Module:
         if debug:
             print(f"Model succesfully loaded from: {MODEL_PTH_FILE_PATH}")
     return model
+    
 
+def load_shape_model_map():
+    return {shape: load_model(shape) for shape in modules.keys()}
 
-def save_model(model: nn.Module, name: str, debug: bool = False) -> None:
-    MODEL_FILENAME = name + ".pth"
+def save_model(model: nn.Module, shape: Tuple[int], debug: bool = False) -> None:
+    MODEL_FILENAME = "model_n" + "".join(map(str, shape)) + ".pth"
     MODEL_PTH_FILE_PATH = os.path.join(path.BRICK_MODELS_DIR, MODEL_FILENAME)
     try:
         torch.save(obj=model.state_dict(), f=MODEL_PTH_FILE_PATH)
@@ -86,13 +86,4 @@ def save_model(model: nn.Module, name: str, debug: bool = False) -> None:
               f"model to {MODEL_PTH_FILE_PATH}: {e}")
     else:
         if debug:
-            print(f"Model {name} succesfully saved to: {MODEL_PTH_FILE_PATH}")
-
-
-def load_all_models():
-    models = {}
-    for name in get_model_names():
-        model = create_model(name)
-        model = load_model(model, name)
-        models[name] = model
-    return models
+            print(f"Model {MODEL_FILENAME} succesfully saved to: {MODEL_PTH_FILE_PATH}")

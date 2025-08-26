@@ -8,7 +8,7 @@ from .geom_preparation import prepare_part_grid
 prepared_part_grids = {}
 for filename in part_by_filename.keys():
     part = part_by_filename[filename]
-    prepared_part_grids[part.brick_id] = prepare_part_grid(
+    prepared_part_grids[part.id] = prepare_part_grid(
         part.grid, part.size * const.BRICK_UNIT_RESOLUTION)
 
 

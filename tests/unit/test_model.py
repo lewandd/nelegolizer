@@ -5,24 +5,23 @@ import unittest
 import numpy as np
 from torch import nn
 
-from nelegolizer.model import brick_classification_models
-from nelegolizer.model import brick
+from nelegolizer.model import brick, shape_model_map
 from nelegolizer import const
 
+#TODO dodać testy z shape_model_map
 
-class Test_brick_classification_models(unittest.TestCase):
+class Test_shape_model_map(unittest.TestCase):
     def test_not_empty(self):
-        self.assertGreater(len(brick_classification_models), 0)
+        self.assertGreater(len(shape_model_map), 0)
 
     def test_instance_nn_module(self):
-        for key in brick_classification_models.keys():
-            self.assertIsInstance(brick_classification_models[key], nn.Module)
-
+        for key in shape_model_map.keys():
+            self.assertIsInstance(shape_model_map[key], nn.Module)
 
 class Test_brick_test_predict(unittest.TestCase):
     def setUp(self):
-        first_key = list(brick_classification_models.keys())[0]
-        self.model = brick_classification_models[first_key]
+        first_key = list(shape_model_map.keys())[0]
+        self.model = shape_model_map[first_key]
 
     def test_returns_int(self):
         grid = np.zeros(

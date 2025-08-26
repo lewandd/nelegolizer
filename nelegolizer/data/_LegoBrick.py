@@ -1,4 +1,4 @@
-from nelegolizer.data import part_by_filename, ldu_to_mesh, mesh_to_ldu
+from nelegolizer.data import part_by_filename, ldu_to_mesh, mesh_to_ldu, part_by_id
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
 from nelegolizer.data import LDrawReference
@@ -28,19 +28,31 @@ class LegoBrick:
                  mesh_position: Tuple[int, int, int],
                  rotation: int,
                  color: int = 16):
-        self.id = id
-        self.dat_filename = id + ".dat"
-        if self.dat_filename not in part_by_filename.keys():
-            available_keys = list(part_by_filename.keys())
-            raise KeyError(f"LegoBrick filename can be: {available_keys}. "
-                           f"Filename {self.dat_filename} is invalid.")
-        self.part = part_by_filename[self.dat_filename]
+        # part
+        try:
+            self.part = part_by_id[id]
+        except KeyError:
+            available_keys = list(part_by_id.keys())
+            raise KeyError(f"LegoBrick id can be: {available_keys}. "
+                           f"Brick id {id} is invalid.")
+
+        # position
         self.mesh_position = mesh_position
-        if rotation not in [0, 90, 180, 270]:
-            raise Exception(f"LegoBrick rotation can be either 0, 90, 180"
-                            f" or 270. Rotation {rotation} is invalid.")
+
+        #rotation
+        valid_rotations = (0, 90, 180, 270)
+        if rotation not in valid_rotations:
+            raise Exception(
+                f"LegoBrick rotation can be either {valid_rotations}." 
+                f"Rotation {rotation} is invalid.")
         self.rotation = rotation
+
+        # color
         self.color = color
+
+    @property
+    def id(self) -> str:
+        return self.part.id
 
     @classmethod
     def from_reference(cls, ref: LDrawReference):
@@ -57,7 +69,7 @@ class LegoBrick:
                             f" Rotation should be either: \n>{ROT_MATRIX_0}\n"
                             f">{ROT_MATRIX_90}\n>{ROT_MATRIX_180}\n"
                             f">{ROT_MATRIX_270}\nGot: \n{ref.rotation}.")
-        id = part_by_filename[ref.name].brick_id
+        id = part_by_filename[ref.name].id
         return cls(id=id,
                    mesh_position=ldu_to_mesh(ref.position, id),
                    rotation=degrees,

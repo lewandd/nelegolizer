@@ -5,7 +5,7 @@ import unittest
 import pyvista
 import numpy as np
 
-from nelegolizer.data import LDrawPart, part_by_size_label, part_by_filename
+from nelegolizer.data import LDrawPart, part_by_id, part_by_filename
 from nelegolizer.data import LegoBrick, LDrawReference, LDrawFile, LDrawModel
 from nelegolizer.data._LegoBrick import ROT_MATRIX_180
 
@@ -14,78 +14,78 @@ class TestLDrawPart(unittest.TestCase):
     def test_initialization_with_valid_parameters(self):
         LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
                   geom_path="tests/unit/fixtures/3004.stl",
-                  label=3,
-                  size=(2, 1, 1))
+                  id="3004",
+                  size=(2, 1, 1),
+                  ldraw_offset=(0, 0, 0))
 
     def test_brick_id_is_ok(self):
         ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
                         geom_path="tests/unit/fixtures/3004.stl",
-                        label=3,
-                        size=(2, 1, 1))
-        self.assertEqual(ldp.brick_id, '3004')
+                        id="3004",
+                        size=(2, 1, 1),
+                        ldraw_offset=(0, 0, 0))
+        self.assertEqual(ldp.id, '3004')
 
     def test_initialization_with_no_existing_geom_path(self):
         with self.assertRaises(FileNotFoundError):
             LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
                       geom_path="tests/unit/fixtures/invalid_file.stl",
-                      label=3,
-                      size=(2, 1, 1))
+                      id="3004",
+                      size=(2, 1, 1),
+                      ldraw_offset=(0, 0, 0))
 
-    def test_initialization_with_no_label(self):
+    def test_initialization_with_no_id(self):
         with self.assertRaises(TypeError):
             LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
                       geom_path="tests/unit/fixtures/3004.stl",
-                      size=(2, 1, 1))
+                      size=(2, 1, 1),
+                      ldraw_offset=(0, 0, 0))
 
     def test_initialization_with_no_dat_path(self):
         with self.assertRaises(TypeError):
             LDrawPart(geom_path="tests/unit/fixtures/3004.stl",
-                      label=3,
-                      size=(2, 1, 1))
+                      id="3004",
+                      size=(2, 1, 1),
+                      ldraw_offset=(0, 0, 0))
 
     def test_initialization_with_no_geom_path(self):
         with self.assertRaises(TypeError):
             LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
-                      label=3,
-                      size=(2, 1, 1))
+                      id="3004",
+                      size=(2, 1, 1),
+                      ldraw_offset=(0, 0, 0))
 
     def test_mesh_exist(self):
         ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
                         geom_path="tests/unit/fixtures/3004.stl",
-                        label=3,
-                        size=(2, 1, 1))
+                        id="3004",
+                        size=(2, 1, 1),
+                        ldraw_offset=(0, 0, 0))
         self.assertIsNotNone(ldp.mesh)
 
     def test_mesh_is_pv_PolyData(self):
         ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
                         geom_path="tests/unit/fixtures/3004.stl",
-                        label=3,
-                        size=(2, 1, 1))
+                        id="3004",
+                        size=(2, 1, 1),
+                        ldraw_offset=(0, 0, 0))
         self.assertIsInstance(ldp.mesh, pyvista.PolyData)
 
     def test_grid_exist(self):
         ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
                         geom_path="tests/unit/fixtures/3004.stl",
-                        label=3,
-                        size=(2, 1, 1))
+                        id="3004",
+                        size=(2, 1, 1),
+                        ldraw_offset=(0, 0, 0))
         self.assertIsNotNone(ldp.grid)
 
     def test_grid_is_np_ndarray(self):
         ldp = LDrawPart(dat_path="tests/unit/fixtures/3004.dat",
                         geom_path="tests/unit/fixtures/3004.stl",
-                        label=3,
-                        size=(2, 1, 1))
+                        id="3004",
+                        size=(2, 1, 1),
+                        ldraw_offset=(0, 0, 0))
         self.assertIsInstance(ldp.grid, np.ndarray)
-
-
-class TestPartByLabel(unittest.TestCase):
-    def test_part_by_label_not_empty(self):
-        self.assertGreater(len(part_by_size_label), 0)
-
-    def test_part_by_label_elements_are_LDrawPart(self):
-        for key in part_by_size_label[str((1, 1, 1))].keys():
-            self.assertIsInstance(
-                part_by_size_label[str((1, 1, 1))][key], LDrawPart)
 
 
 class TestPartByFilename(unittest.TestCase):
@@ -97,11 +97,21 @@ class TestPartByFilename(unittest.TestCase):
             self.assertIsInstance(part_by_filename[key], LDrawPart)
 
 
+class TestPartById(unittest.TestCase):
+    def test_part_by_label_not_empty(self):
+        self.assertGreater(len(part_by_id), 0)
+
+    def test_part_by_id_elements_are_intigers(self):
+        for key in part_by_id.keys():
+            self.assertIsInstance(
+                part_by_id[key], LDrawPart)
+
+
 class TestLegoBrick(unittest.TestCase):
     def setUp(self):
-        valid_filename = list(part_by_filename.keys())[0]
-        part = part_by_filename[valid_filename]
-        self.valid_id = part.brick_id
+        valid_id = list(part_by_id.keys())[0]
+        part = part_by_id[valid_id]
+        self.valid_id = part.id
 
     def test_initialization_with_valid_parameters(self):
         LegoBrick(id=self.valid_id,
@@ -285,7 +295,7 @@ class Test_LDrawModel(unittest.TestCase):
             brick = lbs[i]
             ref = ldm.references[i]
             dat_filename = ref.name
-            self.assertEqual(part_by_filename[dat_filename].brick_id, brick.id)
+            self.assertEqual(part_by_filename[dat_filename].id, brick.id)
             self.assertTrue(np.allclose(ref.matrix, brick.matrix))
             self.assertEqual(ref.color, brick.color)
 

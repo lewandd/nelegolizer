@@ -11,38 +11,34 @@ class LDrawPart:
     def __init__(self, *,
                  dat_path: str,
                  geom_path: str,
-                 label: int,
-                 size: Tuple[int, int, int]):
+                 id: str,
+                 size: Tuple[int, int, int],
+                 ldraw_offset: Tuple[int, int, int]):
         self.dat_path = dat_path
         _, self.dat_filename = os.path.split(dat_path)
-        self.brick_id = self.dat_filename[:-4]
+        self.id = id
         self.geom_path = geom_path
-        self.label = label
         self.size = size
+        self.ldraw_offset = ldraw_offset
 
         reader = pv.get_reader(geom_path)
         self.mesh = reader.read()
         self.grid = grid.from_mesh(self.mesh,
                                    voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
 
-
-_PART_DATA_DF = pd.read_csv(path.PART_DATA_CSV).set_index("dat_filename")
-
-part_by_size_label = {}
+_PARTS_DF = pd.read_csv(path.PARTS_CSV).set_index("id")
+part_by_id = {}
 part_by_filename = {}
-for dat_filename in _PART_DATA_DF.index.tolist():
-    label = _PART_DATA_DF.loc[dat_filename]["label"]
-    geom_filename = _PART_DATA_DF.loc[dat_filename]["geom_filename"]
-    size_x = int(_PART_DATA_DF.loc[dat_filename]["size_x"])
-    size_y = int(_PART_DATA_DF.loc[dat_filename]["size_y"])
-    size_z = int(_PART_DATA_DF.loc[dat_filename]["size_z"])
-    size = (size_x, size_y, size_z)
+for id in _PARTS_DF.index.tolist():
+    shape = tuple(map(int, _PARTS_DF.loc[id]["shape"].split(",")))
+    ldraw_offset = tuple(map(int, _PARTS_DF.loc[id]["ldraw_offset"].split(",")))
+    dat_filename = _PARTS_DF.loc[id]["dat_filename"]
+    geom_filename = _PARTS_DF.loc[id]["geom_filename"]
+
     ldp = LDrawPart(dat_path=os.path.join(path.PART_DAT_DIR, dat_filename),
                     geom_path=os.path.join(path.PART_GEOM_DIR, geom_filename),
-                    label=label,
-                    size=size)
-    if not str(size) in part_by_size_label:
-        part_by_size_label[str(size)] = {}
-    part_by_size_label[str(size)][label] = ldp
-
-    part_by_filename[dat_filename] = ldp
+                    id=str(id),
+                    size=shape,
+                    ldraw_offset=ldraw_offset)
+    part_by_id[str(id)] = ldp
+    part_by_filename[str(dat_filename)] = ldp

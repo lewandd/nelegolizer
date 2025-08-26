@@ -5,63 +5,16 @@ from torch import nn
 from typing import List, Tuple, Union
 
 from nelegolizer import const
-from nelegolizer.data import LegoBrick
+from nelegolizer.data import LegoBrick, ClassificationResult
 from nelegolizer.utils import grid
-from nelegolizer.utils.grid import vu_to_bu, bu_to_vu
+from nelegolizer.utils.grid import vu_to_bu, bu_to_vu, bu_to_mesh
 from nelegolizer.utils import voxelization # noqa
-from nelegolizer.model import brick_classification_models
-from nelegolizer.data import part_by_size_label
+#from nelegolizer.model import brick_classification_models
+#from nelegolizer.data import part_by_size_label
 import nelegolizer.model.brick as brick
+from nelegolizer.model import shape_model_map, rotate_division
 
 fill_treshold = 0.1
-
-
-def predictLegoBrick(*, voxel_grid: np.ndarray,
-                     model: nn.Module,
-                     shape: np.ndarray,
-                     mesh_position: np.ndarray) -> LegoBrick:
-    best_rotation = grid.find_best_rotation(voxel_grid)
-    voxel_grid = grid.rotate(voxel_grid, best_rotation)
-
-    fill_ratio = grid.get_fill_ratio(voxel_grid)
-    if fill_ratio > fill_treshold:
-        # mesh = voxelization.from_grid(voxel_grid,
-        #                              voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
-        # p = pv.Plotter()
-        # p.add_mesh(mesh)
-        # p.show_bounds(bounds=[0.0, 0.9, 0.0, 1.2, 0.0, 0.9])
-        # p.show(cpos="xy")
-        label = brick.test_predict(model, torch.tensor(voxel_grid).flatten())
-        shape_tuple = tuple(map(int, shape))
-        id = part_by_size_label[str(shape_tuple)][label].brick_id
-        lego_brick = LegoBrick(id=id,
-                               mesh_position=mesh_position,
-                               rotation=best_rotation)
-        return lego_brick
-    else:
-        return None
-
-
-def check_subspace(*, voxel_grid: np.ndarray,
-                   position: Tuple[int, int, int],
-                   shape: np.ndarray,
-                   LegoBrickList: List[LegoBrick]) -> None:
-    position = np.array(position)
-    voxel_shape = shape * const.BRICK_UNIT_RESOLUTION
-    voxel_subgrid = grid.get_subgrid(grid=voxel_grid,
-                                     position=position*voxel_shape,
-                                     shape=voxel_shape + 2*const.PADDING)
-    mesh_shape = shape * const.BRICK_UNIT_MESH_SHAPE
-    mesh_position = position * mesh_shape
-
-    if np.all(shape == (1, 1, 1)):
-        lb = predictLegoBrick(voxel_grid=voxel_subgrid,
-                              model=brick_classification_models["model_n111"],
-                              shape=shape,
-                              mesh_position=mesh_position)
-        if lb is not None:
-            LegoBrickList.append(lb)
-
 
 def voxelize(mesh: Union[str, pv.PolyData]):
     if isinstance(mesh, str):
@@ -79,7 +32,6 @@ def voxelize(mesh: Union[str, pv.PolyData]):
                                     divider=bu_to_vu(const.LCH))
     return voxel_grid
 
-
 def grid_regular_division(
                     voxel_grid: np.ndarray, 
                     vu_shape: np.ndarray) -> List[Tuple[np.ndarray, np.ndarray]]:
@@ -88,21 +40,48 @@ def grid_regular_division(
                                                  ::vu_shape[1],
                                                  ::vu_shape[2]]):
         shape = vu_to_bu(vu_shape)
-        groups_locations.append((position , shape))
+        groups_locations.append((position*shape, shape))
     return groups_locations
 
+def classify_group(position: np.ndarray,
+                   shape: np.ndarray,
+                   voxel_grid: np.ndarray) -> List[LegoBrick]:
+    group = grid.get_subgrid(voxel_grid, bu_to_vu(position), bu_to_vu(shape) + 2*const.PADDING)
+    if grid.is_empty(group):
+        return []
+    fill_ratio = grid.get_fill_ratio(group)
+    if fill_ratio <= fill_treshold:
+        return []
+    
+    rotation = grid.find_best_rotation(group)
+    group = grid.rotate(group, rotation)
+
+    model = shape_model_map[tuple(map(int, shape))]
+    label = brick.test_predict(model, torch.tensor(group).flatten())
+    result = ClassificationResult(shape, label)
+    if result.type == "brick":
+        return [LegoBrick(id=str(result.brick_id), mesh_position=bu_to_mesh(position), rotation=rotation)]
+    elif result.type == "division":
+        #TODO test rotate_division function
+        division = rotate_division(result.division, -rotation)
+        _, offset1, shape1, offset2, shape2 = division
+        lb_list1 = classify_group(position + offset1, shape1, voxel_grid)
+        lb_list2 = classify_group(position + offset2, shape2, voxel_grid)
+        return lb_list1 + lb_list2
+    else: # result.type is None
+        return []
 
 def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
     voxel_grid = voxelize(mesh)
     groups_locations = grid_regular_division(voxel_grid, 
                                              vu_shape=bu_to_vu(const.LCH))
-    LegoBrickList = []
     voxel_grid = grid.add_padding(voxel_grid, const.PADDING)
 
+    lb_list = []
     for gl in groups_locations:
         position, shape = gl
-        check_subspace(voxel_grid=voxel_grid,
+        lb_list += classify_group(
                        position=position,
                        shape=shape,
-                       LegoBrickList=LegoBrickList)
-    return LegoBrickList
+                       voxel_grid=voxel_grid)
+    return lb_list

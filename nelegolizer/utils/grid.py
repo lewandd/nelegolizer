@@ -15,7 +15,13 @@ def vu_to_bu(vu: np.ndarray) -> np.ndarray:
 def bu_to_vu(bu: np.ndarray) -> np.ndarray:
     return bu * const.BRICK_UNIT_RESOLUTION
 
-def get_fill(voxel_grid: np.ndarray) -> np.ndarray:
+def bu_to_mesh(bu: np.ndarray) -> np.ndarray:
+    return bu * const.BRICK_UNIT_MESH_SHAPE
+
+def is_empty(group: np.ndarray) -> bool:
+    return get_fill(group) == 0
+
+def get_fill(voxel_grid: np.ndarray) -> int:
     n = 0
     for x in np.nditer(voxel_grid):
         n += 1 if x else 0
