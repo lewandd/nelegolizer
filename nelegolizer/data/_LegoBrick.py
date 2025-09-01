@@ -1,4 +1,5 @@
 from nelegolizer.data import part_by_filename, ldu_to_mesh, mesh_to_ldu, part_by_id
+from nelegolizer.utils.grid import mesh_to_bu
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
 from nelegolizer.data import LDrawReference
@@ -39,6 +40,8 @@ class LegoBrick:
         # position
         self.mesh_position = mesh_position
 
+        self.position2 = None
+
         #rotation
         valid_rotations = (0, 90, 180, 270)
         if rotation not in valid_rotations:
@@ -53,9 +56,24 @@ class LegoBrick:
     @property
     def id(self) -> str:
         return self.part.id
+    
+    @property
+    def position(self):
+        pos = mesh_to_bu(self.mesh_position)
+        if self.id == "54200":
+            return pos - np.array([0, 2, 0])
+        return pos
+
+    @property
+    def rotated_shape(self) -> str:
+        if self.rotation == 0 or self.rotation == 180:
+            return self.part.size
+        elif self.rotation == 90 or self.rotation == 270:
+            return (self.part.size[2], self.part.size[1], self.part.size[0])
 
     @classmethod
     def from_reference(cls, ref: LDrawReference):
+        # find rotation matrix
         if np.allclose(ref.rotation, ROT_MATRIX_0):
             degrees = 0
         elif np.allclose(ref.rotation, ROT_MATRIX_90):
@@ -69,15 +87,36 @@ class LegoBrick:
                             f" Rotation should be either: \n>{ROT_MATRIX_0}\n"
                             f">{ROT_MATRIX_90}\n>{ROT_MATRIX_180}\n"
                             f">{ROT_MATRIX_270}\nGot: \n{ref.rotation}.")
-        id = part_by_filename[ref.name].id
-        return cls(id=id,
-                   mesh_position=ldu_to_mesh(ref.position, id),
+        
+        # get a part
+        try:
+            part = part_by_filename[ref.name]
+        except KeyError:
+            if len(part_by_filename) == 0:
+                raise KeyError(f"No filenames in part_by_filename. "
+                           f"Initizalize parts with function initilize_parts() "
+                           f"from nelegolizer.data.")    
+            else:
+                raise KeyError(f"No {ref.name} filename in part_by_filename. "
+                           f"Available filenames: {part_by_filename.keys()}")
+
+        # rotate offset
+        if degrees in [0, 180]:
+            ldraw_offset = part.ldraw_offset
+        elif degrees in [90, 270]:
+            ldraw_offset = (part.ldraw_offset[2], part.ldraw_offset[1], part.ldraw_offset[0])
+        
+        return cls(id=part.id,
+                   mesh_position=ldu_to_mesh(ref.position)-ldraw_offset,
                    rotation=degrees,
                    color=ref.color)
 
+    # TODO: kiedy jest konwertowane LegoBrick do LDraw to powinno się przywrócić
+    #       ten offset, który teraz został na stałe odjęty
+
     @property
     def ldu_position(self):
-        return mesh_to_ldu(self.mesh_position, self.id)
+        return mesh_to_ldu(self.mesh_position, self.id, self.rotation)
 
     @property
     def matrix(self):
@@ -99,11 +138,6 @@ class LegoBrick:
         m = self.part.mesh
         m = m.rotate_y(angle=self.rotation, inplace=False)
         m = umesh.translate_to_zero(m)
-        part_height = umesh.get_resolution(m)[1]
-        height_translate = np.array([0,
-                                     const.VOXEL_MESH_SHAPE[1] - part_height,
-                                     0])
-        m = m.translate(height_translate, inplace=False)
         m = m.translate(self.mesh_position, inplace=False)
         return m
 

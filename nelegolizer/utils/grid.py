@@ -18,6 +18,9 @@ def bu_to_vu(bu: np.ndarray) -> np.ndarray:
 def bu_to_mesh(bu: np.ndarray) -> np.ndarray:
     return bu * const.BRICK_UNIT_MESH_SHAPE
 
+def mesh_to_bu(mesh: np.ndarray) -> np.ndarray:
+    return mesh / const.BRICK_UNIT_MESH_SHAPE
+
 def is_empty(group: np.ndarray) -> bool:
     return get_fill(group) == 0
 

@@ -5,6 +5,7 @@ from typing import Tuple
 
 from nelegolizer.utils import grid
 from nelegolizer import const, path
+from nelegolizer.data.voxelized_parts import part_grid, ext_part_grid
 
 
 class LDrawPart:
@@ -23,22 +24,32 @@ class LDrawPart:
 
         reader = pv.get_reader(geom_path)
         self.mesh = reader.read()
-        self.grid = grid.from_mesh(self.mesh,
-                                   voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+        self.grid = part_grid[self.id]
+        self.ext_grid = ext_part_grid[self.id]
 
-_PARTS_DF = pd.read_csv(path.PARTS_CSV).set_index("id")
+
 part_by_id = {}
 part_by_filename = {}
-for id in _PARTS_DF.index.tolist():
-    shape = tuple(map(int, _PARTS_DF.loc[id]["shape"].split(",")))
-    ldraw_offset = tuple(map(int, _PARTS_DF.loc[id]["ldraw_offset"].split(",")))
-    dat_filename = _PARTS_DF.loc[id]["dat_filename"]
-    geom_filename = _PARTS_DF.loc[id]["geom_filename"]
 
-    ldp = LDrawPart(dat_path=os.path.join(path.PART_DAT_DIR, dat_filename),
-                    geom_path=os.path.join(path.PART_GEOM_DIR, geom_filename),
-                    id=str(id),
-                    size=shape,
-                    ldraw_offset=ldraw_offset)
-    part_by_id[str(id)] = ldp
-    part_by_filename[str(dat_filename)] = ldp
+
+def initilize_parts():
+    global part_by_id
+    global part_by_filename
+
+    _PARTS2_DF = pd.read_csv(path.PARTS2_CSV).set_index("id")
+    for id in _PARTS2_DF.index.tolist():
+        shape = tuple(map(int, _PARTS2_DF.loc[id]["shape"].split(",")))
+        ldraw_offset = tuple(map(float, _PARTS2_DF.loc[id]["ldraw_offset"].split(",")))
+        dat_filename = _PARTS2_DF.loc[id]["dat_filename"]
+        geom_filename = _PARTS2_DF.loc[id]["geom_filename"]
+
+        ldp = LDrawPart(dat_path=os.path.join(path.PART_DAT_DIR, dat_filename),
+                        geom_path=os.path.join(path.PART_GEOM_DIR, geom_filename),
+                        id=str(id),
+                        size=shape,
+                        ldraw_offset=ldraw_offset)
+        part_by_id[str(id)] = ldp
+        part_by_filename[str(dat_filename)] = ldp
+    if (len(part_by_id) == 0) or (len(part_by_filename) == 0):
+        raise Exception(f"Parts initialization failed. "
+                        f"No parts found in file {path.PARTS2_CSV}.")
