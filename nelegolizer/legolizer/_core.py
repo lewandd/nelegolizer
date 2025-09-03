@@ -230,6 +230,16 @@ def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
     # fill all uncovered space
     next_to_cover = find_next_to_cover(oo.brick_grid, bo.brick_grid)
     #find_next_to_cover(cover_grid, covered_grid)
+
+    # TODO należy przeglądać grupy o wszystkich rozmiarach
+    # za każdym razem trzeba sprawdzać czy grupa się mieści w granicach
+    # jeżeli się nie mieści, to należy może po prostu wtedy zastosować inną grupę
+    # jeżeli to kraniec to nie ma wyboru jaką grupę wybrać, będzie tylko jedna możliwa
+    # opcja albo rozmiar 2x1 dla jednej ściany albo 1x2 dla drugiej ściany albo 1x1 dla 3 ściany
+    # może też być 1x1x1 dla sufitu, czyli po prostu jest if dla danego next_to_cover 
+    # rozmiar poza granicą, to wtedy sprawdzamy kolejny rozmiar z listy
+    # któryś będzie dobry
+
     while next_to_cover is not None:
         bricks += cover2(next_to_cover, const.LCH, oo, bo)
         #bricks += cover(next_to_cover, const.LCH, voxel_grid, cover_grid, covered_grid)

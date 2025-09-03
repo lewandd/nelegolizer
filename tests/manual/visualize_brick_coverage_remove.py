@@ -36,7 +36,7 @@ def get_occupancy_mesh(brick_to_remove):
     nbo.voxel_grid[15, -1, 15] = True
     nbo.voxel_grid[15, -2, 15] = True
     
-    voxels = uvox.from_grid(nbo.voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+    voxels = uvox.from_grid(nbo.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
     return voxels
 
 def add_all_bricks_to_plotter(plotter, brick_to_highlight=None):

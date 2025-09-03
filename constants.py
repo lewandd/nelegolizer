@@ -38,7 +38,7 @@ LCH = np.array([1, 1, 1])
 # PADDING
 # Extended space around 3-dim voxel grid. Subspaces with padding are inputs
 # for neural networks.
-PADDING = np.array([2, 2, 2])
+PADDING = np.array([0, 0, 0])
 
 # LDRAW_BRICK_OFFSET
 # Offset possition for every LDraw part. For example brick 3005 bottom height 

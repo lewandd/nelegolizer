@@ -12,7 +12,7 @@ ldf = LDrawFile.load(filenames[0])
 ldm = ldf.models[0]
 bricks = ldm.as_bricks()
 
-bo = BrickCoverage.from_bricks(bricks)
+bo = BrickCoverage.from_bricks(bricks, bottom_extension=3, side_extension=1)
 
 print(f"shape {bo.ext_voxel_grid.shape}")
 pos_top = (14,0,19)
@@ -29,6 +29,11 @@ bo.ext_voxel_grid[pos_top4] = True
 bo.ext_voxel_grid[pos_bot] = True
 bo.ext_voxel_grid[pos_bot2] = True
 bo.ext_voxel_grid[pos_bot3] = True
+
+bo.brick_grid[3, -1, 3] = True
+bo.brick_grid[3, -2, 3] = True
+bo.brick_grid[3, -3, 3] = True
+bo.brick_grid[3, 0:3, 3] = True
 
 mesh = pv.MultiBlock([brick.mesh for brick in bricks]).combine()
 bricks = uvox.from_grid(bo.brick_grid, voxel_mesh_shape=const.BRICK_UNIT_MESH_SHAPE)
