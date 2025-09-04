@@ -61,6 +61,18 @@ class BrickCoverage:
         # Stud grid
         self.stud_grid = np.zeros(shape=self.shape, dtype=bool)
 
+        # top connection availibility
+        self.top_available_grid = np.zeros(shape=self.shape, dtype=bool)
+        floor_availible = np.ones((self.shape[0], 1, self.shape[2]), dtype=bool)
+        floor_available_pos = (0, self.shape[1]-self.BOT_EXT-1, 0)
+        self._paste_subgrid(self.top_available_grid, floor_availible, floor_available_pos)
+
+        # bottom connection availibility
+        self.bottom_available_grid = np.zeros(shape=self.shape, dtype=bool)
+
+        # bottom connection availibility
+        self.bottom3_available_grid = np.zeros(shape=self.shape, dtype=bool)
+
         # Grid boundaries
         self.pos_min = np.zeros(3)
         self.pos_max = np.zeros(3)
@@ -166,10 +178,87 @@ class BrickCoverage:
         vu_mask = rotate(brick.part.grid, brick.rotation)
         self._paste_subgrid(self.voxel_grid, vu_mask, vu_pos)
 
+        # update above Voxel Unit grid
+        for x in range(brick_shape[0]):
+            for z in range(brick_shape[2]):
+                used_available_pos = (ext_pos[0]+x, ext_pos[1], ext_pos[2]+z)
+                if self.bottom_available_grid[used_available_pos]:
+                    vu_pos = bu_to_vu(pos)+np.array([0, 1, 0])
+                    w, _, d = ext_bu_to_vu((1, 1, 1))
+                    vu_ones = np.ones((w-1, 1, d-1), dtype=bool)
+                    self._paste_subgrid(self.voxel_grid, vu_ones, vu_pos)
+
         # extended Voxel Units grid
-        ext_vu_pos = ext_bu_to_vu(ext_pos - np.array([0, 1, 0]))+const.PADDING
+        #ext_vu_pos = ext_bu_to_vu(ext_pos - np.array([0, 1, 0]))+const.PADDING
+        ext_vu_pos = ext_bu_to_vu(ext_pos)-np.array([0, 1, 0])
         ext_vu_mask = ext_part_grid2[brick.part.id][brick.rotation]
         self._paste_subgrid(self.ext_voxel_grid, ext_vu_mask, ext_vu_pos)
+
+        # update above extended Voxel Unit grid
+        for x in range(brick_shape[0]):
+            for z in range(brick_shape[2]):
+                used_available_pos = (ext_pos[0]+x, ext_pos[1], ext_pos[2]+z)
+                if self.bottom_available_grid[used_available_pos]:
+                    ext_vu_pos = ext_bu_to_vu(ext_pos)-np.array([0, 1, 0])
+                    w, _, d = ext_bu_to_vu((1, 1, 1))
+                    ext_vu_ones = np.ones((w-1, 1, d-1), dtype=bool)
+                    self._paste_subgrid(self.ext_voxel_grid, ext_vu_ones, ext_vu_pos)
+
+        # update connections
+        available_mask = np.ones((1, 1, 1), dtype=bool)
+        unavailable_mask = ~available_mask
+
+        # add top connection availibility
+        if brick.part.id in ["3004", "3005", "3024"]:
+            for x in range(brick_shape[0]):
+                for z in range(brick_shape[2]):
+                    above_available_pos = (ext_pos[0]+x, ext_pos[1]-1, ext_pos[2]+z)
+                    if not self.brick_grid[above_available_pos]: # if above position is free
+                        self._paste_subgrid(self.top_available_grid, available_mask, above_available_pos)
+
+        # remove used connection availibility from below
+        for x in range(brick_shape[0]):
+            for z in range(brick_shape[2]):
+                used_available_pos = (ext_pos[0]+x, ext_pos[1]+brick_shape[1]-1, ext_pos[2]+z)
+                self._paste_subgrid(self.top_available_grid, unavailable_mask, used_available_pos)
+
+        # add bottom connection availibility
+        for x in range(brick_shape[0]):
+            for z in range(brick_shape[2]):
+                below_available_pos = (ext_pos[0]+x, ext_pos[1]+brick_shape[1], ext_pos[2]+z)
+                if not self.brick_grid[below_available_pos] and below_available_pos[1] < self.shape[1]-self.BOT_EXT: # if above position is free
+                    self._paste_subgrid(self.bottom_available_grid, available_mask, below_available_pos)
+
+
+        # --------------------------------------- IN WORK
+        # add bottom3 connection availibility
+        for x in range(brick_shape[0]):
+            for z in range(brick_shape[2]):
+                below_available_pos = (ext_pos[0]+x, ext_pos[1]+brick_shape[1], ext_pos[2]+z)
+                below2_available_pos = (ext_pos[0]+x, ext_pos[1]+brick_shape[1]+1, ext_pos[2]+z)
+                below3_available_pos = (ext_pos[0]+x, ext_pos[1]+brick_shape[1]+2, ext_pos[2]+z)
+                below_occupied = (self.brick_grid[below_available_pos] or 
+                                  self.brick_grid[below2_available_pos] or
+                                  self.brick_grid[below3_available_pos])
+                if not below_occupied and below3_available_pos[1] < self.shape[1]-self.BOT_EXT: # if above position is free
+                    self._paste_subgrid(self.bottom3_available_grid, available_mask, below3_available_pos)
+        # ------------------------------------------------
+
+        # remove used connection availibility from above
+        for x in range(brick_shape[0]):
+            for z in range(brick_shape[2]):
+                used_available_pos = (ext_pos[0]+x, ext_pos[1], ext_pos[2]+z)
+                self._paste_subgrid(self.bottom_available_grid, unavailable_mask, used_available_pos)
+
+        # ------------------------------------------- IN WORK
+        # remove used 3-connection availibility from above
+        #if brick_shape[1] >= 3:
+        for x in range(brick_shape[0]):
+            for z in range(brick_shape[2]):
+                used_available_pos = (ext_pos[0]+x, ext_pos[1], ext_pos[2]+z)
+                used_available_pos3 = (ext_pos[0]+x, ext_pos[1]+2, ext_pos[2]+z)
+                self._paste_subgrid(self.bottom3_available_grid, unavailable_mask, used_available_pos3)
+        # ----------------------------------------------------
 
         # fill stud grid
         if brick.part.id in ["3004", "3005", "3024"]:

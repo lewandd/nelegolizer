@@ -7,9 +7,10 @@ from nelegolizer.data._GeometryCoverage import GeometryCoverage
 
 initilize_parts()
 
-filenames = ["fixtures/church.mpd"]
+#filename = "fixtures/church.mpd"
+filename = "fixtures/impossible_trophy.mpd"
 
-ldf = LDrawFile.load(filenames[0])
+ldf = LDrawFile.load(filename)
 ldm = ldf.models[0]
 bricks = ldm.as_bricks()
 
@@ -21,29 +22,29 @@ geometry = GeometryCoverage(bc.voxel_grid, bottom_extension=3, side_extension=1)
 
 
 print(f"geometry ext voxel shape {geometry.ext_voxel_grid.shape}")
-geometry.ext_voxel_grid[14, 0, 19] = True
-geometry.ext_voxel_grid[14, 1, 19] = True
-geometry.ext_voxel_grid[14, -1, 19] = True
-geometry.ext_voxel_grid[14, -2, 19] = True
+#geometry.ext_voxel_grid[14, 0, 19] = True
+#geometry.ext_voxel_grid[14, 1, 19] = True
+#geometry.ext_voxel_grid[14, -1, 19] = True
+#geometry.ext_voxel_grid[14, -2, 19] = True
 
-geometry.voxel_grid[14, 0, 19] = True
-geometry.voxel_grid[14, -1, 19] = True
+#geometry.voxel_grid[14, 0, 19] = True
+#geometry.voxel_grid[14, -1, 19] = True
 
 #bc.voxel_grid[14, 0, 19] = True
 #bc.voxel_grid[14, 1, 19] = True
 #bc.voxel_grid[14, -1, 19] = True
 #bc.voxel_grid[14, -2, 19] = True
 
-geometry.brick_grid[3, -1, 3] = True
-geometry.brick_grid[3, -2, 3] = True
-geometry.brick_grid[3, -3, 3] = True
-geometry.brick_grid[3, 0:3, 3] = True
+#geometry.brick_grid[3, -1, 3] = True
+#geometry.brick_grid[3, -2, 3] = True
+#geometry.brick_grid[3, -3, 3] = True
+#geometry.brick_grid[3, 0:3, 3] = True
 
 mesh = pv.MultiBlock([brick.mesh for brick in bricks]).combine()
 
 bricks = uvox.from_grid(geometry.brick_grid, voxel_mesh_shape=const.BRICK_UNIT_MESH_SHAPE)
-voxels = uvox.from_grid(geometry.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
 #voxels = uvox.from_grid(bc.voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+voxels = uvox.from_grid(geometry.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
 plotter = pv.Plotter(shape=(1, 3))
 
 plotter.subplot(0, 0)

@@ -68,8 +68,8 @@ ext_stud_grid = np.array(
 
 ext_part_grid = {
     "3005": np.array([
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
         [ False,False,False,False,False,False],
         [ True, True, True, True, True,False],
@@ -81,8 +81,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
         [ False, True, True, True,False,False],
         [ True, True, True, True, True,False],
@@ -94,8 +94,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
          [False, True, True, True,False,False],
         [ True, True, True, True, True,False],
@@ -107,8 +107,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
          [False, True, True, True,False,False],
         [ True, True, True, True, True,False],
@@ -120,8 +120,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
          [False,False,False,False,False,False],
         [ True, True, True, True, True,False],
@@ -134,8 +134,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False]],
 
         # 0 extension
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], # 
         [ False,False,False,False,False,False],
         [False,False,False,False,False,False],
@@ -149,8 +149,8 @@ ext_part_grid = {
 
 
     "3004": np.array(
-        [[[False,False,False,False,False,False], #
-          [False,False,False,False,False,False], #
+        [[#[False,False,False,False,False,False], #
+          #[False,False,False,False,False,False], #
           [False,False,False,False,False,False], #
           [False,False,False,False,False,False],
         [ True, True, True, True, True,False],
@@ -162,8 +162,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
          [False, True, True, True,False,False],
         [ True, True, True, True, True,False],
@@ -175,8 +175,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
          [False, True, True, True,False,False],
         [ True, True, True, True, True,False],
@@ -188,8 +188,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
          [False, True, True, True,False,False],
         [ True, True, True, True, True,False],
@@ -201,8 +201,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
          [False,False,False,False,False,False],
         [ True, True, True, True, True,False],
@@ -215,21 +215,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False]],
 
         # middle extended
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
-
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
          [False,False,False,False,False,False],
         [ True, True, True, True, True,False],
@@ -241,47 +228,8 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
-
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
-
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
-
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
          [False,False,False,False,False,False],
         [ True, True, True, True, True,False],
@@ -293,8 +241,60 @@ ext_part_grid = {
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
+         [False, True, True, True,False,False], #
+         [False, True, True, True,False,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False], # extended
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False], # extended
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False]],
+
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
+         [False, True, True, True,False,False], #
+         [False, True, True, True,False,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False], # extended
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False], # extended
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False]],
+
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
+         [False, True, True, True,False,False], #
+         [False, True, True, True,False,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False], # extended
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False], # extended
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False]],
+
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
+         [False,False,False,False,False,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False], # extended
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False], # extended
+        [ True, True, True, True, True,False],
+        [ True, True, True, True, True,False]],
+
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
          [False,False,False,False,False,False], # 0 extension
         [ False,False,False,False,False,False],
@@ -308,8 +308,8 @@ ext_part_grid = {
 
 
     "54200": np.array(
-        [[[False,False,False,False, False, False], #
-          [False,False,False,False, False, False], #
+        [[#[False,False,False,False, False, False], #
+          #[False,False,False,False, False, False], #
           [False,False,False,False, False, False], #
           [False,False,False,False, False, False],
         [ False,False,False,False, False, False],
@@ -321,8 +321,8 @@ ext_part_grid = {
         [ False, True, True, True, True, False],
         [ True, True, True, True, True, False]],
 
-        [[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
+        [#[False,False,False,False, False, False], #
+         #[False,False,False,False, False, False], #
          [False,False,False,False, False, False], #
          [False,False,False,False, False, False],
         [ False,False,False,False, False, False],
@@ -334,21 +334,8 @@ ext_part_grid = {
         [ False, True, True, True, True, False],
         [ True, True, True, True, True, False]],
 
-        [[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
-         [False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False], # extended
-        [False,False,False,False, True, False],
-        [ False,False, True, True, True, False],
-        [ False,False, True, True, True, False], # extended
-        [ False, True, True, True, True, False],
-        [ True, True, True, True, True, False]],
-
-        [[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
+        [#[False,False,False,False, False, False], #
+         #[False,False,False,False, False, False], #
          [False,False,False,False, False, False], #
          [False,False,False,False, False, False],
         [ False,False,False,False, False, False],
@@ -360,8 +347,21 @@ ext_part_grid = {
         [ False, True, True, True, True, False],
         [ True, True, True, True, True, False]],
 
-        [[False,False,False,False, False, False], #
+        [#[False,False,False,False, False, False], #
+         #[False,False,False,False, False, False], #
          [False,False,False,False, False, False], #
+         [False,False,False,False, False, False],
+        [ False,False,False,False, False, False],
+        [ False,False,False,False, False, False],
+        [ False,False,False,False, False, False], # extended
+        [False,False,False,False, True, False],
+        [ False,False, True, True, True, False],
+        [ False,False, True, True, True, False], # extended
+        [ False, True, True, True, True, False],
+        [ True, True, True, True, True, False]],
+
+        [#[False,False,False,False, False, False], #
+         #[False,False,False,False, False, False], #
          [False,False,False,False, False, False], #
          [False,False,False,False, False, False],
         [ False,False,False,False, False, False],
@@ -373,8 +373,8 @@ ext_part_grid = {
         [ False, True, True, True, True, False],
         [ True, True, True, True, True, False]],
         
-        [[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
+        [#[False,False,False,False, False, False], #
+         #[False,False,False,False, False, False], #
          [False,False,False,False, False, False], #
          [False,False,False,False,False,False], # 0 extension
         [ False,False,False,False,False,False],
@@ -388,43 +388,43 @@ ext_part_grid = {
 
 
     "3024": np.array(
-        [[[False,False,False,False,False,False], #
-          [False,False,False,False,False,False], #
+        [[#[False,False,False,False,False,False], #
+          #[False,False,False,False,False,False], #
           [False,False,False,False,False,False], #
           [False,False,False,False,False,False],
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
          [False, True, True, True,False,False],
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
          [False, True, True, True,False,False],
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False, True, True, True,False,False], #
          [False, True, True, True,False,False],
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
          [False,False,False,False,False,False],
         [ True, True, True, True, True,False],
         [ True, True, True, True, True,False]],
 
-        [[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
+        [#[False,False,False,False,False,False], #
+         #[False,False,False,False,False,False], #
          [False,False,False,False,False,False], #
          [False,False,False,False,False,False],  # 0 xtension
         [False,False,False,False,False,False],
@@ -433,8 +433,8 @@ ext_part_grid = {
 
 part3004_rot_90 = np.array( 
     #                  vertical extended fill at 6th position                   
-    [[[False, False, False, False, False, False, False, False, False, False, False, False], #
-      [False, False, False, False, False, False, False, False, False, False, False, False], #
+    [[#[False, False, False, False, False, False, False, False, False, False, False, False], #
+      #[False, False, False, False, False, False, False, False, False, False, False, False], #
       [False, False, False, False, False, False, False, False, False, False, False, False], #
       [False, False, False, False, False, False, False, False, False, False, False, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False],
@@ -446,8 +446,8 @@ part3004_rot_90 = np.array(
     [ True, True, True, True, True, True, True, True, True, True, True, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False, False, False, False, False, False, False], #
+     #[False, False, False, False, False, False, False, False, False, False, False, False], #
      [False, True, True, True, False, False, False, True, True, True, False, False], #
      [False, True, True, True, False, False, False, True, True, True, False, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False],
@@ -459,8 +459,8 @@ part3004_rot_90 = np.array(
     [ True, True, True, True, True, True, True, True, True, True, True, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False, False, False, False, False, False, False], #
+     #[False, False, False, False, False, False, False, False, False, False, False, False], #
      [False, True, True, True, False, False, False, True, True, True, False, False], #
      [False, True, True, True, False, False, False, True, True, True, False, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False],
@@ -472,8 +472,8 @@ part3004_rot_90 = np.array(
     [ True, True, True, True, True, True, True, True, True, True, True, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False, False, False, False, False, False, False], #
+     #[False, False, False, False, False, False, False, False, False, False, False, False], #
      [False, True, True, True, False, False, False, True, True, True, False, False], #
      [False, True, True, True, False, False, False, True, True, True, False, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False],
@@ -485,8 +485,8 @@ part3004_rot_90 = np.array(
     [ True, True, True, True, True, True, True, True, True, True, True, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False, False, False, False, False, False, False], #
+     #[False, False, False, False, False, False, False, False, False, False, False, False], #
      [False, False, False, False, False, False, False, False, False, False, False, False], #
      [False, False, False, False, False, False, False, False, False, False, False, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False],
@@ -498,8 +498,8 @@ part3004_rot_90 = np.array(
     [ True, True, True, True, True, True, True, True, True, True, True, False],
     [ True, True, True, True, True, True, True, True, True, True, True, False]],
     
-    [[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False, False, False, False, False, False, False], #
+     #[False, False, False, False, False, False, False, False, False, False, False, False], #
      [False, False, False, False, False, False, False, False, False, False, False, False], #
      [False, False, False, False, False, False, False, False, False, False, False, False], # extended 0
     [False, False, False, False, False, False, False, False, False, False, False, False],
@@ -512,8 +512,8 @@ part3004_rot_90 = np.array(
     [False, False, False, False, False, False, False, False, False, False, False, False]]])
 
 part_54200_rot_90 = np.array([[
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False], #
+    #[False, False, False, False, False, False], #
+    #[False, False, False, False, False, False], #
     [False, False, False, False, False, False], #
     [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -525,8 +525,8 @@ part_54200_rot_90 = np.array([[
     [False, False, False, False, False, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -538,21 +538,8 @@ part_54200_rot_90 = np.array([[
     [ True, True, True, True, True, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended fill
-    [False, False, False, False, False, False],
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
-
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -564,8 +551,21 @@ part_54200_rot_90 = np.array([[
     [ True, True, True, True, True, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
+     [False, False, False, False, False, False],
+    [False, False, False, False, False, False],
+    [False, False, False, False, False, False],
+    [False, False, False, False, False, False], # extended fill
+    [False, False, False, False, False, False],
+    [ True, True, True, True, True, False],
+    [ True, True, True, True, True, False], # extended fill
+    [ True, True, True, True, True, False],
+    [ True, True, True, True, True, False]],
+
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -577,8 +577,8 @@ part_54200_rot_90 = np.array([[
     [ True, True, True, True, True, False],
     [ True, True, True, True, True, False]],
     
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
      [False, False, False, False, False, False],
@@ -591,8 +591,8 @@ part_54200_rot_90 = np.array([[
      [False, False, False, False, False, False]]])
 
 part_54200_rot_180 = np.array([[
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False], #
+    #[False, False, False, False, False, False], #
+    #[False, False, False, False, False, False], #
     [False, False, False, False, False, False], #
     [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -604,21 +604,8 @@ part_54200_rot_180 = np.array([[
     [ True, True, True, True, False, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [ True, False, False, False, False, False],
-    [ True, True, True, False, False, False],
-    [ True, True, True, False, False, False], #
-    [ True, True, True, True, False, False],
-    [ True, True, True, True, True, False]],
-
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -630,8 +617,21 @@ part_54200_rot_180 = np.array([[
     [ True, True, True, True, False, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
+     [False, False, False, False, False, False],
+    [False, False, False, False, False, False],
+    [False, False, False, False, False, False],
+    [False, False, False, False, False, False], #
+    [ True, False, False, False, False, False],
+    [ True, True, True, False, False, False],
+    [ True, True, True, False, False, False], #
+    [ True, True, True, True, False, False],
+    [ True, True, True, True, True, False]],
+
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -643,8 +643,8 @@ part_54200_rot_180 = np.array([[
     [ True, True, True, True, False, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -656,8 +656,8 @@ part_54200_rot_180 = np.array([[
     [ True, True, True, True, False, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -670,8 +670,8 @@ part_54200_rot_180 = np.array([[
     [False, False, False, False, False, False]]])
 
 part_54200_rot_270 = np.array([[
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False], #
+    #[False, False, False, False, False, False], #
+    #[False, False, False, False, False, False], #
     [False, False, False, False, False, False], #
     [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -683,21 +683,8 @@ part_54200_rot_270 = np.array([[
     [ True, True, True, True, True, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False], #
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
-
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -709,8 +696,21 @@ part_54200_rot_270 = np.array([[
     [ True, True, True, True, True, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
+     [False, False, False, False, False, False],
+    [False, False, False, False, False, False],
+    [False, False, False, False, False, False],
+    [False, False, False, False, False, False], #
+    [False, False, False, False, False, False],
+    [ True, True, True, True, True, False],
+    [ True, True, True, True, True, False], #
+    [ True, True, True, True, True, False],
+    [ True, True, True, True, True, False]],
+
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -722,8 +722,8 @@ part_54200_rot_270 = np.array([[
     [ True, True, True, True, True, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
@@ -735,8 +735,8 @@ part_54200_rot_270 = np.array([[
     [False, False, False, False, False, False],
     [ True, True, True, True, True, False]],
 
-    [[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
+    [#[False, False, False, False, False, False], #
+     #[False, False, False, False, False, False], #
      [False, False, False, False, False, False], #
      [False, False, False, False, False, False],
     [False, False, False, False, False, False],
