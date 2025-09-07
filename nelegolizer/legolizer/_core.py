@@ -7,7 +7,7 @@ from typing import List, Tuple, Union
 from nelegolizer import const
 from nelegolizer.data import LegoBrick, ClassificationResult, ClassificationResult2
 from nelegolizer.utils import grid
-from nelegolizer.utils.grid import vu_to_bu, bu_to_vu, bu_to_mesh
+from nelegolizer.utils.conversion import *
 from nelegolizer.utils import voxelization # noqa
 #from nelegolizer.model import brick_classification_models
 #from nelegolizer.data import part_by_size_label
@@ -15,7 +15,7 @@ import nelegolizer.model.brick as brick
 from nelegolizer.model import shape_model_map, shape_model_map_cnn, rotate_division
 from nelegolizer.model import initilize_models, initilize_models_cnn, initilize_models_csv
 from nelegolizer.model.cnn import test_predict_cnn
-from nelegolizer.data import initilize_parts, BrickOccupancy, ObjectOccupancy
+from nelegolizer.data import initilize_parts
 
 fill_treshold = 0.1
 
@@ -218,8 +218,8 @@ def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
     voxel_grid = voxelize(mesh)
     voxel_grid = grid.add_padding(voxel_grid, const.PADDING)
 
-    oo = ObjectOccupancy(voxel_grid)
-    bo = BrickOccupancy(oo.brick_grid.shape)
+    oo = None#ObjectOccupancy(voxel_grid)
+    bo = None#BrickOccupancy(oo.brick_grid.shape)
 
     #cover_grid = set_cover_grid(voxel_grid, const.BRICK_UNIT_RESOLUTION)
     #covered_grid = np.zeros_like(cover_grid)

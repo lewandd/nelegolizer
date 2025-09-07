@@ -6,6 +6,7 @@ from typing import Tuple
 from nelegolizer.utils import grid
 from nelegolizer import const, path
 from nelegolizer.data.voxelized_parts import part_grid, ext_part_grid
+import numpy as np
 
 
 class LDrawPart:
@@ -21,6 +22,8 @@ class LDrawPart:
         self.geom_path = geom_path
         self.size = size
         self.ldraw_offset = ldraw_offset
+        #self.ldraw_offset = np.array([0, 0, 0])
+        self.ldu_offset = np.array([0, 0, 0])
 
         reader = pv.get_reader(geom_path)
         self.mesh = reader.read()
@@ -42,12 +45,14 @@ def initilize_parts():
         ldraw_offset = tuple(map(float, _PARTS2_DF.loc[id]["ldraw_offset"].split(",")))
         dat_filename = _PARTS2_DF.loc[id]["dat_filename"]
         geom_filename = _PARTS2_DF.loc[id]["geom_filename"]
+        ldu_offset = tuple(map(float, _PARTS2_DF.loc[id]["ldu_offset"].split(",")))
 
         ldp = LDrawPart(dat_path=os.path.join(path.PART_DAT_DIR, dat_filename),
                         geom_path=os.path.join(path.PART_GEOM_DIR, geom_filename),
                         id=str(id),
                         size=shape,
                         ldraw_offset=ldraw_offset)
+        ldp.ldu_offset = ldu_offset
         part_by_id[str(id)] = ldp
         part_by_filename[str(dat_filename)] = ldp
     if (len(part_by_id) == 0) or (len(part_by_filename) == 0):

@@ -1,26 +1,13 @@
 import numpy as np
 from nelegolizer import const
-from nelegolizer.utils.grid import add_padding, rotate, bu_to_vu
-from typing import Tuple, List, Union
+from nelegolizer.utils.grid import rotate, is_empty, get_subgrid
+from nelegolizer.utils.brick import compute_bounds
+from nelegolizer.utils.conversion import *
+from typing import Tuple, List
 from nelegolizer.data.voxelized_parts import stud_grid, ext_part_grid2, ext_stud_grid
 import logging
 
 logger = logging.getLogger(__name__)
-
-UNIT_EXT = np.array([1, 1, 1])
-EXTBU = const.BRICK_UNIT_RESOLUTION + UNIT_EXT
-
-def ext_bu_to_vu(bu: Union[np.ndarray, Tuple[int, int, int]]) -> np.ndarray:
-    arr = np.array(bu, dtype=int)
-
-    if arr.shape != (3,):
-        raise ValueError(f"Expected shape (3,), got {arr.shape} from {bu!r}")
-
-    result = arr * (const.BRICK_UNIT_RESOLUTION + UNIT_EXT)
-
-    if isinstance(bu, tuple):
-        return tuple(result.tolist())
-    return result
 
 class BrickCoverage:
     def __init__(self, shape, bottom_extension=0, top_extension=0, side_extension=0):
@@ -35,7 +22,7 @@ class BrickCoverage:
         logger.debug(f"BrickCoverage: brick_grid.shape = {self.brick_grid.shape}")
 
         # Voxel Units
-        self.vu_shape = bu_to_vu(shape) + 2*const.PADDING
+        self.vu_shape = bu_to_vu(self.shape) + 2*const.PADDING
         self.voxel_grid = np.zeros(self.vu_shape, dtype=bool)
 
         ones = np.ones(shape=(self.vu_shape[0], const.PADDING[1], self.vu_shape[2]))
@@ -91,7 +78,7 @@ class BrickCoverage:
 
     def _grid_position(self, brick) -> np.ndarray:
         """Brick position relative to minimal position."""
-        return (brick.position - self.pos_min).astype(int)
+        return np.round(brick.position - self.pos_min).astype(int)
     
     def _update_studs(self, brick):
         pos = self._grid_position(brick)
@@ -159,10 +146,16 @@ class BrickCoverage:
 
     # --- PUBLIC API ---
 
+    def is_placement_available(self, brick):
+        ext_pos = self._grid_position(brick)+ np.array([0, 1, 0])# + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT]) 
+        brick_shape = brick.rotated_shape
+        placement = get_subgrid(self.brick_grid, ext_pos, brick_shape)
+        return is_empty(placement)
+        
     def place_brick(self, brick, debug=False):
         """Put a brick into brick_grid, voxel_grid and stud_grid."""
         # fill occupancy grid
-        ext_pos = self._grid_position(brick) + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT]) + np.array([0, 1, 0])
+        ext_pos = self._grid_position(brick) + np.array([0, 1, 0]) #+ np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT])
         pos = self._grid_position(brick)
         brick_shape = brick.rotated_shape
         if debug:
@@ -269,7 +262,7 @@ class BrickCoverage:
         for brick in bricks:
             b_pos = self._grid_position(brick)
             # TUTAJ?
-            b_pos = np.array([b_pos[0] + self.SIDE_EXT, b_pos[1] + self.TOP_EXT, b_pos[2] + self.SIDE_EXT,])
+            #b_pos = np.array([b_pos[0] + self.SIDE_EXT, b_pos[1] + self.TOP_EXT, b_pos[2] + self.SIDE_EXT,])
             b_shape = brick.rotated_shape
             if all(b_pos[i] <= pos[i] < b_pos[i] + b_shape[i] for i in range(3)):
                 return brick
@@ -338,23 +331,10 @@ class BrickCoverage:
         shape = shape + np.array([0, 1, 0])
 
         bo = cls(shape, bottom_extension, top_extension, side_extension) 
-        bo.pos_min, bo.pos_max = pos_min, pos_max
+        #bo.pos_min, bo.pos_max = pos_min, pos_max
+        bo.pos_min, bo.pos_max = 0, 0
 
         for brick in bricks:
             bo.place_brick(brick)
         return bo
     
-def compute_bounds(lb_list):
-        mins = []
-        maxs = []
-        
-        for b in lb_list:
-            b_min = np.array(b.position)
-            b_max = b_min + np.array(b.rotated_shape)
-            mins.append(b_min)
-            maxs.append(b_max)
-        
-        mins = np.min(mins, axis=0)
-        maxs = np.max(maxs, axis=0)
-        
-        return mins, maxs

@@ -2,6 +2,8 @@ from nelegolizer.data import LDrawFile, initilize_parts
 import pyvista as pv
 import nelegolizer.utils.voxelization as uvox
 from nelegolizer import const
+from nelegolizer.data._BrickCoverage import compute_bounds
+from nelegolizer.utils.grid import get_fill, bu_to_mesh
 from nelegolizer.data import BrickCoverage
 import numpy as np
 
@@ -14,38 +16,59 @@ ldf = LDrawFile.load(filename)
 ldm = ldf.models[0]
 bricks = ldm.as_bricks()
 
-bo_old = BrickCoverage.from_bricks(bricks, bottom_extension=3, side_extension=1, top_extension=1)
-bo = BrickCoverage(bo_old.shape-np.array([2, 4, 2]), bottom_extension=3, side_extension=1, top_extension=1)
+mins, maxs = compute_bounds(bricks)
+for brick in bricks:
+    #print()
+    #print(f"old position {brick.position}")
+    #print(f"({brick.position} - {mins}).astype(int) = {(brick.position - mins).astype(int)}")
+    brick.mesh_position = bu_to_mesh((np.round(brick.position - mins)+np.array([1, 4, 1])).astype(int))
+    #print(f"new position {brick.position}")
+
+bo_old = BrickCoverage.from_bricks(bricks, bottom_extension=3, side_extension=1, top_extension=4)
+bo = BrickCoverage(bo_old.shape-np.array([2, 7, 2]), bottom_extension=3, side_extension=1, top_extension=4)
 bo.pos_min = bo_old.pos_min
 bo.pos_max = bo_old.pos_max
 
-bo.place_brick(bricks[0])
-bo.place_brick(bricks[1])
-bo.place_brick(bricks[2])
+
+
+
+#for brick in bricks:
+#    bo.place_brick(brick)
+
+#bo.place_brick(bricks[1])
+#bo.place_brick(bricks[0])
+#bo.place_brick(bricks[2])
+
 bo.place_brick(bricks[3])
-bo.place_brick(bricks[4])
-bo.place_brick(bricks[5])
-bo.place_brick(bricks[6])
-bo.place_brick(bricks[7])
-bo.place_brick(bricks[8])
-bo.place_brick(bricks[9])
-bo.place_brick(bricks[10])
-bo.place_brick(bricks[11])
-bo.place_brick(bricks[12])
-bo.place_brick(bricks[13])
-bo.place_brick(bricks[14])
-bo.place_brick(bricks[15])
-bo.place_brick(bricks[16])
-bo.place_brick(bricks[17])
-bo.place_brick(bricks[18])
-bo.place_brick(bricks[19])
-bo.place_brick(bricks[20])
-bo.place_brick(bricks[21])
-bo.place_brick(bricks[22])
-bo.place_brick(bricks[23])
-bo.place_brick(bricks[24])
-bo.place_brick(bricks[25])
-bo.place_brick(bricks[26])
+print(bo.get_brick_position(bricks[3]))
+print(bricks[3].position)
+
+#bo.place_brick(bricks[4])
+#bo.place_brick(bricks[5])
+#bo.place_brick(bricks[6])
+#bo.place_brick(bricks[7])
+#bo.place_brick(bricks[8])
+#bo.place_brick(bricks[9]) # 3004
+#bo.place_brick(bricks[10]) # 3024
+#bo.place_brick(bricks[11]) # 3024
+#bo.place_brick(bricks[12]) # 3024
+#bo.place_brick(bricks[13]) # 3024
+#bo.place_brick(bricks[14]) # 3004
+#bo.place_brick(bricks[15]) # 3005
+#bo.place_brick(bricks[16]) # 3024
+#bo.place_brick(bricks[17]) # 3024
+#bo.place_brick(bricks[18]) # 3005
+#bo.place_brick(bricks[19]) # 3024
+#bo.place_brick(bricks[21]) # 3024
+#bo.place_brick(bricks[22]) # 54200
+#bo.place_brick(bricks[23]) # 54200
+#bo.place_brick(bricks[24]) # 3005
+
+#bo.place_brick(bricks[26])
+
+#bo.place_brick(bricks[20]) # 3024 po prawej u góry drugi
+#bo.place_brick(bricks[25]) # 3024 po prawej u góry drugi
+
 #bo.ext_voxel_grid[6, :2, 6] = True
 #bo.ext_voxel_grid[6, -2:, 6] = True
 

@@ -1,27 +1,8 @@
 import numpy as np
 from nelegolizer import const
-from nelegolizer.utils.grid import vu_to_bu, bu_to_vu
-import nelegolizer.utils.grid as grid
-from typing import Tuple, Union
-from nelegolizer.data.voxelized_parts import ext_stud_grid
-
-UNIT_EXT = np.array([1, 1, 1])
-EXTBU = const.BRICK_UNIT_RESOLUTION + UNIT_EXT
-
-def ext_bu_to_vu(bu: Union[np.ndarray, Tuple[int, int, int]]) -> np.ndarray:
-    arr = np.array(bu, dtype=int)
-
-    if arr.shape != (3,):
-        raise ValueError(f"Expected shape (3,), got {arr.shape} from {bu!r}")
-
-    result = arr * (const.BRICK_UNIT_RESOLUTION + UNIT_EXT)
-
-    if isinstance(bu, tuple):
-        return tuple(result.tolist())
-    return result
-
-def in_bounds(arr: np.ndarray, pos: Tuple[int, int, int]) -> bool:
-    return all(0 <= idx < dim for idx, dim in zip(pos, arr.shape))
+from nelegolizer.utils.conversion import *
+from nelegolizer.utils.grid import get_subgrid, get_fill
+from typing import Tuple
 
 class GeometryCoverage:
     def __init__(self, voxel_grid, bottom_extension=0, top_extension=0, side_extension=0):
@@ -31,21 +12,29 @@ class GeometryCoverage:
         self.SIDE_EXT = side_extension
 
         # Voxel Units occupancy (with padding)
-        self.vu_shape = voxel_grid.shape
-        self.voxel_grid = voxel_grid
+        
+        self.voxel_grid = np.pad(voxel_grid,
+                                 pad_width=((side_extension*5, side_extension*5),
+                                            (top_extension*2, bottom_extension*2),
+                                            (side_extension*5, side_extension*5)),
+                                 mode="constant",
+                                 constant_values=0)
+        self.vu_shape = self.voxel_grid.shape
         print(f"GeometryCoverage: voxel_grid.shape = {self.voxel_grid.shape}")
 
         # Initialize Brick Unit brick_grid
-        self.interior_shape = vu_to_bu(voxel_grid.shape-2*const.PADDING)
+        self.interior_shape = vu_to_bu(voxel_grid.shape)
         self.shape = self.interior_shape + np.array([self.SIDE_EXT*2, self.VERT_EXT, self.SIDE_EXT*2])
         self.brick_grid = np.zeros(self.shape, dtype=bool)
         print(f"GeometryCoverage: brick_grid.shape = {self.brick_grid.shape}")
-        for pos, _ in np.ndenumerate(self.brick_grid[self.SIDE_EXT:-self.SIDE_EXT,self.TOP_EXT:-self.BOT_EXT,self.SIDE_EXT:-self.SIDE_EXT]):
+        for pos, _ in np.ndenumerate(self.brick_grid):
+        #for pos, _ in np.ndenumerate(self.brick_grid[self.SIDE_EXT:-self.SIDE_EXT,self.TOP_EXT:-self.BOT_EXT,self.SIDE_EXT:-self.SIDE_EXT]):
             x, y, z = pos
+            ext_pos = pos# + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT])
             vu_pos = bu_to_vu(pos)+const.PADDING
-            ext_pos = pos + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT])
-            self.brick_grid[ext_pos[0], ext_pos[1], ext_pos[2]] = grid.get_fill(
-                grid.get_subgrid(voxel_grid, vu_pos, const.BRICK_UNIT_RESOLUTION)) > 0
+            
+            self.brick_grid[ext_pos[0], ext_pos[1], ext_pos[2]] = get_fill(
+                get_subgrid(self.voxel_grid, vu_pos, const.BRICK_UNIT_RESOLUTION)) > 0
             
 
         # extended Voxel Units
@@ -70,15 +59,29 @@ class GeometryCoverage:
             #        self._paste_subgrid(self.ext_voxel_grid, ext_stud_grid, ext_vu_pos)
 
         # wypełnianie wokselami wnętrza komórek
-        for pos, _ in np.ndenumerate(self.brick_grid[self.SIDE_EXT:-self.SIDE_EXT,self.TOP_EXT:-self.BOT_EXT,self.SIDE_EXT:-self.SIDE_EXT]):
+        #for pos, _ in np.ndenumerate(self.brick_grid[self.SIDE_EXT:-self.SIDE_EXT,self.TOP_EXT:-self.BOT_EXT,self.SIDE_EXT:-self.SIDE_EXT]):
+        #    x, y, z = pos
+        #    ext_pos = pos + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT])
+        #    if self.brick_grid[ext_pos[0], ext_pos[1], ext_pos[2]]:
+        #        
+        #        #ext_vu_pos = ext_bu_to_vu(pos)+const.PADDING+np.array([0, 1, 0])
+        #        ext_vu_pos = ext_bu_to_vu(ext_pos)+const.PADDING+np.array([0, 1, 0])
+        #        # dodałem ext_pos zamiast pos
+        #        vu_pos = bu_to_vu(ext_pos)+const.PADDING
+        #        vu_mask = grid.get_subgrid(voxel_grid, vu_pos, const.BRICK_UNIT_RESOLUTION)
+        #        self._paste_subgrid(self.ext_voxel_grid, vu_mask, ext_vu_pos)
+
+        # wypełnianie wokselami wnętrza komórek
+        for pos, _ in np.ndenumerate(self.brick_grid):
             x, y, z = pos
-            ext_pos = pos + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT])
+            ext_pos = pos# + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT])
             if self.brick_grid[ext_pos[0], ext_pos[1], ext_pos[2]]:
                 
                 #ext_vu_pos = ext_bu_to_vu(pos)+const.PADDING+np.array([0, 1, 0])
                 ext_vu_pos = ext_bu_to_vu(ext_pos)+const.PADDING+np.array([0, 1, 0])
-                vu_pos = bu_to_vu(pos)+const.PADDING
-                vu_mask = grid.get_subgrid(voxel_grid, vu_pos, const.BRICK_UNIT_RESOLUTION)
+                # dodałem ext_pos zamiast pos
+                vu_pos = bu_to_vu(ext_pos)+const.PADDING
+                vu_mask = get_subgrid(self.voxel_grid, vu_pos, const.BRICK_UNIT_RESOLUTION)
                 self._paste_subgrid(self.ext_voxel_grid, vu_mask, ext_vu_pos)
             
 

@@ -1,5 +1,5 @@
-id,shape,ldraw_offset,dat_filename,geom_filename
-3005,"1,3,1","0,0,0",3005.dat,3005mod.stl
-3004,"2,3,1","0.4,0,0",3004.dat,3004mod.stl
-54200,"1,3,1","0,0.45,0",54200.dat,54200mod.stl
-3024,"1,1,1","0,0,0",3024.dat,3024mod.stl
+id,shape,ldraw_offset,ldu_offset,dat_filename,geom_filename
+3005,"1,3,1","0,0,0","0,0,0",3005.dat,3005mod.stl
+3004,"2,3,1","0.4,0,0","10,0,0",3004.dat,3004mod.stl
+54200,"1,3,1","0,0.45,0","0,24,0",54200.dat,54200mod.stl
+3024,"1,1,1","0,0,0","0,0,0",3024.dat,3024mod.stl

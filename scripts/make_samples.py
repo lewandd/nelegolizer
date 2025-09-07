@@ -1,5 +1,5 @@
-from nelegolizer.data import LDrawFile, initilize_parts, BrickOccupancy, ObjectOccupancy
-from nelegolizer.model.dataset_generation import make_samples, save_dataset
+from nelegolizer.data import initilize_parts
+from nelegolizer.model.dataset_generation import make_samples2, save_dataset
 import argparse
 from pathlib import Path
 
@@ -31,18 +31,25 @@ def main():
         print(f"File doesn't exist: {input_path}")
         return
     
+    if shape == (3, 3, 3):
+        network_type = 1
+    elif shape == (5, 5, 5):
+        network_type = 3
+
     initilize_parts()
-
-    ldf = LDrawFile.load(input_path)
-    lbm = ldf.models[0]
-    bricks = lbm.as_bricks()
-
-    #shapes = [(2,3,2), (2,3,1), (1,3,1), (1,1,1)]
-    bo = BrickOccupancy.from_bricks(bricks)
-    oo = ObjectOccupancy(bo.voxel_grid)
-
-    samples = make_samples(oo, shape, bricks, debug=True)
+    samples = make_samples2(input_path, network_type)
     print("samples generated:", len(samples))
+    save_dataset(samples, output_path)
+    #ldf = LDrawFile.load(input_path)
+    #lbm = ldf.models[0]
+    #bricks = lbm.as_bricks()
+
+    
+    #bo = BrickOccupancy.from_bricks(bricks)
+    #oo = ObjectOccupancy(bo.voxel_grid)
+
+    #samples = make_samples(oo, shape, bricks, debug=True)
+    #print("samples generated:", len(samples))
     #save_dataset(samples, output_path)
 
 if __name__ == "__main__":

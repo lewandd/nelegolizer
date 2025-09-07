@@ -4,22 +4,8 @@ from nelegolizer.utils import mesh as umesh
 from typing import Tuple
 import constants as const
 
-def vu_to_bu(vu: np.ndarray) -> np.ndarray:
-    if np.any((vu / const.BRICK_UNIT_RESOLUTION) != (vu // const.BRICK_UNIT_RESOLUTION)):
-        raise Exception(
-            "{vu} is not divisible by {const.BRICK_UNIT_RESOLUTION}."
-            "Cannot convert VoxelUnit to BrickUnit.")
-    else:
-        return (vu / const.BRICK_UNIT_RESOLUTION).astype(int)
-
-def bu_to_vu(bu: np.ndarray) -> np.ndarray:
-    return bu * const.BRICK_UNIT_RESOLUTION
-
-def bu_to_mesh(bu: np.ndarray) -> np.ndarray:
-    return bu * const.BRICK_UNIT_MESH_SHAPE
-
-def mesh_to_bu(mesh: np.ndarray) -> np.ndarray:
-    return mesh / const.BRICK_UNIT_MESH_SHAPE
+def in_bounds(arr: np.ndarray, pos: Tuple[int, int, int]) -> bool:
+    return all(0 <= idx < dim for idx, dim in zip(pos, arr.shape))
 
 def is_empty(group: np.ndarray) -> bool:
     return get_fill(group) == 0

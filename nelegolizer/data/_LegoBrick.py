@@ -1,5 +1,5 @@
-from nelegolizer.data import part_by_filename, ldu_to_mesh, mesh_to_ldu, part_by_id
-from nelegolizer.utils.grid import mesh_to_bu
+from nelegolizer.data import part_by_filename, part_by_id
+from nelegolizer.utils.conversion import *
 from nelegolizer.utils import mesh as umesh
 from nelegolizer.utils import grid
 from nelegolizer.data import LDrawReference
@@ -40,7 +40,7 @@ class LegoBrick:
         # position
         self.mesh_position = mesh_position
 
-        self.position2 = None
+        self.real_position = None
 
         #rotation
         valid_rotations = (0, 90, 180, 270)
@@ -60,8 +60,8 @@ class LegoBrick:
     @property
     def position(self):
         pos = mesh_to_bu(self.mesh_position)
-        if self.id == "54200":
-            return pos - np.array([0, 2, 0])
+        #if self.id == "54200":
+        #    return pos - np.array([0, 2, 0])
         return pos
 
     @property
@@ -101,13 +101,21 @@ class LegoBrick:
                            f"Available filenames: {part_by_filename.keys()}")
 
         # rotate offset
-        if degrees in [0, 180]:
-            ldraw_offset = part.ldraw_offset
-        elif degrees in [90, 270]:
-            ldraw_offset = (part.ldraw_offset[2], part.ldraw_offset[1], part.ldraw_offset[0])
+        #if degrees in [0, 180]:
+        #    ldraw_offset = part.ldraw_offset
+        #elif degrees in [90, 270]:
+        #    ldraw_offset = (part.ldraw_offset[2], part.ldraw_offset[1], part.ldraw_offset[0])
         
+        if degrees in [0, 180]:
+            ldu_offset = part.ldu_offset
+        elif degrees in [90, 270]:
+            ldu_offset = (part.ldu_offset[2], part.ldu_offset[1], part.ldu_offset[0])
+
+        # TUTAJ ZMIENIA SIĘ POZYCJA
+        #print(ref.position, "and", ldu_offset)
         return cls(id=part.id,
-                   mesh_position=ldu_to_mesh(ref.position)-ldraw_offset,
+                   #mesh_position=ldu_to_mesh(ref.position)-ldraw_offset,
+                   mesh_position=ldu_to_mesh(ref.position-ldu_offset),
                    rotation=degrees,
                    color=ref.color)
 
@@ -138,6 +146,14 @@ class LegoBrick:
         m = self.part.mesh
         m = m.rotate_y(angle=self.rotation, inplace=False)
         m = umesh.translate_to_zero(m)
+        
+        # translate to make mesh (0,0,0) pos to upper BU bounding box corner
+        part_height = umesh.get_resolution(m)[1]
+        height_translate = np.array([0,
+                                     self.rotated_shape[1]*2*const.VOXEL_MESH_SHAPE[1] - part_height,
+                                     0])
+        m = m.translate(height_translate, inplace=False)
+        
         m = m.translate(self.mesh_position, inplace=False)
         return m
 

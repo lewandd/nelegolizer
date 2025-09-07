@@ -17,736 +17,650 @@ stud_grid = np.array(
          [False,False,False,False,False],]])
 
 ext_empty_grid = np.array(
-        [[[False, False, False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False],],
+        [[[False, False, False,False,False,],
+          [False,False,False,False,False,],
+          [False,False,False,False,False,],],
           
-          [[False,False,False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False]],
+          [[False,False,False,False,False,],
+          [False,False,False,False,False,],
+          [False,False,False,False,False,]],
 
-          [[False,False,False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False]],
+          [[False,False,False,False,False,],
+          [False,False,False,False,False,],
+          [False,False,False,False,False,]],
 
-          [[False,False,False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False]],
+          [[False,False,False,False,False,],
+          [False,False,False,False,False,],
+          [False,False,False,False,False,]],
 
-          [[False,False,False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False]],
+          [[False,False,False,False,False,],
+          [False,False,False,False,False,],
+          [False,False,False,False,False,]],
 
-          [[False,False,False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False],]])
+])
 
 ext_stud_grid = np.array(
-        [[[False,False,False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False],],
+        [[[False,False,False,False,False,],
+          [False,False,False,False,False,],
+          [False,False,False,False,False,],],
 
-         [[False,False,False,False,False,False],
-          [False, True, True, True,False,False],
-          [False, True, True, True,False,False],],
+         [[False,False,False,False,False,],
+          [False, True, True, True,False,],
+          [False, True, True, True,False,],],
 
-         [[False,False,False,False,False,False],
-          [False, True, True, True,False,False],
-          [False, True, True, True,False,False],],
+         [[False,False,False,False,False,],
+          [False, True, True, True,False,],
+          [False, True, True, True,False,],],
 
-         [[False,False,False,False,False,False],
-          [False, True, True, True,False,False],
-          [False, True, True, True,False,False],],
+         [[False,False,False,False,False,],
+          [False, True, True, True,False,],
+          [False, True, True, True,False,],],
 
-         [[False,False,False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False],],
+         [[False,False,False,False,False,],
+          [False,False,False,False,False,],
+          [False,False,False,False,False,],],
 
-         [[False,False,False,False,False,False],
-          [False,False,False,False,False,False],
-          [False,False,False,False,False,False],]])
+         ])
 
 ext_part_grid = {
     "3005": np.array([
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-        [ False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False,False,False,False,False,], #
+        [ False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-        [ False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+        [ False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False,False,False,False,False,], #
+         [False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         # 0 extension
-        [#[False,False,False,False,False,False], #
-         #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], # 
-        [ False,False,False,False,False,False],
-        [False,False,False,False,False,False],
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False], # extended
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False], # extended
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False]]]),
+        ]),
 
 
     "3004": np.array(
         [[#[False,False,False,False,False,False], #
           #[False,False,False,False,False,False], #
-          [False,False,False,False,False,False], #
-          [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+          [False,False,False,False,False,], #
+          [False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False,False,False,False,False,], #
+         [False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         # middle extended
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False,False,False,False,False,], #
+         [False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False,False,False,False,False,], #
+         [False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False], # extended
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False,False,False,False,False,], #
+         [False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,], # extended
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
-        [#[False,False,False,False,False,False], #
-         #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False], # 0 extension
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False], # extended
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False], # extended
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False]]]),
+        ]),
 
 
     "54200": np.array(
         [[#[False,False,False,False, False, False], #
           #[False,False,False,False, False, False], #
-          [False,False,False,False, False, False], #
-          [False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False], # extended
-        [ False,False,False,False, True, False],
-        [ False,False, True, True, True, False],
-        [ False,False, True, True, True, False], # extended
-        [ False, True, True, True, True, False],
-        [ True, True, True, True, True, False]],
+          [False,False,False,False, False, ], #
+          [False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ], # extended
+        [ False,False,False,False, True, ],
+        [ False,False, True, True, True, ],
+        [ False,False, True, True, True, ], # extended
+        [ False, True, True, True, True, ],
+        [ True, True, True, True, True, ]],
 
         [#[False,False,False,False, False, False], #
          #[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
-         [False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False], # extended
-        [ False,False,False,False, True, False],
-        [ False,False, True, True, True, False],
-        [ False,False, True, True, True, False], # extended
-        [ False, True, True, True, True, False],
-        [ True, True, True, True, True, False]],
+         [False,False,False,False, False, ], #
+         [False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ], # extended
+        [ False,False,False,False, True, ],
+        [ False,False, True, True, True, ],
+        [ False,False, True, True, True, ], # extended
+        [ False, True, True, True, True, ],
+        [ True, True, True, True, True, ]],
 
         [#[False,False,False,False, False, False], #
          #[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
-         [False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False], # extended
-        [False,False,False,False, True, False],
-        [ False,False, True, True, True, False],
-        [ False,False, True, True, True, False], # extended
-        [ False, True, True, True, True, False],
-        [ True, True, True, True, True, False]],
+         [False,False,False,False, False, ], #
+         [False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ], # extended
+        [False,False,False,False, True, ],
+        [ False,False, True, True, True, ],
+        [ False,False, True, True, True, ], # extended
+        [ False, True, True, True, True, ],
+        [ True, True, True, True, True, ]],
 
         [#[False,False,False,False, False, False], #
          #[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
-         [False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False], # extended
-        [False,False,False,False, True, False],
-        [ False,False, True, True, True, False],
-        [ False,False, True, True, True, False], # extended
-        [ False, True, True, True, True, False],
-        [ True, True, True, True, True, False]],
+         [False,False,False,False, False, ], #
+         [False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ], # extended
+        [False,False,False,False, True, ],
+        [ False,False, True, True, True, ],
+        [ False,False, True, True, True, ], # extended
+        [ False, True, True, True, True, ],
+        [ True, True, True, True, True, ]],
 
         [#[False,False,False,False, False, False], #
          #[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
-         [False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False],
-        [ False,False,False,False, False, False], # extended
-        [False,False,False,False, True, False],
-        [ False,False, True, True, True, False],
-        [ False,False, True, True, True, False], # extended
-        [ False, True, True, True, True, False],
-        [ True, True, True, True, True, False]],
+         [False,False,False,False, False, ], #
+         [False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ],
+        [ False,False,False,False, False, ], # extended
+        [False,False,False,False, True, ],
+        [ False,False, True, True, True, ],
+        [ False,False, True, True, True, ], # extended
+        [ False, True, True, True, True, ],
+        [ True, True, True, True, True, ]],
         
-        [#[False,False,False,False, False, False], #
-         #[False,False,False,False, False, False], #
-         [False,False,False,False, False, False], #
-         [False,False,False,False,False,False], # 0 extension
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False], # extended
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False], # extended
-        [ False,False,False,False,False,False],
-        [ False,False,False,False,False,False]]]),
+        ]),
 
 
     "3024": np.array(
         [[#[False,False,False,False,False,False], #
           #[False,False,False,False,False,False], #
-          [False,False,False,False,False,False], #
-          [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+          [False,False,False,False,False,], #
+          [False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False, True, True, True,False,False], #
-         [False, True, True, True,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False, True, True, True,False,], #
+         [False, True, True, True,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
         [#[False,False,False,False,False,False], #
          #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False],
-        [ True, True, True, True, True,False],
-        [ True, True, True, True, True,False]],
+         [False,False,False,False,False,], #
+         [False,False,False,False,False,],
+        [ True, True, True, True, True,],
+        [ True, True, True, True, True,]],
 
-        [#[False,False,False,False,False,False], #
-         #[False,False,False,False,False,False], #
-         [False,False,False,False,False,False], #
-         [False,False,False,False,False,False],  # 0 xtension
-        [False,False,False,False,False,False],
-        [False,False,False,False,False,False]]])
+])
 }
 
 part3004_rot_90 = np.array( 
     #                  vertical extended fill at 6th position                   
     [[#[False, False, False, False, False, False, False, False, False, False, False, False], #
       #[False, False, False, False, False, False, False, False, False, False, False, False], #
-      [False, False, False, False, False, False, False, False, False, False, False, False], #
-      [False, False, False, False, False, False, False, False, False, False, False, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],# extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False]],
+      [False, False, False, False, False, False, False, False, False, False, False, ], #
+      [False, False, False, False, False, False, False, False, False, False, False, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False, False, False, False, False, False, False], #
      #[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, True, True, True, False, False, False, True, True, True, False, False], #
-     [False, True, True, True, False, False, False, True, True, True, False, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], 
-    [ True, True, True, True, True, True, True, True, True, True, True, False],# extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False]],
+     [False, True, True, True, False, False, False, True, True, True, False, ], #
+     [False, True, True, True, False, False, False, True, True, True, False, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], 
+    [ True, True, True, True, True, True, True, True, True, True, True, ],# extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False, False, False, False, False, False, False], #
      #[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, True, True, True, False, False, False, True, True, True, False, False], #
-     [False, True, True, True, False, False, False, True, True, True, False, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False]],
+     [False, True, True, True, False, False, False, True, True, True, False, ], #
+     [False, True, True, True, False, False, False, True, True, True, False, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False, False, False, False, False, False, False], #
      #[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, True, True, True, False, False, False, True, True, True, False, False], #
-     [False, True, True, True, False, False, False, True, True, True, False, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False]],
+     [False, True, True, True, False, False, False, True, True, True, False, ], #
+     [False, True, True, True, False, False, False, True, True, True, False, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False, False, False, False, False, False, False], #
      #[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, True, True, True, True, True, True, False],
-    [ True, True, True, True, True, True, True, True, True, True, True, False]],
+     [False, False, False, False, False, False, False, False, False, False, False, ], #
+     [False, False, False, False, False, False, False, False, False, False, False, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, True, True, True, True, True, True, ],
+    [ True, True, True, True, True, True, True, True, True, True, True, ]],
     
-    [#[False, False, False, False, False, False, False, False, False, False, False, False], #
-     #[False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False], #
-     [False, False, False, False, False, False, False, False, False, False, False, False], # extended 0
-    [False, False, False, False, False, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, False, False, False, False, False, False], # extended fill
-    [False, False, False, False, False, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, False, False, False, False, False, False], # extended fill
-    [False, False, False, False, False, False, False, False, False, False, False, False],
-    [False, False, False, False, False, False, False, False, False, False, False, False]]])
+   ])
 
 part_54200_rot_90 = np.array([[
     #[False, False, False, False, False, False], #
     #[False, False, False, False, False, False], #
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended fill
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended fill
-    [False, False, False, False, False, False],
-    [ True, True, True, True, True, False]],
+    [False, False, False, False, False, ], #
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], # extended fill
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], # extended fill
+    [False, False, False, False, False, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended fill
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended fill
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], # extended fill
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], # extended fill
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended fill
-    [False, False, False, False, False, False],
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], # extended fill
+    [False, False, False, False, False, ],
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended fill
-    [False, False, False, False, False, False],
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], # extended fill
+    [False, False, False, False, False, ],
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended fill
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False], # extended fill
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], # extended fill
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ], # extended fill
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ]],
     
-    [#[False, False, False, False, False, False], #
-     #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-     [False, False, False, False, False, False],
-     [False, False, False, False, False, False],
-     [False, False, False, False, False, False], # extended fill
-     [False, False, False, False, False, False],
-     [False, False, False, False, False, False],
-     [False, False, False, False, False, False], # extended fill
-     [False, False, False, False, False, False],
-     [False, False, False, False, False, False]]])
+    ])
 
 part_54200_rot_180 = np.array([[
     #[False, False, False, False, False, False], #
     #[False, False, False, False, False, False], #
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], # extended
-    [ True, False, False, False, False, False],
-    [ True, True, True, False, False, False],
-    [ True, True, True, False, False, False], #
-    [ True, True, True, True, False, False],
-    [ True, True, True, True, True, False]],
+    [False, False, False, False, False, ], #
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], # extended
+    [ True, False, False, False, False, ],
+    [ True, True, True, False, False, ],
+    [ True, True, True, False, False, ], #
+    [ True, True, True, True, False, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [ True, False, False, False, False, False],
-    [ True, True, True, False, False, False],
-    [ True, True, True, False, False, False], #
-    [ True, True, True, True, False, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [ True, False, False, False, False, ],
+    [ True, True, True, False, False, ],
+    [ True, True, True, False, False, ], #
+    [ True, True, True, True, False, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [ True, False, False, False, False, False],
-    [ True, True, True, False, False, False],
-    [ True, True, True, False, False, False], #
-    [ True, True, True, True, False, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [ True, False, False, False, False, ],
+    [ True, True, True, False, False, ],
+    [ True, True, True, False, False, ], #
+    [ True, True, True, True, False, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [ True, False, False, False, False, False],
-    [ True, True, True, False, False, False],
-    [ True, True, True, False, False, False],#
-    [ True, True, True, True, False, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [ True, False, False, False, False, ],
+    [ True, True, True, False, False, ],
+    [ True, True, True, False, False, ],#
+    [ True, True, True, True, False, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [ True, False, False, False, False, False],
-    [ True, True, True, False, False, False],
-    [ True, True, True, False, False, False], #
-    [ True, True, True, True, False, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [ True, False, False, False, False, ],
+    [ True, True, True, False, False, ],
+    [ True, True, True, False, False, ], #
+    [ True, True, True, True, False, ],
+    [ True, True, True, True, True, ]],
 
-    [#[False, False, False, False, False, False], #
-     #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False]]])
+    ])
 
 part_54200_rot_270 = np.array([[
     #[False, False, False, False, False, False], #
     #[False, False, False, False, False, False], #
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False], #
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
+    [False, False, False, False, False, ], #
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ], #
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False], #
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [False, False, False, False, False, ],
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ], #
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False], #
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [False, False, False, False, False, ],
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ], #
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [ True, True, True, True, True, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [ True, True, True, True, True, ],
+    [ True, True, True, True, True, ]],
 
     [#[False, False, False, False, False, False], #
      #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [ True, True, True, True, True, False]],
+     [False, False, False, False, False, ], #
+     [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ],
+    [False, False, False, False, False, ], #
+    [False, False, False, False, False, ],
+    [ True, True, True, True, True, ]],
 
-    [#[False, False, False, False, False, False], #
-     #[False, False, False, False, False, False], #
-     [False, False, False, False, False, False], #
-     [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False], #
-    [False, False, False, False, False, False],
-    [False, False, False, False, False, False]]])
+    ])
 
 ext_part_grid2 = {
     "3005": {0: ext_part_grid["3005"],
