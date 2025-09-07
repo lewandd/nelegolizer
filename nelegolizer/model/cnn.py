@@ -11,6 +11,82 @@ import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+class V3DCNN1(nn.Module):
+    """
+    3D CNN do klasyfikacji voxelowych bloków LEGO.
+    Przyjmuje dane o kształcie [batch, 2, D, H, W].
+
+    Args:
+        input_shape: (D, H, W) rozmiar wejścia (bez kanałów).
+        num_classes: liczba klas do przewidzenia.
+    """
+
+    def __init__(self, input_shape: Tuple[int, int, int], num_classes: int):
+        super().__init__()
+        self.input_shape = input_shape
+        self.num_classes = num_classes
+
+        # Blok 1: pełna rozdzielczość
+        self.block1 = nn.Sequential(
+            nn.Conv3d(2, 32, kernel_size=3, padding=1),
+            nn.BatchNorm3d(32),
+            nn.ReLU(inplace=True),
+
+            nn.Conv3d(32, 32, kernel_size=3, padding=1),
+            nn.BatchNorm3d(32),
+            nn.ReLU(inplace=True),
+        )
+
+        # Pooling 1 (łagodny, zmniejsza wymiar o połowę)
+        self.pool1 = nn.MaxPool3d(kernel_size=2, stride=2)
+
+        # Blok 2: średnia skala
+        self.block2 = nn.Sequential(
+            nn.Conv3d(32, 64, kernel_size=3, padding=1),
+            nn.BatchNorm3d(64),
+            nn.ReLU(inplace=True),
+
+            nn.Conv3d(64, 64, kernel_size=3, padding=1),
+            nn.BatchNorm3d(64),
+            nn.ReLU(inplace=True),
+        )
+
+        # Pooling 2 (mocniejszy, np. 3x3x3)
+        self.pool2 = nn.MaxPool3d(kernel_size=3, stride=3)
+
+        # Blok 3: globalne cechy
+        self.block3 = nn.Sequential(
+            nn.Conv3d(64, 128, kernel_size=3, padding=1),
+            nn.BatchNorm3d(128),
+            nn.ReLU(inplace=True),
+
+            nn.Conv3d(128, 128, kernel_size=3, padding=1),
+            nn.BatchNorm3d(128),
+            nn.ReLU(inplace=True),
+        )
+
+        # Global Average Pooling
+        self.global_pool = nn.AdaptiveAvgPool3d((1, 1, 1))
+
+        # Klasyfikator
+        self.fc_layers = nn.Sequential(
+            nn.Linear(128, 128),
+            nn.ReLU(inplace=True),
+            nn.Linear(128, num_classes)
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.block1(x)
+        x = self.pool1(x)
+
+        x = self.block2(x)
+        x = self.pool2(x)
+
+        x = self.block3(x)
+        x = self.global_pool(x)
+
+        x = torch.flatten(x, 1)  # [batch, features]
+        return self.fc_layers(x)
 
 class Voxel3DCNN(nn.Module):
     """
@@ -68,7 +144,9 @@ class Voxel3DCNN(nn.Module):
         x = self.conv_layers(x)
         x = x.view(x.size(0), -1)
         return self.fc_layers(x)
-    
+
+net_types = {"type3": V3DCNN1}
+
 
 # Definicja: shape -> liczba klas
 MODEL_CONFIGS: Dict[Tuple[int, int, int], int] = {

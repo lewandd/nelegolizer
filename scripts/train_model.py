@@ -1,14 +1,11 @@
-from nelegolizer.data import LDrawFile, initilize_parts, BrickOccupancy, ObjectOccupancy
-from nelegolizer.model.dataset_generation import make_samples, save_dataset
+from nelegolizer.data import initilize_parts
 import argparse
 from pathlib import Path
 import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader
-from tqdm import tqdm
 from nelegolizer.model.dataset import VoxelDataset
-from nelegolizer.model.io import load_model_str, save_model_str
-from nelegolizer.model.cnn import Voxel3DCNN, train_model, evaluate_model
+from nelegolizer.model.io import save_model_str
+from nelegolizer.model.cnn import train_model
+from nelegolizer.model.cnn import net_types
 from torch.utils.data import random_split
 
 def main():
@@ -20,9 +17,9 @@ def main():
         help="Path to the input model file"
     )
     parser.add_argument(
-        "shape",
+        "net_type",
         type=str,
-        help='Shape could be either 111, 131, 231, 232'
+        help='Network type'
     )
     parser.add_argument(
         "dataset",
@@ -33,8 +30,11 @@ def main():
     args = parser.parse_args()
     model_path = Path(args.model)
     dataset_path = Path(args.dataset)
-    shape = tuple(int(ch) for ch in args.shape)
-    shape = (shape[0]*5, shape[1]*2, shape[2]*5)
+    #shape = tuple(int(ch) for ch in args.shape)
+    #shape = (shape[0]*5, shape[1]*2, shape[2]*5)
+
+    net_type = args.net_type
+    model = net_types[net_type](input_shape=(30, 15, 30), num_classes=10)
 
     if not model_path.exists():
         print(f"File doesn't exist: {model_path}")
@@ -51,8 +51,10 @@ def main():
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 
-    
-    model = load_model_str(model_path, shape)
+    model = net_types[net_type](input_shape=(30, 15, 30), num_classes=10)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.load_state_dict(torch.load(model_path, map_location=device))
+    #model = load_model_str(model_path, shape)
     #create_model(shape)#Voxel3DCNN(num_classes=NUM_CLASSES)
 
 

@@ -17,25 +17,30 @@ def main():
         help="Path to the output TXT file"
     )
     parser.add_argument(
-        "shape",
+        "net_type",
         type=str,
-        help="Shape"
+        help="Network type"
     )
     
     args = parser.parse_args()
     input_path = Path(args.input_file)
     output_path = Path(args.output_file)
-    shape = tuple(int(ch) for ch in args.shape)
+    #shape = tuple(int(ch) for ch in args.shape)
+    net_type = args.net_type
 
     if not input_path.exists():
         print(f"File doesn't exist: {input_path}")
         return
     
-    if shape == (3, 3, 3):
-        network_type = 1
-    elif shape == (5, 5, 5):
-        network_type = 3
+    #if shape == (3, 3, 3):
+    #    network_type = 1
+    #elif shape == (5, 5, 5):
+    #    network_type = 3
 
+    if net_type == "type3":
+        network_type = 3
+    elif net_type == "type1":
+        network_type = 1
     initilize_parts()
     samples = make_samples2(input_path, network_type)
     print("samples generated:", len(samples))

@@ -12,7 +12,8 @@ from nelegolizer.model.dataset_generation import make_brick_variants, get_label
 initilize_parts()
 
 #filename = "fixtures/impossible_trophy.mpd"
-filename = "fixtures/church.mpd"
+#filename = "fixtures/church.mpd"
+filename = "fixtures/simple_mountain.mpd"
 
 ldf = LDrawFile.load(filename)
 lbm = ldf.models[0]
@@ -70,6 +71,8 @@ while ntc1 is not None or ntc3 is not None:
     analyzed[network_type][x, y, z] = True
     ntc1, ntc3 = find_next_to_cover_net(gc, training_bc, analyzed)
 
+    # 30 15 30 i 18 9 18
+
     ext_vu_pos = ext_bu_to_vu(np.array([x-shape_side_ext, y-shape_top_ext-1, z-shape_side_ext]))
     ext_vu_shape = ext_bu_to_vu(shape)
 
@@ -81,7 +84,7 @@ while ntc1 is not None or ntc3 is not None:
                                           ext_vu_pos[1]:ext_vu_pos[1]+ext_vu_shape[1],
                                           ext_vu_pos[2]:ext_vu_pos[2]+ext_vu_shape[2]]
 
-
+    print(f"Rozmiary channeli {channel1.shape}, {channel2.shape}")
     plotter = pv.Plotter(shape=(1, 2))
     # subplot - whole voxels scene with moving kernel
     plotter.subplot(0, 0)
@@ -103,6 +106,8 @@ while ntc1 is not None or ntc3 is not None:
     voxels_mesh = uvox.from_grid(training_bc.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
     voxels_mesh.translate(np.array([0, -0.16, 0]), inplace=True)
     plotter.add_mesh(voxels_mesh, show_edges=True, color="white")
+
+
 
     plotter.subplot(0, 1)
     try:
