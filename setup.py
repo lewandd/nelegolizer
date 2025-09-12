@@ -17,6 +17,6 @@ setup(
     author_email='lewandd9@gmail.com',
     url='https://github.com/lewandd/nelegolizer',
     license=license,
-    install_requires=['numpy', 'pandas', 'pyvista', 'torch'],
+    install_requires=['numpy', 'pandas', 'pyvista', 'torch', 'pyyaml', 'tqdm'],
     packages=find_packages()
 )

@@ -1,20 +1,9 @@
-from torch import nn
-import os
-import torch
-import pyvista as pv
+from ..data import LDrawFile, LegoBrick, GeometryCoverage, LDrawFile, BrickCoverage, LegoBrick
+from ..utils import brick as utils_brick
+from ..legolizer.iterator import find_next_to_cover_net, place_brick
+from ..utils.conversion import bu_to_mesh, ext_bu_to_vu
 import numpy as np
-from typing import Tuple, List
-from nelegolizer.data import LDrawFile
-from nelegolizer import const
-import nelegolizer.utils.voxelization as uvox
 import json
-from nelegolizer.data import ClassificationResult2
-from nelegolizer.model import initilize_models_csv, subshapes_by_id, shape_label_part_id_map2,shape_label_part_rot_map2,shape_label_subshape_id_map2
-from nelegolizer.data import LegoBrick, GeometryCoverage
-from nelegolizer.data import LDrawFile, initilize_parts, BrickCoverage, LegoBrick
-from nelegolizer.data._BrickCoverage import compute_bounds
-from nelegolizer.legolizer.iterator import find_next_to_cover_net, place_brick
-from nelegolizer.utils.conversion import *
 
 def sample_to_str(channel1: np.ndarray, channel2: np.ndarray, label: int) -> str:
     """
@@ -56,12 +45,6 @@ shape_id_rot_label_map = {(2, 3, 2): {"3005": {0:1, 90:1, 180:1, 270:1},
                                       "3024": {0:1, 90:1, 180:1, 270:1},
                                       "3004": {0:1, 90:1, 180:1, 270:1}}}
 
-# TODO jeszcze trzeba uwzględnić obrót odpowiednio
-
-# TODO poza tym mogę się czatu GPT spytać co zrobić z tymi pustmi miejscami czy
-# nie lepiej byłoby je pomijać skoro wiele danych jest takich samych?
-# jak to wpływa na sieć? czy to jest potrzebne czy nie?
-
 def make_brick_variants(placement_pos, network_type):
     if network_type == 3:
         return {"3004_0": LegoBrick(id="3004", mesh_position=bu_to_mesh(placement_pos), rotation=0),
@@ -90,12 +73,12 @@ def get_label(filled_bc, looking_pos, placement_pos, network_type, bricks):
     else:
         return 0
 
-def make_samples2(filename, samples_network_type):
+def make_samples(filename, samples_network_type):
     ldf = LDrawFile.load(filename)
     lbm = ldf.models[0]
     bricks = lbm.as_bricks()
 
-    mins, _ = compute_bounds(bricks)
+    mins, _ = utils_brick.compute_bounds(bricks)
 
     for brick in bricks:
         brick.mesh_position = bu_to_mesh((np.round(brick.position - mins)+np.array([2, 4, 2])).astype(int))
@@ -163,44 +146,3 @@ def make_samples2(filename, samples_network_type):
     print(f"samples generated:", len(samples))
     return samples
 
-#def make_samples(oo: ObjectOccupancy, shape: Tuple, bricks: list, debug = False) -> List[str]:
-#    initilize_models_csv()
-
-#    samples = []
-
-#    if debug:
-#        print("grid shape:", oo.brick_grid.shape)
-    
-    # TODO możnaby ładniej iterować po tym wszystkim
-#    for y in range(oo.brick_grid.shape[1] - shape[1], -1, -1):
-#        for x in range(oo.brick_grid.shape[0] - shape[0] + 1):
-#            for z in range(oo.brick_grid.shape[2] - shape[2] + 1):
-#                pos = np.array([x, y, z])
- #               vu_pos = bu_to_vu(pos)
- #               vu_shape = bu_to_vu(shape) + 2*const.PADDING
- #               #print("voxel group shape:", vu_shape)
- #               patch = oo.brick_grid[x:x+shape[0], y:y+shape[1], z:z+shape[2]]
-                
- #               channel1 = oo.voxel_grid[vu_pos[0]:vu_pos[0]+vu_shape[0],
- #                                       vu_pos[1]:vu_pos[1]+vu_shape[1],
- #                                       vu_pos[2]:vu_pos[2]+vu_shape[2]]
-
- #               temp_bo = BrickOccupancy.from_bricks(bricks)
- #               brick = temp_bo.get_brick_at(bricks, (pos[0], pos[1]+shape[1]-1, pos[2]))
-
- #               label = 0 # if nothing to analyse then label is 0 for every cnn
-
- #               if brick is not None:
- #                   label = shape_id_rot_label_map[shape][brick.part.id][brick.rotation]
- #                   temp_bo.remove_brick(brick)
-
-
-
- #               channel2 = temp_bo.voxel_grid[vu_pos[0]:vu_pos[0]+vu_shape[0],
- #                                           vu_pos[1]:vu_pos[1]+vu_shape[1],
- #                                           vu_pos[2]:vu_pos[2]+vu_shape[2]]
- #
- #               samples.append(sample_to_str(channel1, channel2, label))
- #   if debug:
- #       print(f"samples generated:", len(samples))
- #   return samples

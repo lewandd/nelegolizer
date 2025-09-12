@@ -1,12 +1,10 @@
-from nelegolizer.data import part_by_filename, part_by_id
-from nelegolizer.utils.conversion import *
-from nelegolizer.utils import mesh as umesh
-from nelegolizer.utils import grid
-from nelegolizer.data import LDrawReference
-from nelegolizer import const
+from . import part_by_filename, part_by_id
+from ..utils.conversion import mesh_to_bu, ldu_to_mesh, mesh_to_ldu
+from ..utils import mesh as utils_mesh
+from ..utils import grid as utils_grid
+from . import LDrawReference
+from ..constants import VU
 from typing import Tuple
-import constants as const
-
 import numpy as np
 
 ROT_MATRIX_0 = np.array([[1, 0, 0],
@@ -145,12 +143,12 @@ class LegoBrick:
     def mesh(self):
         m = self.part.mesh
         m = m.rotate_y(angle=self.rotation, inplace=False)
-        m = umesh.translate_to_zero(m)
+        m = utils_mesh.translate_to_zero(m)
         
         # translate to make mesh (0,0,0) pos to upper BU bounding box corner
-        part_height = umesh.get_resolution(m)[1]
+        part_height = utils_mesh.get_resolution(m)[1]
         height_translate = np.array([0,
-                                     self.rotated_shape[1]*2*const.VOXEL_MESH_SHAPE[1] - part_height,
+                                     self.rotated_shape[1]*2*VU[1] - part_height,
                                      0])
         m = m.translate(height_translate, inplace=False)
         
@@ -160,7 +158,7 @@ class LegoBrick:
     @property
     def grid(self):
         g = self.part.grid
-        g = grid.rotate(g, self.rotation)
+        g = utils_grid.rotate(g, self.rotation)
         return g
 
     def __str__(self):

@@ -1,22 +1,22 @@
 from nelegolizer.data import LDrawFile, initilize_parts
 import pyvista as pv
 import nelegolizer.utils.voxelization as uvox
-from nelegolizer import const
-from nelegolizer.data._BrickCoverage import compute_bounds
-from nelegolizer.utils.grid import get_fill, bu_to_mesh
+from nelegolizer.utils import brick as utils_brick
+from nelegolizer.utils.conversion import bu_to_mesh
+from nelegolizer.constants import VU, BU
 from nelegolizer.data import BrickCoverage
 import numpy as np
 
 initilize_parts()
 
-filename = "fixtures/impossible_trophy.mpd"
-#filename = "fixtures/church.mpd"
+#filename = "fixtures/impossible_trophy.mpd"
+filename = "fixtures/church.mpd"
 
 ldf = LDrawFile.load(filename)
 ldm = ldf.models[0]
 bricks = ldm.as_bricks()
 
-mins, maxs = compute_bounds(bricks)
+mins, maxs = utils_brick.compute_bounds(bricks)
 for brick in bricks:
     #print()
     #print(f"old position {brick.position}")
@@ -32,16 +32,16 @@ bo.pos_max = bo_old.pos_max
 
 
 
-#for brick in bricks:
-#    bo.place_brick(brick)
+for brick in bricks:
+    bo.place_brick(brick)
 
 #bo.place_brick(bricks[1])
 #bo.place_brick(bricks[0])
 #bo.place_brick(bricks[2])
 
-bo.place_brick(bricks[3])
-print(bo.get_brick_position(bricks[3]))
-print(bricks[3].position)
+#bo.place_brick(bricks[3])
+#print(bo.get_brick_position(bricks[3]))
+#print(bricks[3].position)
 
 #bo.place_brick(bricks[4])
 #bo.place_brick(bricks[5])
@@ -79,7 +79,7 @@ print(bricks[3].position)
 #bo.brick_grid[3, 0:2, 3] = True
 
 mesh = pv.MultiBlock([brick.mesh for brick in bricks]).combine()
-voxels = uvox.from_grid(bo.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+voxels = uvox.from_grid(bo.ext_voxel_grid, voxel_mesh_shape=VU)
 plotter = pv.Plotter(shape=(1, 3))
 
 plotter.subplot(0, 0)
@@ -89,22 +89,22 @@ plotter.add_mesh(mesh)
 plotter.subplot(0, 1)
 plotter.add_title("BU coverage", 8)
 
-bricks = uvox.from_grid(bo.brick_grid, voxel_mesh_shape=const.BRICK_UNIT_MESH_SHAPE)
+bricks = uvox.from_grid(bo.brick_grid, voxel_mesh_shape=BU)
 
 try:
-    bottom_studs = uvox.from_grid(bo.bottom_available_grid, voxel_mesh_shape=const.BRICK_UNIT_MESH_SHAPE)
+    bottom_studs = uvox.from_grid(bo.bottom_available_grid, voxel_mesh_shape=BU)
     plotter.add_mesh(bottom_studs, show_edges=True, color="orange", opacity=0.5)
 except TypeError:
     pass
 
 try:
-    bottom3_studs = uvox.from_grid(bo.bottom3_available_grid, voxel_mesh_shape=const.BRICK_UNIT_MESH_SHAPE)
+    bottom3_studs = uvox.from_grid(bo.bottom3_available_grid, voxel_mesh_shape=BU)
     plotter.add_mesh(bottom3_studs, show_edges=True, color="yellow", opacity=0.5)
 except TypeError:
     pass
 
 try:
-    top_studs = uvox.from_grid(bo.top_available_grid, voxel_mesh_shape=const.BRICK_UNIT_MESH_SHAPE)
+    top_studs = uvox.from_grid(bo.top_available_grid, voxel_mesh_shape=BU)
     plotter.add_mesh(top_studs, show_edges=True, color="green", opacity=0.5)
 except TypeError:
     pass

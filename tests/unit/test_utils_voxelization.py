@@ -6,7 +6,7 @@ import numpy as np
 import pyvista as pv
 
 from nelegolizer.utils.voxelization import from_mesh, from_grid
-from nelegolizer.utils import mesh as umesh
+from nelegolizer.utils import mesh as utils_mesh
 
 
 class Test_from_mesh(unittest.TestCase):
@@ -56,7 +56,7 @@ class Test_from_grid(unittest.TestCase):
                          [[True, False], [False, False]]])
         shape = np.array([1, 1.12, 1])
         pv_voxels = from_grid(grid, voxel_mesh_shape=shape)
-        result_cell_shape = umesh.get_resolution(pv_voxels.extract_cells(0))
+        result_cell_shape = utils_mesh.get_resolution(pv_voxels.extract_cells(0))
         self.assertTrue(np.allclose(result_cell_shape, shape))
 
     def test_all_cells_same_shape(self):
@@ -65,5 +65,5 @@ class Test_from_grid(unittest.TestCase):
         shape = np.array([1, 1.12, 1])
         pv_voxels = from_grid(grid, voxel_mesh_shape=shape)
         for ind in range(pv_voxels.n_cells):
-            cell_shape = umesh.get_resolution(pv_voxels.extract_cells(ind))
+            cell_shape = utils_mesh.get_resolution(pv_voxels.extract_cells(ind))
             self.assertTrue(np.allclose(cell_shape, shape))

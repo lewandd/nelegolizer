@@ -1,6 +1,6 @@
 import numpy as np
-from nelegolizer.data import LegoBrick
-from nelegolizer.utils.conversion import *
+from ..data import LegoBrick
+from ..utils.conversion import bu_to_mesh
 
 label_data = {3: {1: ("3004", 0),
                   2: ("3004", 90),

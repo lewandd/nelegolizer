@@ -1,8 +1,7 @@
+from . import mesh as utils_mesh
 import pyvista as pv
 import numpy as np
-from nelegolizer.utils import mesh as umesh
 from typing import Tuple
-import constants as const
 
 def in_bounds(arr: np.ndarray, pos: Tuple[int, int, int]) -> bool:
     return all(0 <= idx < dim for idx, dim in zip(pos, arr.shape))
@@ -105,9 +104,9 @@ def get_fill_ratio(grid: np.ndarray) -> float:
 
 
 def from_pv_voxels(pv_voxels: pv.UnstructuredGrid) -> np.ndarray:
-    pv_voxels = umesh.translate_to_zero(pv_voxels)
-    mesh_shape = umesh.get_resolution(pv_voxels)
-    unit_shape = umesh.get_resolution(pv_voxels.extract_cells(0))
+    pv_voxels = utils_mesh.translate_to_zero(pv_voxels)
+    mesh_shape = utils_mesh.get_resolution(pv_voxels)
+    unit_shape = utils_mesh.get_resolution(pv_voxels.extract_cells(0))
     resolution = np.around((mesh_shape/unit_shape)).astype(int)
     voxel_centers = pv_voxels.cell_centers().points
     grid = np.zeros(resolution, dtype=bool)
@@ -143,9 +142,9 @@ def from_mesh(mesh: pv.PolyData,
               *, voxel_mesh_shape: np.ndarray) -> np.ndarray:
     # copied voxelization.from_mesh code to avoid import
     eps = voxel_mesh_shape/2.0
-    eps_ext_mesh = umesh.scale_to(mesh, umesh.get_resolution(mesh)+eps)
+    eps_ext_mesh = utils_mesh.scale_to(mesh, utils_mesh.get_resolution(mesh)+eps)
 
-    eps_ext_mesh = umesh.translate_to_zero(eps_ext_mesh)
+    eps_ext_mesh = utils_mesh.translate_to_zero(eps_ext_mesh)
     pv_voxels = pv.voxelize(eps_ext_mesh,
                             density=voxel_mesh_shape,
                             check_surface=False)

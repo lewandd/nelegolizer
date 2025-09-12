@@ -1,5 +1,5 @@
 from nelegolizer.data import initilize_parts
-from nelegolizer.model.dataset_generation import make_samples2, save_dataset
+from nelegolizer.model.dataset_generation import make_samples, save_dataset
 import argparse
 from pathlib import Path
 
@@ -32,17 +32,12 @@ def main():
         print(f"File doesn't exist: {input_path}")
         return
     
-    #if shape == (3, 3, 3):
-    #    network_type = 1
-    #elif shape == (5, 5, 5):
-    #    network_type = 3
-
     if net_type == "type3":
         network_type = 3
     elif net_type == "type1":
         network_type = 1
     initilize_parts()
-    samples = make_samples2(input_path, network_type)
+    samples = make_samples(input_path, network_type)
     print("samples generated:", len(samples))
     save_dataset(samples, output_path)
     #ldf = LDrawFile.load(input_path)

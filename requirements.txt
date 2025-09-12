@@ -4,3 +4,5 @@ pyvista
 torch
 pytest
 flake8
+tqdm
+pyyaml

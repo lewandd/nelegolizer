@@ -1,10 +1,10 @@
-import numpy as np
-from nelegolizer import const
-from nelegolizer.utils.grid import rotate, is_empty, get_subgrid
-from nelegolizer.utils.brick import compute_bounds
-from nelegolizer.utils.conversion import *
+from ..utils import grid as utils_grid
+from ..utils import brick as utils_brick
+from ..utils.conversion import ext_bu_to_vu, bu_to_vu
+from ..constants import EXT_BU_RES
+from .voxelized_parts import stud_grid, ext_part_grid2, ext_stud_grid
 from typing import Tuple, List
-from nelegolizer.data.voxelized_parts import stud_grid, ext_part_grid2, ext_stud_grid
+import numpy as np
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,27 +22,28 @@ class BrickCoverage:
         logger.debug(f"BrickCoverage: brick_grid.shape = {self.brick_grid.shape}")
 
         # Voxel Units
-        self.vu_shape = bu_to_vu(self.shape) + 2*const.PADDING
+        self.vu_shape = bu_to_vu(self.shape)
         self.voxel_grid = np.zeros(self.vu_shape, dtype=bool)
 
-        ones = np.ones(shape=(self.vu_shape[0], const.PADDING[1], self.vu_shape[2]))
-        ones_pos = (0, self.vu_shape[1]-const.PADDING[1], 0)
-        self._paste_subgrid(self.voxel_grid, ones, ones_pos)
+        # ???
+        #ones = np.ones(shape=(self.vu_shape[0], const.PADDING[1], self.vu_shape[2]))
+        #ones_pos = (0, self.vu_shape[1], 0)
+        #self._paste_subgrid(self.voxel_grid, ones, ones_pos)
 
         # extended Voxel Units
-        self.ext_vu_shape = ext_bu_to_vu(self.shape)+2*const.PADDING
+        self.ext_vu_shape = ext_bu_to_vu(self.shape)
+        print(self.ext_vu_shape)
         self.ext_voxel_grid = np.zeros(self.ext_vu_shape, dtype=bool)
         logger.debug(f"BrickCoverage: ext_voxel_grid.shape = {self.ext_voxel_grid.shape}")
-
         if self.BOT_EXT:
             # bottom
-            ext_ones = np.ones(shape=(self.ext_vu_shape[0], self.BOT_EXT*EXTBU[1]-1+const.PADDING[1], self.ext_vu_shape[2]))
-            ext_ones_pos = (0, self.ext_vu_shape[1]-const.PADDING[1]-self.BOT_EXT*EXTBU[1]+1, 0)
+            ext_ones = np.ones(shape=(self.ext_vu_shape[0], self.BOT_EXT*EXT_BU_RES[1]-1, self.ext_vu_shape[2]))
+            ext_ones_pos = (0, self.ext_vu_shape[1]-self.BOT_EXT*EXT_BU_RES[1]+1, 0)
             self._paste_subgrid(self.ext_voxel_grid, ext_ones, ext_ones_pos)
             for x in range(self.shape[0]):
                 for z in range(self.shape[2]):
                     y = self.shape[1] - self.BOT_EXT
-                    ext_vu_pos = ext_bu_to_vu(np.array([x, y, z]))+const.PADDING-np.array([0, 2, 0])
+                    ext_vu_pos = ext_bu_to_vu(np.array([x, y, z]))-np.array([0, 2, 0])
                     self._paste_subgrid(self.ext_voxel_grid, ext_stud_grid, ext_vu_pos)
 
         # Stud grid
@@ -91,12 +92,12 @@ class BrickCoverage:
                 lower_position = (x, pos[1]+brick_shape[1]+1, z)
                 # usuń stud jeżeli powyżej nie ma klocka
                 if not (self.in_bounds(self.brick_grid, upper_position) and self.brick_grid[upper_position]):
-                    vu_pos = bu_to_vu(upper_position)+const.PADDING+np.array([0, 3, 0])
+                    vu_pos = bu_to_vu(upper_position)+np.array([0, 3, 0])
                     vu_empty = np.zeros([5,1,5], dtype=bool)
                     self._paste_subgrid(self.voxel_grid, vu_empty, vu_pos)
                 # dodaj stud jeżeli poniżej jest klocek ze studem
                 if self.in_bounds(self.stud_grid, lower_position) and self.stud_grid[lower_position]:
-                    vu_pos = bu_to_vu(lower_position)+const.PADDING-np.array([0, 2, 0])
+                    vu_pos = bu_to_vu(lower_position)-np.array([0, 2, 0])
                     self._paste_subgrid(self.voxel_grid, stud_grid, vu_pos)
 
     def _ext_upper_pos(self, brick):
@@ -108,7 +109,7 @@ class BrickCoverage:
             for z in range(pos[2], pos[2]+brick_shape[2]):
                 upper_position = (x, pos[1]-1, z)
                 if self.in_bounds(self.brick_grid, upper_position):
-                    ext_vu_pos = ext_bu_to_vu(upper_position)+const.PADDING+np.array([0, 5, 0])
+                    ext_vu_pos = ext_bu_to_vu(upper_position)+np.array([0, 5, 0])
                     upper_positions.append(ext_vu_pos)
         return upper_positions
 
@@ -121,7 +122,7 @@ class BrickCoverage:
             for z in range(pos[2], pos[2]+brick_shape[2]):
                 lower_position = (x, pos[1]+brick_shape[1]+1, z)
                 if self.in_bounds(self.brick_grid, lower_position):
-                    ext_vu_pos = ext_bu_to_vu(lower_position)+const.PADDING-np.array([0, 2, 0])
+                    ext_vu_pos = ext_bu_to_vu(lower_position)-np.array([0, 2, 0])
                     lower_positions.append(ext_vu_pos)
         return lower_positions
 
@@ -136,12 +137,12 @@ class BrickCoverage:
                 lower_position = (x, pos[1]+brick_shape[1]+1, z) # lower position powinno być dużo niżej
                 # usuń stud jeżeli powyżej nie ma klocka
                 if not (self.in_bounds(self.brick_grid, upper_position) and self.brick_grid[upper_position]):
-                    vu_pos = ext_bu_to_vu(upper_position)+const.PADDING+np.array([0, 5, 0])
+                    vu_pos = ext_bu_to_vu(upper_position)+np.array([0, 5, 0])
                     vu_empty = np.zeros([5,2,5], dtype=bool)
                     self._paste_subgrid(self.ext_voxel_grid, vu_empty, vu_pos)
                 # dodaj stud jeżeli poniżej jest klocek ze studem
                 if self.in_bounds(self.stud_grid, lower_position) and self.stud_grid[lower_position]:
-                    vu_pos = ext_bu_to_vu(lower_position)+const.PADDING-np.array([0, 2, 0])
+                    vu_pos = ext_bu_to_vu(lower_position)-np.array([0, 2, 0])
                     self._paste_subgrid(self.ext_voxel_grid, ext_stud_grid, vu_pos)
 
     # --- PUBLIC API ---
@@ -149,8 +150,8 @@ class BrickCoverage:
     def is_placement_available(self, brick):
         ext_pos = self._grid_position(brick)+ np.array([0, 1, 0])# + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT]) 
         brick_shape = brick.rotated_shape
-        placement = get_subgrid(self.brick_grid, ext_pos, brick_shape)
-        return is_empty(placement)
+        placement = utils_grid.get_subgrid(self.brick_grid, ext_pos, brick_shape)
+        return utils_grid.is_empty(placement)
         
     def place_brick(self, brick, debug=False):
         """Put a brick into brick_grid, voxel_grid and stud_grid."""
@@ -167,8 +168,8 @@ class BrickCoverage:
 
         # Voxel Units grid
         #stud_shape_extension = np.array([0, 1, 0])
-        vu_pos = bu_to_vu(pos)+const.PADDING+np.array([0, 1, 0])
-        vu_mask = rotate(brick.part.grid, brick.rotation)
+        vu_pos = bu_to_vu(pos)+np.array([0, 1, 0])
+        vu_mask = utils_grid.rotate(brick.part.grid, brick.rotation)
         self._paste_subgrid(self.voxel_grid, vu_mask, vu_pos)
 
         # update above Voxel Unit grid
@@ -181,8 +182,7 @@ class BrickCoverage:
                     vu_ones = np.ones((w-1, 1, d-1), dtype=bool)
                     self._paste_subgrid(self.voxel_grid, vu_ones, vu_pos)
 
-        # extended Voxel Units grid
-        #ext_vu_pos = ext_bu_to_vu(ext_pos - np.array([0, 1, 0]))+const.PADDING
+        # extended Voxel Units griD
         ext_vu_pos = ext_bu_to_vu(ext_pos)-np.array([0, 1, 0])
         ext_vu_mask = ext_part_grid2[brick.part.id][brick.rotation]
         self._paste_subgrid(self.ext_voxel_grid, ext_vu_mask, ext_vu_pos)
@@ -286,12 +286,12 @@ class BrickCoverage:
         self._paste_subgrid(self.brick_grid, empty, pos)
 
         # extended Voxel Units
-        interior_pos = const.PADDING + ext_bu_to_vu(pos+np.array([0, 1, 0])) + np.array([0, 1, 0])
+        interior_pos = ext_bu_to_vu(pos+np.array([0, 1, 0])) + np.array([0, 1, 0])
         interior_empty_shape = ext_part_grid2[brick.part.id][brick.rotation].shape - np.array([0, 4, 0])
         interior_empty = np.zeros(shape=interior_empty_shape, dtype=bool)
         
         upper_connection_pos = interior_pos - np.array([0, 1, 0])
-        lower_connection_pos = const.PADDING + ext_bu_to_vu(pos+np.array([0, 4, 0]))
+        lower_connection_pos = ext_bu_to_vu(pos+np.array([0, 4, 0]))
         connection_empty_shape = (interior_empty_shape[0], 1, interior_empty_shape[2])
         connection_empty = np.zeros(shape=connection_empty_shape, dtype=bool)
 
@@ -307,7 +307,7 @@ class BrickCoverage:
 
 
         # Voxel Units
-        vu_pos = bu_to_vu(pos)+const.PADDING+np.array([0, 2, 0])
+        vu_pos = bu_to_vu(pos)+np.array([0, 2, 0])
         vu_empty = np.zeros(bu_to_vu(brick.rotated_shape), dtype=bool)
         self._paste_subgrid(self.voxel_grid, vu_empty, vu_pos)
         self._update_studs(brick)
@@ -324,7 +324,7 @@ class BrickCoverage:
     @classmethod
     def from_bricks(cls, bricks, bottom_extension=0, top_extension=0, side_extension=0):
         """Create BrickOccupancy from list of bricks"""
-        pos_min, pos_max = compute_bounds(bricks)
+        pos_min, pos_max = utils_brick.compute_bounds(bricks)
         shape = (pos_max-pos_min).astype(int)
         
         # add place for stud

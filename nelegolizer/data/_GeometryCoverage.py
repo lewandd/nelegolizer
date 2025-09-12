@@ -1,8 +1,8 @@
-import numpy as np
-from nelegolizer import const
-from nelegolizer.utils.conversion import *
-from nelegolizer.utils.grid import get_subgrid, get_fill
+from ..utils.conversion import vu_to_bu, bu_to_vu, ext_bu_to_vu
+from ..utils import grid as utils_grid
+from ..constants import BU_RES, EXT_BU_RES 
 from typing import Tuple
+import numpy as np
 
 class GeometryCoverage:
     def __init__(self, voxel_grid, bottom_extension=0, top_extension=0, side_extension=0):
@@ -31,10 +31,10 @@ class GeometryCoverage:
         #for pos, _ in np.ndenumerate(self.brick_grid[self.SIDE_EXT:-self.SIDE_EXT,self.TOP_EXT:-self.BOT_EXT,self.SIDE_EXT:-self.SIDE_EXT]):
             x, y, z = pos
             ext_pos = pos# + np.array([self.SIDE_EXT, self.TOP_EXT, self.SIDE_EXT])
-            vu_pos = bu_to_vu(pos)+const.PADDING
+            vu_pos = bu_to_vu(pos)
             
-            self.brick_grid[ext_pos[0], ext_pos[1], ext_pos[2]] = get_fill(
-                get_subgrid(self.voxel_grid, vu_pos, const.BRICK_UNIT_RESOLUTION)) > 0
+            self.brick_grid[ext_pos[0], ext_pos[1], ext_pos[2]] = utils_grid.get_fill(
+                utils_grid.get_subgrid(self.voxel_grid, vu_pos, BU_RES)) > 0
             
 
         # extended Voxel Units
@@ -43,14 +43,14 @@ class GeometryCoverage:
         self.ext_voxel_grid = np.zeros(self.ext_vu_shape, dtype=bool)
         print(f"GeometryCoverage: ext_voxel_grid.shape = {self.ext_voxel_grid.shape}")
 
-        ext_ones = np.ones(shape=(self.ext_vu_shape[0], const.PADDING[1], self.ext_vu_shape[2]))
-        ext_ones_pos = (0, self.ext_vu_shape[1]-const.PADDING[1], 0)
-        self._paste_subgrid(self.ext_voxel_grid, ext_ones, ext_ones_pos)
+        #ext_ones = np.ones(shape=(self.ext_vu_shape[0], 0], self.ext_vu_shape[2]))
+        #ext_ones_pos = (0, self.ext_vu_shape[1], 0)
+        #self._paste_subgrid(self.ext_voxel_grid, ext_ones, ext_ones_pos)
 
         if self.BOT_EXT:
             # bottom
-            ext_ones = np.ones(shape=(self.ext_vu_shape[0], self.BOT_EXT*EXTBU[1]+const.PADDING[1], self.ext_vu_shape[2]))
-            ext_ones_pos = (0, self.ext_vu_shape[1]-const.PADDING[1]-self.BOT_EXT*EXTBU[1], 0)
+            ext_ones = np.ones(shape=(self.ext_vu_shape[0], self.BOT_EXT*EXT_BU_RES[1], self.ext_vu_shape[2]))
+            ext_ones_pos = (0, self.ext_vu_shape[1]-self.BOT_EXT*EXT_BU_RES[1], 0)
             self._paste_subgrid(self.ext_voxel_grid, ext_ones, ext_ones_pos)
             #for x in range(self.shape[0]):
             #    for z in range(self.shape[2]):
@@ -68,7 +68,7 @@ class GeometryCoverage:
         #        ext_vu_pos = ext_bu_to_vu(ext_pos)+const.PADDING+np.array([0, 1, 0])
         #        # dodałem ext_pos zamiast pos
         #        vu_pos = bu_to_vu(ext_pos)+const.PADDING
-        #        vu_mask = grid.get_subgrid(voxel_grid, vu_pos, const.BRICK_UNIT_RESOLUTION)
+        #        vu_mask = grid.get_subgrid(voxel_grid, vu_pos, BU_RES)
         #        self._paste_subgrid(self.ext_voxel_grid, vu_mask, ext_vu_pos)
 
         # wypełnianie wokselami wnętrza komórek
@@ -78,10 +78,10 @@ class GeometryCoverage:
             if self.brick_grid[ext_pos[0], ext_pos[1], ext_pos[2]]:
                 
                 #ext_vu_pos = ext_bu_to_vu(pos)+const.PADDING+np.array([0, 1, 0])
-                ext_vu_pos = ext_bu_to_vu(ext_pos)+const.PADDING+np.array([0, 1, 0])
+                ext_vu_pos = ext_bu_to_vu(ext_pos)+np.array([0, 1, 0])
                 # dodałem ext_pos zamiast pos
-                vu_pos = bu_to_vu(ext_pos)+const.PADDING
-                vu_mask = get_subgrid(self.voxel_grid, vu_pos, const.BRICK_UNIT_RESOLUTION)
+                vu_pos = bu_to_vu(ext_pos)
+                vu_mask = utils_grid.get_subgrid(self.voxel_grid, vu_pos, BU_RES)
                 self._paste_subgrid(self.ext_voxel_grid, vu_mask, ext_vu_pos)
             
 
@@ -91,8 +91,8 @@ class GeometryCoverage:
                 x, y, z = pos
                 if self.brick_grid[x, y, z]:
 
-                    ext_vu_pos = ext_bu_to_vu(pos)+const.PADDING
-                    vu_shape = const.BRICK_UNIT_RESOLUTION
+                    ext_vu_pos = ext_bu_to_vu(pos)
+                    vu_shape = BU_RES
 
                     for i in range(vu_shape[0]+1):
                         for k in range(vu_shape[2]+1):

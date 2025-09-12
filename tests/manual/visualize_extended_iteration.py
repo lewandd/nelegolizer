@@ -3,9 +3,9 @@ import numpy as np
 from nelegolizer.data import LDrawFile, initilize_parts, BrickCoverage
 from nelegolizer.utils.brick import compute_bounds
 from nelegolizer.data._GeometryCoverage import GeometryCoverage
-from nelegolizer import const
 import nelegolizer.utils.voxelization as uvox
-from nelegolizer.utils.conversion import *
+from nelegolizer.utils.conversion import bu_to_mesh, ext_bu_to_vu
+from nelegolizer.constants import VU, BU
 from nelegolizer.legolizer.iterator import find_next_to_cover_net, place_brick
 from nelegolizer.model.dataset_generation import make_brick_variants, get_label
 
@@ -90,11 +90,11 @@ while ntc1 is not None or ntc3 is not None:
     plotter.subplot(0, 0)
 
     if network_type == 1:
-        shape_of_selection = np.array([5, 3, 5]) * const.VOXEL_MESH_SHAPE
+        shape_of_selection = np.array([5, 3, 5]) * VU
     if network_type == 3:
-        shape_of_selection = np.array([5, 9, 5]) * const.VOXEL_MESH_SHAPE
+        shape_of_selection = np.array([5, 9, 5]) * VU
         
-    selection_pos = (np.array([6, 3, 6])*np.array([x, y-shape[1]+3, z])-np.array([0,1,0]))*const.VOXEL_MESH_SHAPE
+    selection_pos = (np.array([6, 3, 6])*np.array([x, y-shape[1]+3, z])-np.array([0,1,0]))*VU
     selection_mesh = uvox.from_grid(np.array([[[1]]]), voxel_mesh_shape=shape_of_selection)
     selection_mesh.translate(selection_pos, inplace=True)
     if network_type == 1:
@@ -102,8 +102,8 @@ while ntc1 is not None or ntc3 is not None:
     else:
         plotter.add_mesh(selection_mesh, show_edges=True, color="purple", opacity=0.2)
 
-    #voxels_scene_mesh = uvox.from_grid(bo.voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
-    voxels_mesh = uvox.from_grid(training_bc.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+    #voxels_scene_mesh = uvox.from_grid(bo.voxel_grid, voxel_mesh_shape=VU)
+    voxels_mesh = uvox.from_grid(training_bc.ext_voxel_grid, voxel_mesh_shape=VU)
     voxels_mesh.translate(np.array([0, -0.16, 0]), inplace=True)
     plotter.add_mesh(voxels_mesh, show_edges=True, color="white")
 
@@ -111,9 +111,9 @@ while ntc1 is not None or ntc3 is not None:
 
     plotter.subplot(0, 1)
     try:
-        channel1_mesh = uvox.from_grid(channel1, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+        channel1_mesh = uvox.from_grid(channel1, voxel_mesh_shape=VU)
         plotter.add_mesh(channel1_mesh, show_edges=True, color="blue", opacity=0.4)
-        channel2_mesh = uvox.from_grid(channel2, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+        channel2_mesh = uvox.from_grid(channel2, voxel_mesh_shape=VU)
         plotter.add_mesh(channel2_mesh, show_edges=True, color="white", opacity=1)
     except Exception:
         pass
@@ -124,8 +124,8 @@ while ntc1 is not None or ntc3 is not None:
     cpos2 = [(-3.15, -14.13, -4.28), 
             (2.00, 1.36, 2.4), 
             (0.37, -0.47, 0.8)]
-    cpos_moving = [(4+x*const.BRICK_UNIT_MESH_SHAPE[0], -11.5+y*const.BRICK_UNIT_MESH_SHAPE[1], 4+z*const.BRICK_UNIT_MESH_SHAPE[2]), 
-            (1.28+x*const.BRICK_UNIT_MESH_SHAPE[0], 0.64+y*const.BRICK_UNIT_MESH_SHAPE[1], 1.28+z*const.BRICK_UNIT_MESH_SHAPE[2]), 
+    cpos_moving = [(4+x*BU[0], -11.5+y*BU[1], 4+z*BU[2]), 
+            (1.28+x*BU[0], 0.64+y*BU[1], 1.28+z*BU[2]), 
             (-1, -0.17, 0.16)]
     plotter.subplot(0, 0)
     plotter.camera_position = cpos2#_moving

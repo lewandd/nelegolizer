@@ -1,7 +1,6 @@
-import numpy as np
-
-from nelegolizer.data import LDrawReference, LegoBrick
+from . import LDrawReference, LegoBrick
 from typing import List
+import numpy as np
 
 
 class LDrawModel():

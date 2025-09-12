@@ -1,11 +1,12 @@
 from nelegolizer.data import LDrawFile, initilize_parts
 import pyvista as pv
 import nelegolizer.utils.voxelization as uvox
-from nelegolizer import const
+#from nelegolizer import const
+from nelegolizer.constants import VU, BU
 from nelegolizer.data import BrickCoverage
 from nelegolizer.data._GeometryCoverage import GeometryCoverage
-from nelegolizer.data._BrickCoverage import compute_bounds
-from nelegolizer.utils.grid import get_fill, bu_to_mesh
+from nelegolizer.utils import brick as utils_brick
+from nelegolizer.utils.conversion import bu_to_mesh
 import numpy as np
 
 initilize_parts()
@@ -17,7 +18,7 @@ ldf = LDrawFile.load(filename)
 ldm = ldf.models[0]
 bricks = ldm.as_bricks()
 
-mins, maxs = compute_bounds(bricks)
+mins, maxs = utils_brick.compute_bounds(bricks)
 for brick in bricks:
     #print()
     #print(f"old position {brick.position}")
@@ -54,9 +55,9 @@ print(f"geometry ext voxel shape {geometry.ext_voxel_grid.shape}")
 
 mesh = pv.MultiBlock([brick.mesh for brick in bricks]).combine()
 
-bricks = uvox.from_grid(geometry.brick_grid, voxel_mesh_shape=const.BRICK_UNIT_MESH_SHAPE)
+bricks = uvox.from_grid(geometry.brick_grid, voxel_mesh_shape=BU)
 #voxels = uvox.from_grid(bc.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
-voxels = uvox.from_grid(geometry.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
+voxels = uvox.from_grid(geometry.ext_voxel_grid, voxel_mesh_shape=VU)
 plotter = pv.Plotter(shape=(1, 3))
 
 plotter.subplot(0, 0)

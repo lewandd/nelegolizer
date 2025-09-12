@@ -1,6 +1,6 @@
 import argparse
 from pathlib import Path
-from nelegolizer.model.io import save_model_str
+from nelegolizer.model.io import save_model
 from nelegolizer.model.cnn import net_types
 
 def main():
@@ -27,7 +27,7 @@ def main():
     model = net_types[net_type](input_shape=(30, 15, 30), num_classes=10)
 
     #model = create_model(shape)
-    save_model_str(model_path, model)
+    save_model(model_path, model)
 
 if __name__ == "__main__":
     main()

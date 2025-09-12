@@ -1,11 +1,9 @@
+from ..paths import PARTS_CSV, PART_DAT_DIR, PART_GEOM_DIR
+from .voxelized_parts import part_grid, ext_part_grid
 import pyvista as pv
 import pandas as pd
 import os
 from typing import Tuple
-
-from nelegolizer.utils import grid
-from nelegolizer import const, path
-from nelegolizer.data.voxelized_parts import part_grid, ext_part_grid
 import numpy as np
 
 
@@ -39,16 +37,16 @@ def initilize_parts():
     global part_by_id
     global part_by_filename
 
-    _PARTS2_DF = pd.read_csv(path.PARTS2_CSV).set_index("id")
-    for id in _PARTS2_DF.index.tolist():
-        shape = tuple(map(int, _PARTS2_DF.loc[id]["shape"].split(",")))
-        ldraw_offset = tuple(map(float, _PARTS2_DF.loc[id]["ldraw_offset"].split(",")))
-        dat_filename = _PARTS2_DF.loc[id]["dat_filename"]
-        geom_filename = _PARTS2_DF.loc[id]["geom_filename"]
-        ldu_offset = tuple(map(float, _PARTS2_DF.loc[id]["ldu_offset"].split(",")))
+    _PARTS_DF = pd.read_csv(PARTS_CSV).set_index("id")
+    for id in _PARTS_DF.index.tolist():
+        shape = tuple(map(int, _PARTS_DF.loc[id]["shape"].split(",")))
+        ldraw_offset = tuple(map(float, _PARTS_DF.loc[id]["ldraw_offset"].split(",")))
+        dat_filename = _PARTS_DF.loc[id]["dat_filename"]
+        geom_filename = _PARTS_DF.loc[id]["geom_filename"]
+        ldu_offset = tuple(map(float, _PARTS_DF.loc[id]["ldu_offset"].split(",")))
 
-        ldp = LDrawPart(dat_path=os.path.join(path.PART_DAT_DIR, dat_filename),
-                        geom_path=os.path.join(path.PART_GEOM_DIR, geom_filename),
+        ldp = LDrawPart(dat_path=os.path.join(PART_DAT_DIR, dat_filename),
+                        geom_path=os.path.join(PART_GEOM_DIR, geom_filename),
                         id=str(id),
                         size=shape,
                         ldraw_offset=ldraw_offset)
@@ -57,4 +55,4 @@ def initilize_parts():
         part_by_filename[str(dat_filename)] = ldp
     if (len(part_by_id) == 0) or (len(part_by_filename) == 0):
         raise Exception(f"Parts initialization failed. "
-                        f"No parts found in file {path.PARTS2_CSV}.")
+                        f"No parts found in file {PARTS_CSV}.")

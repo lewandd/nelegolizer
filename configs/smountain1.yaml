@@ -1,0 +1,25 @@
+model:
+  name: LegoNet
+  type: cnn
+  hidden_dim: 128
+  num_classes: 10
+  checkpoint: "models/classification/type3model1.pth"
+  input_shape: [30, 15, 30]
+
+iteration:
+  shape: [5, 5, 5]
+  shape_top_ext: 2
+
+data:
+  train_path: "data/processed/simple_mountain.type3.dataset"
+
+training:
+  epochs: 5
+  batch_size: 8
+  lr: 0.0013
+  optimizer: adam
+  save_path: "models/classification/smountain1.pth"
+
+misc:
+  seed: 42
+  device: "cuda"

@@ -1,41 +1,51 @@
+from ..constants import BU_RES, BU, LDU, EXT_BU_RES
 import numpy as np
-from nelegolizer import const
-from typing import Union, Tuple
+from typing import Union, Tuple, Type
 
-UNIT_EXT = np.array([1, 1, 1])
-EXTBU = const.BRICK_UNIT_RESOLUTION + UNIT_EXT
 
-def ext_bu_to_vu(bu: Union[np.ndarray, Tuple[int, int, int]]) -> np.ndarray:
-    arr = np.array(bu, dtype=int)
+#UNIT_EXT = np.array([1, 1, 1])
 
+
+def _cast(input_arr: Union[np.ndarray, Tuple],
+          output_type: Type = np.ndarray) -> Union[np.ndarray, Tuple]:
+    arr = np.asarray(input_arr)#.squeeze()
     if arr.shape != (3,):
-        raise ValueError(f"Expected shape (3,), got {arr.shape} from {bu!r}")
-
-    result = arr * (const.BRICK_UNIT_RESOLUTION + UNIT_EXT)
-
-    if isinstance(bu, tuple):
-        return tuple(result.tolist())
-    return result
-
-def vu_to_bu(vu: np.ndarray) -> np.ndarray:
-    if np.any((vu / const.BRICK_UNIT_RESOLUTION) != (vu // const.BRICK_UNIT_RESOLUTION)):
-        raise Exception(
-            "{vu} is not divisible by {const.BRICK_UNIT_RESOLUTION}."
-            "Cannot convert VoxelUnit to BrickUnit.")
+        raise ValueError(f"Expected shape (3,), got {arr.shape} from {input_arr!r}")
+    if output_type is tuple:
+        return tuple(arr.tolist())
+    elif output_type is np.ndarray:
+        return arr
     else:
-        return (vu / const.BRICK_UNIT_RESOLUTION).astype(int)
+        raise TypeError(f"Unsupported output_type: {output_type}")
 
-def bu_to_vu(bu: np.ndarray) -> np.ndarray:
-    return bu * const.BRICK_UNIT_RESOLUTION
+def ext_bu_to_vu(bu: Union[np.ndarray, Tuple]) -> Union[np.ndarray, Tuple]:
+    npbu = np.array(bu)
+    return _cast((npbu*EXT_BU_RES).astype(int), type(bu)) 
 
-def bu_to_mesh(bu: np.ndarray) -> np.ndarray:
-    return bu * const.BRICK_UNIT_MESH_SHAPE
+def vu_to_bu(vu: Union[np.ndarray, Tuple]) -> Union[np.ndarray, Tuple]:
+    npvu = np.array(vu)
+    if np.any((npvu / BU_RES) != (npvu // BU_RES)):
+        raise Exception(f"{vu} is not divisible by {BU_RES}."
+                         "Cannot convert VoxelUnit to BrickUnit.")
+    else:
+        return _cast((npvu / BU_RES).astype(int), type(vu))
 
-def mesh_to_bu(mesh: np.ndarray) -> np.ndarray:
-    return mesh / const.BRICK_UNIT_MESH_SHAPE
+def bu_to_vu(bu: Union[np.ndarray, Tuple]) -> Union[np.ndarray, Tuple]:
+    npbu = np.array(bu)
+    return _cast((npbu * BU_RES).astype(int), type(bu))
 
-def ldu_to_mesh(ldu_position: np.ndarray) -> np.ndarray:
-    return (ldu_position/const.BRICK_UNIT_LDU_SHAPE) * const.BRICK_UNIT_MESH_SHAPE
+def bu_to_mesh(bu: Union[np.ndarray, Tuple]) -> Union[np.ndarray, Tuple]:
+    npbu = np.array(bu)
+    return _cast(npbu * BU, type(bu))
 
-def mesh_to_ldu(mesh_position: np.ndarray) -> np.ndarray:
-    return (mesh_position/const.BRICK_UNIT_MESH_SHAPE) * const.BRICK_UNIT_LDU_SHAPE 
+def mesh_to_bu(mesh: Union[np.ndarray, Tuple]) -> Union[np.ndarray, Tuple]:
+    npmesh = np.array(mesh)
+    return _cast(npmesh/BU, type(mesh))
+
+def ldu_to_mesh(ldu: Union[np.ndarray, Tuple]) -> Union[np.ndarray, Tuple]:
+    npldu = np.array(ldu)
+    return _cast(npldu*LDU, type(ldu))
+
+def mesh_to_ldu(mesh: Union[np.ndarray, Tuple]) -> Union[np.ndarray, Tuple]:
+    npmesh = np.array(mesh)
+    return _cast(npmesh/LDU, type(mesh))

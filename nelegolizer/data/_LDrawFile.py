@@ -1,4 +1,4 @@
-from nelegolizer.data import LDrawModel, LDrawReference
+from . import LDrawModel, LDrawReference
 
 
 class LDrawFile():

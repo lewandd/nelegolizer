@@ -1,42 +1,42 @@
-from nelegolizer.model import shape_label_division_id_map, shape_label_part_id_map, division_by_id
-from nelegolizer.model import shape_label_part_id_map2, subshapes_by_id, shape_label_subshape_id_map2, shape_label_part_rot_map2
+#from nelegolizer.model import shape_label_division_id_map, shape_label_part_id_map, division_by_id
+#from nelegolizer.model import shape_label_part_id_map2, subshapes_by_id, shape_label_subshape_id_map2, shape_label_part_rot_map2
 
-class ClassificationResult:
-    def __init__(self, shape, label):
-        self.shape = shape
-        self.label = label
-        self.type = None
-        self.brick_id = None
-        self.division_id = None
-        self.division = None
+#class ClassificationResult:
+#    def __init__(self, shape, label):
+#        self.shape = shape
+#        self.label = label
+#        self.type = None
+#        self.brick_id = None
+#        self.division_id = None
+#        self.division = None
         
-        shape_t = tuple(map(int, shape))
-        if (shape_t in shape_label_part_id_map.keys()) and (label in shape_label_part_id_map[shape_t].keys()):
-            self.type = "brick"
-            self.brick_id = shape_label_part_id_map[shape_t][label]
-        elif (shape_t in shape_label_division_id_map.keys()) and (label in shape_label_division_id_map[shape_t].keys()):
-            self.type = "division"
-            self.division_id = shape_label_division_id_map[shape_t][label]
-            self.division = division_by_id[self.division_id]
+#        shape_t = tuple(map(int, shape))
+#        if (shape_t in shape_label_part_id_map.keys()) and (label in shape_label_part_id_map[shape_t].keys()):
+#            self.type = "brick"
+#            self.brick_id = shape_label_part_id_map[shape_t][label]
+#        elif (shape_t in shape_label_division_id_map.keys()) and (label in shape_label_division_id_map[shape_t].keys()):
+#            self.type = "division"
+#            self.division_id = shape_label_division_id_map[shape_t][label]
+#            self.division = division_by_id[self.division_id]
             
-class ClassificationResult2:
-    def __init__(self, shape, label):
-        self.shape = shape
-        self.label = label
-        self.type = None
-        self.brick_id = None
-        self.rotation = None
-        self.subshape = None
+#class ClassificationResult2:
+#    def __init__(self, shape, label):
+#        self.shape = shape
+#        self.label = label
+#        self.type = None
+#        self.brick_id = None
+#        self.rotation = None
+#        self.subshape = None
         
-        shape_t = tuple(map(int, shape))
-        if (shape_t in shape_label_part_id_map2.keys()) and (label in shape_label_part_id_map2[shape_t].keys()):
-            self.type = "brick"
-            self.rotation = shape_label_part_rot_map2[shape_t][label]
-            self.brick_id = shape_label_part_id_map2[shape_t][label]
-        elif (shape_t in shape_label_subshape_id_map2.keys()) and (label in shape_label_subshape_id_map2[shape_t].keys()):
-            self.type = "subshape"
-            self.subshape_id = shape_label_subshape_id_map2[shape_t][label]
-            self.subshape = subshapes_by_id[self.subshape_id]
+#        shape_t = tuple(map(int, shape))
+#        if (shape_t in shape_label_part_id_map2.keys()) and (label in shape_label_part_id_map2[shape_t].keys()):
+#            self.type = "brick"
+#            self.rotation = shape_label_part_rot_map2[shape_t][label]
+#            self.brick_id = shape_label_part_id_map2[shape_t][label]
+#        elif (shape_t in shape_label_subshape_id_map2.keys()) and (label in shape_label_subshape_id_map2[shape_t].keys()):
+#            self.type = "subshape"
+#            self.subshape_id = shape_label_subshape_id_map2[shape_t][label]
+#            self.subshape = subshapes_by_id[self.subshape_id]
 
             # sieć zwraca w result nic więcej o
 # tym subspace tylko docelowy realny
