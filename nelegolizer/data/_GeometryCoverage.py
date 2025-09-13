@@ -20,13 +20,13 @@ class GeometryCoverage:
                                  mode="constant",
                                  constant_values=0)
         self.vu_shape = self.voxel_grid.shape
-        print(f"GeometryCoverage: voxel_grid.shape = {self.voxel_grid.shape}")
+        #print(f"GeometryCoverage: voxel_grid.shape = {self.voxel_grid.shape}")
 
         # Initialize Brick Unit brick_grid
         self.interior_shape = vu_to_bu(voxel_grid.shape)
         self.shape = self.interior_shape + np.array([self.SIDE_EXT*2, self.VERT_EXT, self.SIDE_EXT*2])
         self.brick_grid = np.zeros(self.shape, dtype=bool)
-        print(f"GeometryCoverage: brick_grid.shape = {self.brick_grid.shape}")
+        #print(f"GeometryCoverage: brick_grid.shape = {self.brick_grid.shape}")
         for pos, _ in np.ndenumerate(self.brick_grid):
         #for pos, _ in np.ndenumerate(self.brick_grid[self.SIDE_EXT:-self.SIDE_EXT,self.TOP_EXT:-self.BOT_EXT,self.SIDE_EXT:-self.SIDE_EXT]):
             x, y, z = pos
@@ -41,7 +41,7 @@ class GeometryCoverage:
         self.ext_vu_shape = ext_bu_to_vu(np.array(self.shape))# + np.array([self.SIDE_EXT*2, self.VERT_EXT, self.SIDE_EXT*2])
         #self.ext_vu_shape = ext_bu_to_vu(self.shape)+2*const.PADDING
         self.ext_voxel_grid = np.zeros(self.ext_vu_shape, dtype=bool)
-        print(f"GeometryCoverage: ext_voxel_grid.shape = {self.ext_voxel_grid.shape}")
+        #print(f"GeometryCoverage: ext_voxel_grid.shape = {self.ext_voxel_grid.shape}")
 
         #ext_ones = np.ones(shape=(self.ext_vu_shape[0], 0], self.ext_vu_shape[2]))
         #ext_ones_pos = (0, self.ext_vu_shape[1], 0)

@@ -1,0 +1,19 @@
+model:
+  name: LegoNet
+  config_path: "configs/models/smountain1.model.yaml"
+  checkpoint: "models/classification/smountain1.pth"
+
+data:
+  train_path: "data/processed/smountain2/train_set1.dataset"
+  test_path: "data/processed/smountain2/test_set1.dataset"
+
+training:
+  epochs: 20
+  batch_size: 16
+  lr: 0.0001
+  optimizer: adam
+  save_path: "models/classification/smountain1v4.pth"
+
+misc:
+  seed: 42
+  device: "cuda"

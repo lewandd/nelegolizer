@@ -2,19 +2,22 @@ from nelegolizer.data import LDrawFile, initilize_parts
 import pyvista as pv
 import nelegolizer.utils.voxelization as uvox
 from nelegolizer.utils import brick as utils_brick
-from nelegolizer.utils.conversion import bu_to_mesh
+from nelegolizer.utils.conversion import bu_to_mesh, mesh_to_bu
 from nelegolizer.constants import VU, BU
 from nelegolizer.data import BrickCoverage
 import numpy as np
+import copy
 
 initilize_parts()
 
 #filename = "fixtures/impossible_trophy.mpd"
-filename = "fixtures/church.mpd"
+#filename = "fixtures/church.mpd"
+filename = "fixtures/simple_mountain.mpd"
 
 ldf = LDrawFile.load(filename)
 ldm = ldf.models[0]
 bricks = ldm.as_bricks()
+bricks = utils_brick.rotate_bricks_y(bricks, k=0)
 
 mins, maxs = utils_brick.compute_bounds(bricks)
 for brick in bricks:

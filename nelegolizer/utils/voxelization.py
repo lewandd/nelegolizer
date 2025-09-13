@@ -17,9 +17,6 @@ def voxelize(mesh: Union[str, pv.PolyData]):
     mesh = mesh.flip_normal([0.0, 1.0, 0.0])
 
     voxel_grid = utils_grid.from_mesh(mesh, voxel_mesh_shape=VU)
-    voxel_grid = utils_grid.provide_divisibility(
-                                    voxel_grid,
-                                    divider=BU_RES)
     return voxel_grid
 
 def from_mesh(mesh: pv.PolyData,

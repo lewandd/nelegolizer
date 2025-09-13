@@ -32,7 +32,7 @@ class BrickCoverage:
 
         # extended Voxel Units
         self.ext_vu_shape = ext_bu_to_vu(self.shape)
-        print(self.ext_vu_shape)
+        #print(self.ext_vu_shape)
         self.ext_voxel_grid = np.zeros(self.ext_vu_shape, dtype=bool)
         logger.debug(f"BrickCoverage: ext_voxel_grid.shape = {self.ext_voxel_grid.shape}")
         if self.BOT_EXT:
@@ -299,9 +299,9 @@ class BrickCoverage:
         self._paste_subgrid(self.ext_voxel_grid, interior_empty, interior_pos)
         self._paste_subgrid(self.ext_voxel_grid, connection_empty, upper_connection_pos)
         if len(self._ext_lower_pos(brick)):
-            print("----- REMOVED LOWER CONNECTION -----")
-            print(self._ext_lower_pos(brick))
-            print("------------------------------------")
+            #print("----- REMOVED LOWER CONNECTION -----")
+            #print(self._ext_lower_pos(brick))
+            #print("------------------------------------")
             self._paste_subgrid(self.ext_voxel_grid, connection_empty, lower_connection_pos)
         self._ext_update_studs(brick)
 

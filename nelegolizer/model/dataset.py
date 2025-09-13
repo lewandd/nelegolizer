@@ -2,10 +2,11 @@ import json
 import torch
 from torch.utils.data import Dataset
 import numpy as np
+from .label_encoder import LabelEncoder
 
 
 class VoxelDataset(Dataset):
-    def __init__(self, txt_file: str, transform=None, dtype=torch.float32):
+    def __init__(self, txt_file: str, label_encoder: LabelEncoder, transform=None, dtype=torch.float32):
         """
         Dataset ładujący dane voxelowe zapisane linia-po-linii w pliku .txt (JSONL).
         
@@ -15,6 +16,7 @@ class VoxelDataset(Dataset):
             dtype (torch.dtype): Typ tensora zwracanego do modelu
         """
         self.txt_file = txt_file
+        self.label_encoder = label_encoder
         self.transform = transform
         self.dtype = dtype
 
@@ -39,8 +41,13 @@ class VoxelDataset(Dataset):
         # Stackujemy kanały -> [channels, D, H, W]
         x = torch.stack([grid1, grid2], dim=0)
 
+        # brick_id i rotacja
+        brick_id = data["brick_id"]
+        rotation = data["rotation"]
+
         # Label
-        y = torch.tensor(data["label"], dtype=torch.long)
+        y = torch.tensor(self.label_encoder.encode((brick_id, rotation)), dtype=torch.long)
+        #y = torch.tensor(data["label"], dtype=torch.long)
 
         if self.transform:
             x = self.transform(x)

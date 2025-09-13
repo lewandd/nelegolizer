@@ -1,33 +1,30 @@
 import argparse
+import torch
+import yaml
+from nelegolizer.model.registry import get_model
+from nelegolizer.model.cnn import *
 from pathlib import Path
-from nelegolizer.model.io import save_model
-from nelegolizer.model.cnn import net_types
 
-def main():
-    parser = argparse.ArgumentParser(description="Script that takes a model " \
-                                    "input file and dataset txt file.")
-    parser.add_argument(
-        "model",
-        type=str,
-        help="Path to the output model file"
-    )
-    parser.add_argument(
-        "net_type",
-        type=str,
-        help='Network type'
-    )
+def load_config(path: str):
+    with open(path) as f:
+        return yaml.safe_load(f)
 
-    args = parser.parse_args()
-    model_path = Path(args.model)
-    
-    #shape = tuple(int(ch) for ch in args.shape)
-    #shape = (shape[0]*5, shape[1]*2, shape[2]*5)
-    
-    net_type = args.net_type
-    model = net_types[net_type](input_shape=(30, 15, 30), num_classes=10)
+def main(config_path: str, output_path: str):
+    # load config
+    config = load_config(config_path)
 
-    #model = create_model(shape)
-    save_model(model_path, model)
+    # model
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = get_model(config).to(device)
+    # save fresh state dict
+    torch.save(model.state_dict(), Path(output_path))
+    print(f"Saved untrained model to {output_path}")
+
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", required=True, help="Path to config YAML")
+    parser.add_argument("--output", required=True, help="Path to config output model")
+    args = parser.parse_args()
+
+    main(args.config, args.output)

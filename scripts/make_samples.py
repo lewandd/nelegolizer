@@ -2,56 +2,50 @@ from nelegolizer.data import initilize_parts
 from nelegolizer.model.dataset_generation import make_samples, save_dataset
 import argparse
 from pathlib import Path
+import yaml
+import random
 
-def main():
-    parser = argparse.ArgumentParser(description="Script that takes an mpd " \
-                                    "input file and an output txt file path.")
-    parser.add_argument(
-        "input_file",
-        type=str,
-        help="Path to the input MPD file"
-    )
-    parser.add_argument(
-        "output_file",
-        type=str,
-        help="Path to the output TXT file"
-    )
-    parser.add_argument(
-        "net_type",
-        type=str,
-        help="Network type"
-    )
-    
-    args = parser.parse_args()
-    input_path = Path(args.input_file)
-    output_path = Path(args.output_file)
-    #shape = tuple(int(ch) for ch in args.shape)
-    net_type = args.net_type
+def train_test_split(data, train_ratio=0.8, seed=42):
+    """Split data list into train/test parts."""
+    random.seed(seed)
+    random.shuffle(data)
+    split_idx = int(len(data) * train_ratio)
+    return data[:split_idx], data[split_idx:]
 
-    if not input_path.exists():
-        print(f"File doesn't exist: {input_path}")
-        return
-    
-    if net_type == "type3":
-        network_type = 3
-    elif net_type == "type1":
-        network_type = 1
+def main(config_path: str):
+    # load config
+    with open(config_path) as f:
+        config = yaml.safe_load(f)
+
     initilize_parts()
-    samples = make_samples(input_path, network_type)
-    print("samples generated:", len(samples))
-    save_dataset(samples, output_path)
-    #ldf = LDrawFile.load(input_path)
-    #lbm = ldf.models[0]
-    #bricks = lbm.as_bricks()
+    samples = make_samples(config)
 
-    
-    #bo = BrickOccupancy.from_bricks(bricks)
-    #oo = ObjectOccupancy(bo.voxel_grid)
+    print("Samples generated:", sum(len(v) for v in samples.values()))
 
-    #samples = make_samples(oo, shape, bricks, debug=True)
-    #print("samples generated:", len(samples))
-    #save_dataset(samples, output_path)
+    for subset_name, subset_cfg in config["dataset"]["subsets"].items():
+        subset_samples = samples[subset_name]
+
+        # split into train/test
+        train_samples, test_samples = train_test_split(
+            subset_samples, 
+            train_ratio=subset_cfg["data"]["split"]["train"],
+            seed=config['dataset']['misc']['seed']
+        )
+
+        # resolve paths
+        train_path = Path(subset_cfg["data"]["train_path"])
+        test_path = Path(subset_cfg["data"]["test_path"])
+
+        # save datasets
+        save_dataset(train_samples, train_path)
+        save_dataset(test_samples, test_path)
+
+        print(f"Subset '{subset_name}' samples: {len(train_samples)} train, {len(test_samples)} test")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", required=True, help="Path to config YAML")
+    args = parser.parse_args()
+
+    main(args.config)
 
