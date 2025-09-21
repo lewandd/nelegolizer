@@ -7,7 +7,7 @@ import pyvista as pv
 
 from nelegolizer import legolize
 
-reader = pv.get_reader("../../data/raw/obj_examples/rooster.obj")
+reader = pv.get_reader("../../data/raw/obj_examples/cone.obj")
 mesh = reader.read()
 mesh = mesh.scale(4)
 

@@ -1,0 +1,35 @@
+dataset:
+  name: "point"
+  raw_data_path: "data/raw/ldraw_models/point.ldr"
+  base_path: "data/processed/point"
+
+  subsets:
+    subset1:
+      iteration:
+        channel_shape: [30, 15, 30]
+        group_shape: [5, 5, 5]
+        shape_top_ext: 2
+        height: 3
+      data:
+        train_path: "data/processed/point/train_set1.dataset"
+        test_path: "data/processed/point/test_set1.dataset"
+        split: 
+          train: 0.8
+          test: 0.2
+      bricks: ["3004", "3005", "54200"]
+
+    subset2:
+      iteration:
+        channel_shape: [18, 9, 18]
+        group_shape: [3, 3, 3]
+        shape_top_ext: 0
+        height: 1
+      data:
+        train_path: "data/processed/point/train_set2.dataset"
+        test_path: "data/processed/point/test_set2.dataset"
+        split: 
+          train: 0.8
+          test: 0.2
+      bricks: ["3024"]
+  misc:
+    seed: 42

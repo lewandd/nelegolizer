@@ -11,8 +11,8 @@ import copy
 initilize_parts()
 
 #filename = "fixtures/impossible_trophy.mpd"
-#filename = "fixtures/church.mpd"
-filename = "fixtures/simple_mountain.mpd"
+filename = "fixtures/castle.ldr"
+#filename = "fixtures/simple_mountain.mpd"
 
 ldf = LDrawFile.load(filename)
 ldm = ldf.models[0]
@@ -118,7 +118,7 @@ plotter.add_mesh(bricks, show_edges=True, color="white")
 
 plotter.subplot(0, 2)
 plotter.add_title("extended voxel grid", 8)
-plotter.add_mesh(voxels, show_edges=True, color="white")
+plotter.add_mesh(voxels, show_edges=False, color="white")
 
 
 #plotter.add_mesh(voxels, show_edges=True, color="white")

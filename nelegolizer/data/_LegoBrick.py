@@ -72,13 +72,13 @@ class LegoBrick:
     @classmethod
     def from_reference(cls, ref: LDrawReference):
         # find rotation matrix
-        if np.allclose(ref.rotation, ROT_MATRIX_0):
+        if np.allclose(ref.rotation, ROT_MATRIX_0, atol=1e-04):
             degrees = 0
-        elif np.allclose(ref.rotation, ROT_MATRIX_90):
+        elif np.allclose(ref.rotation, ROT_MATRIX_90, atol=1e-04):
             degrees = 90
-        elif np.allclose(ref.rotation, ROT_MATRIX_180):
+        elif np.allclose(ref.rotation, ROT_MATRIX_180, atol=1e-04):
             degrees = 180
-        elif np.allclose(ref.rotation, ROT_MATRIX_270):
+        elif np.allclose(ref.rotation, ROT_MATRIX_270, atol=1e-04):
             degrees = 270
         else:
             raise Exception(f"Cannot convert model references to bricks."

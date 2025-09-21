@@ -3,10 +3,11 @@ import torch
 from torch.utils.data import Dataset
 import numpy as np
 from .label_encoder import LabelEncoder
+from typing import Union, List
 
 
 class VoxelDataset(Dataset):
-    def __init__(self, txt_file: str, label_encoder: LabelEncoder, transform=None, dtype=torch.float32):
+    def __init__(self, txt_files: Union[str, List[str]], label_encoder: LabelEncoder, transform=None, dtype=torch.float32):
         """
         Dataset ładujący dane voxelowe zapisane linia-po-linii w pliku .txt (JSONL).
         
@@ -15,14 +16,21 @@ class VoxelDataset(Dataset):
             transform (callable, optional): Funkcja/transformacja nakładana na dane
             dtype (torch.dtype): Typ tensora zwracanego do modelu
         """
-        self.txt_file = txt_file
+        if isinstance(txt_files, str):
+            txt_files = [txt_files]
+
+        self.txt_files = txt_files
         self.label_encoder = label_encoder
         self.transform = transform
         self.dtype = dtype
 
         # Wczytanie wszystkich linii do pamięci (można też leniwie, jeśli plik jest ogromny)
-        with open(txt_file, "r") as f:
-            self.lines = f.readlines()
+        self.lines = []
+        for file in self.txt_files:
+            with open(file, "r") as f:
+                self.lines.extend(f.readlines())
+        #with open(txt_file, "r") as f:
+        #    self.lines = f.readlines()
 
     def __len__(self):
         return len(self.lines)

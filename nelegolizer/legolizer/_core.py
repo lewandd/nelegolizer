@@ -26,9 +26,6 @@ def load_config(path: str):
 def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
     initilize_parts()
 
-    #initilize_models()
-    #initilize_models_csv()
-    #initilize_models_cnn()
     filename = "../../data/raw/ldraw_models/simple_mountain.mpd"
     ldf = LDrawFile.load(filename)
     lbm = ldf.models[0]
@@ -50,17 +47,17 @@ def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
     gc = GeometryCoverage(voxel_grid, bottom_extension=3, top_extension=4, side_extension=2)
     bc = BrickCoverage(gc.interior_shape, bottom_extension=3, top_extension=4, side_extension=2)
 
-    nets = {'model555': load_config(MODEL555CONFIG)}
-    models = {'model555': MODEL555}
-    label_encoders = {net: build_label_encoder(conf) for net, conf in nets.items()}
-    height_map = {net: conf['iteration']['height'] for net, conf in nets.items()}
-    #shapes_map = {net: net['iteration']['group_shape'] for net in nets}
-    #shapes_top_ext_map = {net: net['iteration']['shape_top_ext'] for net in nets}
-    #bricks_av_map = {net: net['iteration']['shape_top_ext'] for net in nets}
-    analyzed = {net: np.zeros_like(bc.brick_grid) for net in nets}
+    config = {'model555': load_config(MODEL555CONFIG)}
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model555 = get_model(load_config(MODEL555CONFIG))
+    model555.load_state_dict(torch.load(MODEL555, map_location=device))
+    
+    models = {'model555': model555}
+    label_encoders = {net: build_label_encoder(conf) for net, conf in config.items()}
+    height_map = {net: conf['iteration']['height'] for net, conf in config.items()}
+    analyzed = {net: np.zeros_like(bc.brick_grid) for net in config}
     ntcs = find_next_pos_to_cover(gc, bc, analyzed, height_map)
-
-
 
     bricks = []
 
@@ -73,8 +70,8 @@ def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
             if pos[1] < indices[1]:
                 net_used = subs
                 pos = indices
-        model_config = nets[net_used]['model']
-        iter_config = nets[net_used]['iteration']
+        model_config = config[net_used]['model']
+        iter_config = config[net_used]['iteration']
         
         x, y, z = pos
         shape = np.array(iter_config['group_shape'])
@@ -105,9 +102,10 @@ def legolize(mesh: Union[str, pv.PolyData]) -> List[LegoBrick]:
             it = 0
             while label != 0 and not placed:
                 # model
-                device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-                model = get_model(nets[net_used])
-                model.load_state_dict(torch.load(models[net_used], map_location=device))
+                #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                #model = get_model(nets[net_used])
+                #model.load_state_dict(torch.load(models[net_used], map_location=device))
+                model = models[net_used]
                 label = predict(model, channel1, channel2)[it]
                 brick_id, rotation = label_encoders[net_used].decode(label)
                 if brick_id != "None":
