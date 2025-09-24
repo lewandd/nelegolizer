@@ -1,0 +1,20 @@
+dataset:
+  name: "unstable cylinders"
+  raw_train_data_dir: "data/raw/ldraw_models/primitives unstable/cylinder/train/"
+  raw_test_data_dir: "data/raw/ldraw_models/primitives unstable/cylinder/test/"
+  rotations: [0, 1]
+  base_path: "data/processed/primitives unstable/cylinder"
+
+  subsets:
+    subset1:
+      iteration:
+        channel_shape: [30, 15, 30]
+        group_shape: [5, 5, 5]
+        shape_top_ext: 2
+        height: 3
+      data:
+        train_path: "data/processed/primitives unstable/cylinder/train_set1.dataset"
+        test_path: "data/processed/primitives unstable/cylinder/test_set1.dataset"
+      bricks: ["3004", "3005"]
+  misc:
+    seed: 42

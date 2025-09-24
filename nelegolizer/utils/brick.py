@@ -1,6 +1,8 @@
 import numpy as np
 from .conversion import mesh_to_bu, bu_to_mesh
 import copy
+from typing import List
+from ..data import LegoBrick
 
 def compute_bounds(lb_list):
         mins = []
@@ -16,6 +18,11 @@ def compute_bounds(lb_list):
         maxs = np.max(maxs, axis=0)
         
         return mins, maxs
+
+def normalize_positions(bricks: List[LegoBrick], offset: np.ndarray):
+    mins, _ = compute_bounds(bricks)
+    for brick in bricks:
+        brick.mesh_position = bu_to_mesh((np.round(brick.position - mins)+offset).astype(int))
 
 def rotate_bricks_y(bricks, k=1):
     """

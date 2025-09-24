@@ -1,10 +1,11 @@
-from ..data import LDrawFile, LegoBrick, GeometryCoverage, LDrawFile, BrickCoverage, LegoBrick, part_by_id
+from ..data import LDrawFile, LegoBrick, GeometryCoverage, LDrawFile, BrickCoverage, LegoBrick, part_by_id, LDrawModel
 from ..utils import brick as utils_brick
 from ..legolizer.iterator import find_next_pos_to_cover, place_brick, make_brick_variants
 from ..utils.conversion import bu_to_mesh, ext_bu_to_vu
 import numpy as np
 import json
 import copy
+import os
 
 def sample_to_str(channel1: np.ndarray, channel2: np.ndarray, brick_id: str, rotation: int) -> str:
     """
@@ -117,31 +118,38 @@ def generate_samples_from_scene(bricks, filled_bc, gc, training_bc, config):
     #print(f"samples generated:", len(samples))
     return samples
 
-def make_samples(config):
+def make_samples(config, type: str):
     # initialize smaples dict
     all_samples = {subset: [] for subset in config['dataset']['subsets']}
     
-    # load bricks
-    filename = config['dataset']['raw_data_path']
-    ldf = LDrawFile.load(filename)
-    lbm = ldf.models[0]
-    input_bricks = lbm.as_bricks()
+    if type == "train":
+        dir = config['dataset']['raw_train_data_dir']
+    elif type == "test":
+        dir = config['dataset']['raw_test_data_dir']
 
-    for k in range(4):
-        bricks = utils_brick.rotate_bricks_y(input_bricks, k)
+    for filename in os.listdir(dir):
+        filepath = os.path.join(dir, filename)
 
-        # normalize bricks positions
-        mins, _ = utils_brick.compute_bounds(bricks)
-        for brick in bricks:
-            brick.mesh_position = bu_to_mesh((np.round(brick.position - mins)+np.array([2, 4, 2])).astype(int))
+        ldf = LDrawFile.load(filepath)
+        lbm = LDrawModel.merge_multiple_models(ldf.models)
+        input_bricks = lbm.as_bricks()
 
-        # prepare input data
-        filled_bc = BrickCoverage.from_bricks(bricks, bottom_extension=3, top_extension=4, side_extension=2)
-        interior_voxel_grid = filled_bc.voxel_grid[10:-10, 8:-6, 10:-10]
-        gc = GeometryCoverage(interior_voxel_grid, bottom_extension=3, top_extension=4, side_extension=2)
-        training_bc = BrickCoverage(gc.interior_shape, bottom_extension=3, top_extension=4, side_extension=2)
+        for k in config['dataset']['rotations']:
+            bricks = utils_brick.rotate_bricks_y(input_bricks, k)
 
-        samples = generate_samples_from_scene(bricks, filled_bc, gc, training_bc, config)    
-        for subset in all_samples:
-            all_samples[subset].extend(samples[subset])
+            # normalize bricks positions
+            mins, _ = utils_brick.compute_bounds(bricks)
+            for brick in bricks:
+                brick.mesh_position = bu_to_mesh((np.round(brick.position - mins)+np.array([2, 4, 2])).astype(int))
+
+            # prepare input data
+            filled_bc = BrickCoverage.from_bricks(bricks, bottom_extension=3, top_extension=4, side_extension=2)
+            interior_voxel_grid = filled_bc.voxel_grid[10:-10, 8:-6, 10:-10]
+            gc = GeometryCoverage(interior_voxel_grid, bottom_extension=3, top_extension=4, side_extension=2)
+            training_bc = BrickCoverage(gc.interior_shape, bottom_extension=3, top_extension=4, side_extension=2)
+
+            samples = generate_samples_from_scene(bricks, filled_bc, gc, training_bc, config)    
+            for subset in all_samples:
+                print(f"{filename} | rotation: {k} | subset: {subset} | samples: {len(samples[subset])}")
+                all_samples[subset].extend(samples[subset])
     return all_samples

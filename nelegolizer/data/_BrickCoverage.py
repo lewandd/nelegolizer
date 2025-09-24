@@ -322,13 +322,14 @@ class BrickCoverage:
         self._paste_subgrid(self.stud_grid, empty, pos)
 
     @classmethod
-    def from_bricks(cls, bricks, bottom_extension=0, top_extension=0, side_extension=0):
+    def from_bricks(cls, bricks, bottom_extension=0, top_extension=0, side_extension=0, shape=None):
         """Create BrickOccupancy from list of bricks"""
         pos_min, pos_max = utils_brick.compute_bounds(bricks)
-        shape = (pos_max-pos_min).astype(int)
         
-        # add place for stud
-        shape = shape + np.array([0, 1, 0])
+        if shape is None:
+            shape = (pos_max-pos_min).astype(int) + np.array([0, 1, 0])
+        else:
+            shape = shape+np.array([0, 1, 0])
 
         bo = cls(shape, bottom_extension, top_extension, side_extension) 
         #bo.pos_min, bo.pos_max = pos_min, pos_max

@@ -61,6 +61,37 @@ class LegoBrick:
         #if self.id == "54200":
         #    return pos - np.array([0, 2, 0])
         return pos
+    
+    @property
+    def occupied_positions(self):
+        positions = []
+        for dx in range(self.rotated_shape[0]):
+            for dy in range(self.rotated_shape[1]):
+                for dz in range(self.rotated_shape[2]):
+                    positions.append((self.position[0]+dx, 
+                                      self.position[1]+dy, 
+                                      self.position[2]+dz))
+        return positions
+    
+    @property
+    def upper_positions(self):
+        positions = []
+        for dx in range(self.rotated_shape[0]):
+            for dz in range(self.rotated_shape[2]):
+                positions.append((self.position[0]+dx, 
+                                  self.position[1]-1, 
+                                  self.position[2]+dz))
+        return positions
+
+    @property
+    def lower_positions(self):
+        positions = []
+        for dx in range(self.rotated_shape[0]):
+            for dz in range(self.rotated_shape[2]):
+                positions.append((self.position[0]+dx, 
+                                  self.position[1]+self.rotated_shape[1], 
+                                  self.position[2]+dz))
+        return positions
 
     @property
     def rotated_shape(self) -> str:
@@ -97,22 +128,13 @@ class LegoBrick:
             else:
                 raise KeyError(f"No {ref.name} filename in part_by_filename. "
                            f"Available filenames: {part_by_filename.keys()}")
-
-        # rotate offset
-        #if degrees in [0, 180]:
-        #    ldraw_offset = part.ldraw_offset
-        #elif degrees in [90, 270]:
-        #    ldraw_offset = (part.ldraw_offset[2], part.ldraw_offset[1], part.ldraw_offset[0])
         
         if degrees in [0, 180]:
             ldu_offset = part.ldu_offset
         elif degrees in [90, 270]:
             ldu_offset = (part.ldu_offset[2], part.ldu_offset[1], part.ldu_offset[0])
 
-        # TUTAJ ZMIENIA SIĘ POZYCJA
-        #print(ref.position, "and", ldu_offset)
         return cls(id=part.id,
-                   #mesh_position=ldu_to_mesh(ref.position)-ldraw_offset,
                    mesh_position=ldu_to_mesh(ref.position-ldu_offset),
                    rotation=degrees,
                    color=ref.color)
@@ -122,7 +144,11 @@ class LegoBrick:
 
     @property
     def ldu_position(self):
-        return mesh_to_ldu(self.mesh_position, self.id, self.rotation)
+        if self.rotation in [0, 180]:
+            ldu_offset = self.part.ldu_offset
+        elif self.rotation in [90, 270]:
+            ldu_offset = (self.part.ldu_offset[2], self.part.ldu_offset[1], self.part.ldu_offset[0])
+        return mesh_to_ldu(self.mesh_position)+ldu_offset
 
     @property
     def matrix(self):

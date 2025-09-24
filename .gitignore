@@ -5,6 +5,7 @@ data/generated/n111/*
 
 .venv/
 .vscode
+data/processed/
 
 # Test Output
 tests/integration/fixtures/legolized_cone.mpd

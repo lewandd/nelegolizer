@@ -23,7 +23,7 @@ class LDrawFile():
             line_tail = " ".join(line_list[2:])
 
             if line_head[0] == '0' and line_head[1] == 'Name:':
-                name = line_tail
+                name = line_tail.lower().strip()
                 act_model = LDrawModel(name)
                 act_model.comms['Name'] = name
                 c.models.append(act_model)

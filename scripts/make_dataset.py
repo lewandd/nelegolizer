@@ -18,29 +18,23 @@ def main(config_path: str):
         config = yaml.safe_load(f)
 
     initilize_parts()
-    samples = make_samples(config)
+    train_samples = make_samples(config, type="train")
+    test_samples = make_samples(config, type="test")
 
-    print("Samples generated:", sum(len(v) for v in samples.values()))
+    print("Train samples generated:", sum(len(v) for v in train_samples.values()))
+    print("Test samples generated:", sum(len(v) for v in test_samples.values()))
 
     for subset_name, subset_cfg in config["dataset"]["subsets"].items():
-        subset_samples = samples[subset_name]
-
-        # split into train/test
-        train_samples, test_samples = train_test_split(
-            subset_samples, 
-            train_ratio=subset_cfg["data"]["split"]["train"],
-            seed=config['dataset']['misc']['seed']
-        )
-
-        # resolve paths
+        subset_train_samples = train_samples[subset_name]
+        subset_test_samples = test_samples[subset_name]
         train_path = Path(subset_cfg["data"]["train_path"])
+        save_dataset(subset_train_samples, train_path)
+        print(f"Subset '{subset_name}' train samples: {len(subset_train_samples)}")
+
         test_path = Path(subset_cfg["data"]["test_path"])
-
-        # save datasets
-        save_dataset(train_samples, train_path)
-        save_dataset(test_samples, test_path)
-
-        print(f"Subset '{subset_name}' samples: {len(train_samples)} train, {len(test_samples)} test")
+        save_dataset(subset_test_samples, test_path)
+        print(f"Subset '{subset_name}' test samples: {len(subset_test_samples)}")
+            
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
