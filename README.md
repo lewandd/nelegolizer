@@ -34,7 +34,7 @@ Load 3d object and get list of lego bricks ([list of supported file extensions](
 from nelegolizer import legolize
 from nelegolizer.data import LDrawModel, LDrawFile
 
-lego_bricks = legolize("path/to/model_3d.obj")
+lego_bricks = legolize("path/to/model_3d.obj", "legolize_configh_path.yaml")
 ```
 Then you can use results by either:
 - Save results as mpd file ([LDraw File Format Specification](https://www.ldraw.org/article/218.html))
