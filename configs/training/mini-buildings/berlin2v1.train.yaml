@@ -1,0 +1,19 @@
+model:
+  name: BuildingsNet2
+  config_path: "configs/models/buildingsnet2.model.yaml"
+  checkpoint: "models/classification/buildingsnet2v0.pth"
+
+data:
+  train_path: [data/processed/mini-buildings/datasets/berlin/train_set2.dataset]
+  test_path: [data/processed/mini-buildings/datasets/berlin/test_set2.dataset]
+
+training:
+  epochs: 28 # 19
+  batch_size: 8
+  lr: 0.0001
+  optimizer: adam
+  save_path: "models/classification/mini-buildings/berlin2v1.pth"
+
+misc:
+  seed: 42
+  device: "cuda"

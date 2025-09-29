@@ -59,7 +59,7 @@ def compute_stability_cost(bricks: List[LegoBrick]) -> int:
     utils_brick.normalize_positions(bricks, (0, 0, 0))
     for b in bricks:
         for n in bricks:
-            if b.part.id == "3004" and n.part.id == "3004":
+            if b.part.id in ["3004", "3023"] and n.part.id in ["3004", "3023"]:
                 n_under = any_tuple_close(b.lower_positions, n.occupied_positions)
                 n_above = any_tuple_close(b.upper_positions, n.occupied_positions)
                 if  n_under or n_above:
@@ -69,8 +69,11 @@ def compute_stability_cost(bricks: List[LegoBrick]) -> int:
     return int(perp/2)
 
 def compute_iou(grid1: np.ndarray, grid2: np.ndarray) -> float:
-    intersection = np.logical_and(grid1, grid2).sum()
-    union = np.logical_or(grid1, grid2).sum()
+    intersection = np.logical_and(grid1[:,:-10,:], grid2[:,:-10,:]).sum()
+    union = np.logical_or(grid1[:,:-10,:], grid2[:,:-10,:]).sum()
+    #print(f"{grid1[:,:-10,:].sum()}, {grid2[:,:-10,:].sum()}")
+    print(f"intersection: {intersection}")
+    print(f"union: {union}")
     if union == 0:
         return 1.0 if intersection == 0 else 0.0
     

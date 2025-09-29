@@ -1,0 +1,9 @@
+legolization:
+  name: feeder
+  models:
+    model1:
+      config_path: "configs/models/buildingsnet1.model.yaml"
+      model_path: "models/classification/feeder1v1.pth"
+    model2:
+      config_path: "configs/models/buildingsnet2.model.yaml"
+      model_path: "models/classification/feeder2v1.pth"

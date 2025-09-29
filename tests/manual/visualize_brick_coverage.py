@@ -1,4 +1,4 @@
-from nelegolizer.data import LDrawFile, initilize_parts
+from nelegolizer.data import LDrawFile, initilize_parts, LDrawModel
 import pyvista as pv
 import nelegolizer.utils.voxelization as uvox
 from nelegolizer.utils import brick as utils_brick
@@ -11,11 +11,11 @@ import copy
 initilize_parts()
 
 #filename = "fixtures/impossible_trophy.mpd"
-filename = "fixtures/castle.ldr"
+filename = "fixtures/feeder.ldr"
 #filename = "fixtures/simple_mountain.mpd"
 
 ldf = LDrawFile.load(filename)
-ldm = ldf.models[0]
+ldm = LDrawModel.merge_multiple_models(ldf.models)
 bricks = ldm.as_bricks()
 bricks = utils_brick.rotate_bricks_y(bricks, k=0)
 

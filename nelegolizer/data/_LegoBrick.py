@@ -148,7 +148,7 @@ class LegoBrick:
             ldu_offset = self.part.ldu_offset
         elif self.rotation in [90, 270]:
             ldu_offset = (self.part.ldu_offset[2], self.part.ldu_offset[1], self.part.ldu_offset[0])
-        return mesh_to_ldu(self.mesh_position)+ldu_offset
+        return tuple(np.array(mesh_to_ldu(self.mesh_position))+np.array(ldu_offset))
 
     @property
     def matrix(self):

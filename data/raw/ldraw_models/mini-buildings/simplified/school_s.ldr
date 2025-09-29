@@ -1,0 +1,17 @@
+0 Untitled Model
+0 Name:  school_s
+0 Author: 
+0 CustomBrick
+0 FlexibleBrickControlPointUnitLength -1
+0 FlexibleBrickLockedControlPoint 
+0 NumOfBricks:  10
+1 7 10 -24 -30 1 0 0 0 1 0 0 0 1 3005.dat
+1 7 30 -24 -30 1 0 0 0 1 0 0 0 1 3005.dat
+1 7 20 -24 -10 1 0 0 0 1 0 0 0 1 3004.dat
+1 7 60 -24 -10 1 0 0 0 1 0 0 0 1 3004.dat
+1 7 -20 -24 -10 1 0 0 0 1 0 0 0 1 3004.dat
+1 7 -20 -24 10 1 0 0 0 1 0 0 0 1 3004.dat
+1 7 60 -24 10 1 0 0 0 1 0 0 0 1 3004.dat
+1 7 20 -24 10 1 0 0 0 1 0 0 0 1 3004.dat
+1 7 30 -48 0 0 0 1 0 1 0 -1 0 0 3004.dat
+1 7 10 -48 0 0 0 1 0 1 0 -1 0 0 3004.dat

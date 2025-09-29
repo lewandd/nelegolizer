@@ -1,0 +1,26 @@
+model:
+  name: BuildingsNet2
+  type: cnn
+  num_classes: 6
+  input_shape: [18, 9, 18]
+
+  bricks: ["3024", "3023"]
+  labels:
+    "None":
+      0: 0
+    "3024":
+      0: 1
+      90: 1
+      180: 1
+      270: 1
+    "3023":
+      0: 2
+      90: 3
+      180: 4
+      270: 5
+
+iteration:
+  channel_shape: [18, 9, 18]
+  group_shape: [3, 3, 3]
+  shape_top_ext: 0
+  height: 1

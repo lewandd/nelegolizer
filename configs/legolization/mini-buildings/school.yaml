@@ -1,0 +1,9 @@
+legolization:
+  name: school
+  models:
+    model1:
+      config_path: "configs/models/buildingsnet1.model.yaml"
+      model_path: "models/classification/school1v1.pth"
+    model2:
+      config_path: "configs/models/buildingsnet2.model.yaml"
+      model_path: "models/classification/school2v1.pth"

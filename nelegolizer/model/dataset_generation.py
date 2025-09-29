@@ -30,20 +30,6 @@ def save_dataset(samples: list, filename: str):
     with open(filename, "w") as f:
         for s in samples:
             f.write(s + "\n")
-
-#def get_label(filled_bc, looking_pos, placement_pos, config, subset, bricks):
-#    brick = filled_bc.get_brick_at(bricks, looking_pos)
-#    labels = config['dataset']['subsets'][subset]['labels']
-#    if brick is not None and brick.id in labels.keys():
-#        proper_pos = filled_bc.get_brick_position(brick)
-#        rot = brick.rotation
-#        if proper_pos[0] == placement_pos[0] - 1:
-#            rot = 180
-#        if proper_pos[2] == placement_pos[2] - 1:
-#            rot = 270
-#        return labels[brick.id][rot]
-#    else:
-#        return 0
     
 def get_brick_id_rotation(filled_bc, looking_pos, placement_pos, config, subset, bricks):
     brick = filled_bc.get_brick_at(bricks, looking_pos)

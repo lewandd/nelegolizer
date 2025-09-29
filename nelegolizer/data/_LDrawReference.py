@@ -8,7 +8,7 @@ class LDrawReference():
                  color: int):
         self.color = color
         self.matrix = matrix
-        self.name = name
+        self.name = name.lower().strip()
 
     @classmethod
     def from_line(cls, line: str):
@@ -23,7 +23,9 @@ class LDrawReference():
             [x, y, z, 1]
         ]).astype(float)
         name = " ".join(line[14:])
-        return cls(name=name, matrix=matrix, color=color)
+        if name == "3023b.dat":
+            name = "3023.dat"
+        return cls(name=name.lower().strip(), matrix=matrix, color=color)
 
     @property
     def line(self) -> str:
@@ -33,7 +35,7 @@ class LDrawReference():
          [x, y, z, _]] = self.matrix
         return (f"1 {self.color} {x} {y} {z} "
                 f"{a} {b} {c} {d} {e} {f} {g} {h} {i} "
-                f"{self.name}\n")
+                f"{self.name.lower().strip()}\n")
 
     @property
     def position(self) -> np.ndarray:

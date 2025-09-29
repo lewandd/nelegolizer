@@ -202,7 +202,7 @@ class BrickCoverage:
         unavailable_mask = ~available_mask
 
         # add top connection availibility
-        if brick.part.id in ["3004", "3005", "3024"]:
+        if brick.part.id in ["3004", "3005", "3024", "3023"]:
             for x in range(brick_shape[0]):
                 for z in range(brick_shape[2]):
                     above_available_pos = (ext_pos[0]+x, ext_pos[1]-1, ext_pos[2]+z)
@@ -254,7 +254,7 @@ class BrickCoverage:
         # ----------------------------------------------------
 
         # fill stud grid
-        if brick.part.id in ["3004", "3005", "3024"]:
+        if brick.part.id in ["3004", "3005", "3024", "3023"]:
             self._paste_subgrid(self.stud_grid, brick_mask, pos)
 
     def get_brick_at(self, bricks: List, pos: Tuple[int, int, int]):

@@ -1,3 +1,3 @@
-from .legolizer import legolize
+from .legolizer import legolize, legolize_from_mpd
 
-__all__ = [legolize]
+__all__ = ["legolize", "legolize_from_mpd"]

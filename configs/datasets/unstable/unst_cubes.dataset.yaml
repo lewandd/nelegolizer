@@ -3,7 +3,7 @@ dataset:
   raw_train_data_dir: "data/raw/ldraw_models/primitives unstable/cube/train/"
   raw_test_data_dir: "data/raw/ldraw_models/primitives unstable/cube/test/"
   rotations: [0, 1]
-  base_path: "data/processed/primitives unstable/cube"
+  base_path: "data/processed/primitives unstable/datasets/cube"
 
   subsets:
     subset1:
@@ -13,8 +13,8 @@ dataset:
         shape_top_ext: 2
         height: 3
       data:
-        train_path: "data/processed/primitives unstable/cube/train_set1.dataset"
-        test_path: "data/processed/primitives unstable/cube/test_set1.dataset"
+        train_path: "data/processed/primitives unstable/datasets/cube/train_set1.dataset"
+        test_path: "data/processed/primitives unstable/datasets/cube/test_set1.dataset"
       bricks: ["3004", "3005"]
   misc:
     seed: 42

@@ -5,7 +5,6 @@ import unittest
 import numpy as np
 from torch import nn
 
-from nelegolizer.model import brick, shape_model_map
 from nelegolizer.constants import BU_RES
 
 #TODO dodać testy z shape_model_map

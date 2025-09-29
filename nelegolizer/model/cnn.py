@@ -330,7 +330,7 @@ class PrimNet1(nn.Module):
             nn.Linear(self.hidden_dim, num_classes)
         )
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor) -> torch.Tensor: 
         x = self.block1(x)
         x = self.pool1(x)
 
@@ -456,8 +456,8 @@ class PrimNet3(nn.Module):
         x = torch.flatten(x, 1)  # [batch, features]
         return self.fc_layers(x)
     
-@register_model("PrimNet4")
-class PrimNet4(nn.Module):
+@register_model("BuildingsNet1")
+class BuildingsNet1(nn.Module):
     """
     3D CNN do klasyfikacji voxelowych bloków LEGO.
     Przyjmuje dane o kształcie [batch, 2, D, H, W].
@@ -467,11 +467,11 @@ class PrimNet4(nn.Module):
         num_classes: liczba klas do przewidzenia.
     """
 
-    def __init__(self, num_classes: int): # 30 15 30
+    def __init__(self, num_classes: int):
         super().__init__()
         self.input_shape = (30, 15, 30)
         self.num_classes = num_classes
-        self.hidden_dim = 64
+        self.hidden_dim = 256
 
         self.block1 = nn.Sequential(
             nn.Conv3d(2, 16, kernel_size=3, padding=1),
@@ -500,6 +500,7 @@ class PrimNet4(nn.Module):
         self.fc_layers = nn.Sequential(
             nn.Linear(32 * 5 * 5 * 5, self.hidden_dim),
             nn.ReLU(inplace=True),
+            nn.Dropout(p=0.5),
             nn.Linear(self.hidden_dim, num_classes)
         )
 
@@ -513,9 +514,8 @@ class PrimNet4(nn.Module):
         x = torch.flatten(x, 1)  # [batch, features]
         return self.fc_layers(x)
     
-
-@register_model("PrimNet5")
-class PrimNet5(nn.Module):
+@register_model("BuildingsNet2")
+class BuildingsNet2(nn.Module):
     """
     3D CNN do klasyfikacji voxelowych bloków LEGO.
     Przyjmuje dane o kształcie [batch, 2, D, H, W].
@@ -527,70 +527,24 @@ class PrimNet5(nn.Module):
 
     def __init__(self, num_classes: int):
         super().__init__()
-        self.input_shape = (30, 15, 30)
-        self.num_classes = num_classes
-        self.hidden_dim = 32
-
-        self.block1 = nn.Sequential(
-            nn.Conv3d(2, 16, kernel_size=3, padding=1),
-            nn.BatchNorm3d(16),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(16, 16, kernel_size=3, padding=1),
-            nn.BatchNorm3d(16),
-            nn.ReLU(inplace=True),
-        )
-
-        self.pool1 = nn.MaxPool3d(kernel_size=(2, 1, 2), stride=(2, 1, 2))
-
-        self.block2 = nn.Sequential(
-            nn.Conv3d(16, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(32, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-        )
-
-        self.pool2 = nn.MaxPool3d(kernel_size=(3, 3, 3), stride=(3, 3, 3))
-
-        self.fc_layers = nn.Sequential(
-            nn.Linear(32 * 5 * 5 * 5, self.hidden_dim),
-            nn.ReLU(inplace=True),
-            nn.Linear(self.hidden_dim, num_classes)
-        )
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.block1(x)
-        x = self.pool1(x)
-
-        x = self.block2(x)
-        x = self.pool2(x)
-
-        x = torch.flatten(x, 1)  # [batch, features]
-        return self.fc_layers(x)
-    
-
-@register_model("PrimNet6")
-class PrimNet6(nn.Module):
-    """
-    3D CNN do klasyfikacji voxelowych bloków LEGO.
-    Przyjmuje dane o kształcie [batch, 2, D, H, W].
-
-    Args:
-        input_shape: (D, H, W) rozmiar wejścia (bez kanałów).
-        num_classes: liczba klas do przewidzenia.
-    """
-
-    def __init__(self, num_classes: int):
-        super().__init__()
-        self.input_shape = (30, 15, 30)
+        self.input_shape = (18, 9, 18)
         self.num_classes = num_classes
         self.hidden_dim = 128
 
         self.block1 = nn.Sequential(
-            nn.Conv3d(2, 16, kernel_size=3, padding=1),
+            nn.Conv3d(2, 8, kernel_size=3, padding=1),
+            nn.BatchNorm3d(8),
+            nn.ReLU(inplace=True),
+
+            nn.Conv3d(8, 8, kernel_size=3, padding=1),
+            nn.BatchNorm3d(8),
+            nn.ReLU(inplace=True),
+        )
+
+        self.pool1 = nn.MaxPool3d(kernel_size=(2, 1, 2), stride=(2, 1, 2))
+
+        self.block2 = nn.Sequential(
+            nn.Conv3d(8, 16, kernel_size=3, padding=1),
             nn.BatchNorm3d(16),
             nn.ReLU(inplace=True),
 
@@ -599,193 +553,10 @@ class PrimNet6(nn.Module):
             nn.ReLU(inplace=True),
         )
 
-        self.pool1 = nn.MaxPool3d(kernel_size=(2, 1, 2), stride=(2, 1, 2))
-
-        self.block2 = nn.Sequential(
-            nn.Conv3d(16, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(32, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-        )
-
         self.pool2 = nn.MaxPool3d(kernel_size=(3, 3, 3), stride=(3, 3, 3))
 
         self.fc_layers = nn.Sequential(
-            nn.Linear(32 * 5 * 5 * 5, self.hidden_dim),
-            nn.ReLU(inplace=True),
-            nn.Linear(self.hidden_dim, num_classes)
-        )
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.block1(x)
-        x = self.pool1(x)
-
-        x = self.block2(x)
-        x = self.pool2(x)
-
-        x = torch.flatten(x, 1)  # [batch, features]
-        return self.fc_layers(x)
-    
-@register_model("PrimNet7")
-class PrimNet7(nn.Module):
-    """
-    3D CNN do klasyfikacji voxelowych bloków LEGO.
-    Przyjmuje dane o kształcie [batch, 2, D, H, W].
-
-    Args:
-        input_shape: (D, H, W) rozmiar wejścia (bez kanałów).
-        num_classes: liczba klas do przewidzenia.
-    """
-
-    def __init__(self, num_classes: int):
-        super().__init__()
-        self.input_shape = (30, 15, 30)
-        self.num_classes = num_classes
-        self.hidden_dim = 64
-
-        self.block1 = nn.Sequential(
-            nn.Conv3d(2, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(32, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-        )
-
-        self.pool1 = nn.MaxPool3d(kernel_size=(2, 1, 2), stride=(2, 1, 2))
-
-        self.block2 = nn.Sequential(
-            nn.Conv3d(32, 64, kernel_size=3, padding=1),
-            nn.BatchNorm3d(64),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(64, 64, kernel_size=3, padding=1),
-            nn.BatchNorm3d(64),
-            nn.ReLU(inplace=True),
-        )
-
-        self.pool2 = nn.MaxPool3d(kernel_size=(3, 3, 3), stride=(3, 3, 3))
-
-        self.fc_layers = nn.Sequential(
-            nn.Linear(64 * 5 * 5 * 5, self.hidden_dim),
-            nn.ReLU(inplace=True),
-            nn.Linear(self.hidden_dim, num_classes)
-        )
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.block1(x)
-        x = self.pool1(x)
-
-        x = self.block2(x)
-        x = self.pool2(x)
-
-        x = torch.flatten(x, 1)  # [batch, features]
-        return self.fc_layers(x)
-    
-@register_model("PrimNet8")
-class PrimNet8(nn.Module):
-    """
-    3D CNN do klasyfikacji voxelowych bloków LEGO.
-    Przyjmuje dane o kształcie [batch, 2, D, H, W].
-
-    Args:
-        input_shape: (D, H, W) rozmiar wejścia (bez kanałów).
-        num_classes: liczba klas do przewidzenia.
-    """
-
-    def __init__(self, num_classes: int):
-        super().__init__()
-        self.input_shape = (30, 15, 30)
-        self.num_classes = num_classes
-        self.hidden_dim = 32
-
-        self.block1 = nn.Sequential(
-            nn.Conv3d(2, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(32, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-        )
-
-        self.pool1 = nn.MaxPool3d(kernel_size=(2, 1, 2), stride=(2, 1, 2))
-
-        self.block2 = nn.Sequential(
-            nn.Conv3d(32, 64, kernel_size=3, padding=1),
-            nn.BatchNorm3d(64),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(64, 64, kernel_size=3, padding=1),
-            nn.BatchNorm3d(64),
-            nn.ReLU(inplace=True),
-        )
-
-        self.pool2 = nn.MaxPool3d(kernel_size=(3, 3, 3), stride=(3, 3, 3))
-
-        self.fc_layers = nn.Sequential(
-            nn.Linear(64 * 5 * 5 * 5, self.hidden_dim),
-            nn.ReLU(inplace=True),
-            nn.Linear(self.hidden_dim, num_classes)
-        )
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.block1(x)
-        x = self.pool1(x)
-
-        x = self.block2(x)
-        x = self.pool2(x)
-
-        x = torch.flatten(x, 1)  # [batch, features]
-        return self.fc_layers(x)
-    
-@register_model("PrimNet9")
-class PrimNet9(nn.Module):
-    """
-    3D CNN do klasyfikacji voxelowych bloków LEGO.
-    Przyjmuje dane o kształcie [batch, 2, D, H, W].
-
-    Args:
-        input_shape: (D, H, W) rozmiar wejścia (bez kanałów).
-        num_classes: liczba klas do przewidzenia.
-    """
-
-    def __init__(self, num_classes: int):
-        super().__init__()
-        self.input_shape = (30, 15, 30)
-        self.num_classes = num_classes
-        self.hidden_dim = 128
-
-        self.block1 = nn.Sequential(
-            nn.Conv3d(2, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(32, 32, kernel_size=3, padding=1),
-            nn.BatchNorm3d(32),
-            nn.ReLU(inplace=True),
-        )
-
-        self.pool1 = nn.MaxPool3d(kernel_size=(2, 1, 2), stride=(2, 1, 2))
-
-        self.block2 = nn.Sequential(
-            nn.Conv3d(32, 64, kernel_size=3, padding=1),
-            nn.BatchNorm3d(64),
-            nn.ReLU(inplace=True),
-
-            nn.Conv3d(64, 64, kernel_size=3, padding=1),
-            nn.BatchNorm3d(64),
-            nn.ReLU(inplace=True),
-        )
-
-        self.pool2 = nn.MaxPool3d(kernel_size=(3, 3, 3), stride=(3, 3, 3))
-
-        self.fc_layers = nn.Sequential(
-            nn.Linear(64 * 5 * 5 * 5, self.hidden_dim),
+            nn.Linear(16 * 3 * 3 * 3, self.hidden_dim),
             nn.ReLU(inplace=True),
             nn.Linear(self.hidden_dim, num_classes)
         )

@@ -2,5 +2,5 @@ legolization:
   name: st_spherenet1v1
   models:
     model1:
-      config_path: "configs/models/primnet1.model.yaml"
-      model_path: "models/classification/st_spherenet1v1.pth"
+      config_path: "configs/models/primnet3.model.yaml"
+      model_path: "models/classification/stable/st_spherenet1v1.pth"

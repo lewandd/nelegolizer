@@ -7,7 +7,6 @@ import pyvista as pv
 from pathlib import Path
 
 from nelegolizer.legolizer._core import legolize_from_mpd
-from nelegolizer.paths import MODEL555, MODEL555CONFIG
 
 reader = pv.get_reader("../../data/raw/obj_examples/cone.obj")
 mesh = reader.read()

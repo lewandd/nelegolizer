@@ -1,0 +1,31 @@
+dataset:
+  name: "tower"
+  raw_train_data_dir: "data/raw/ldraw_models/mini-buildings/subsets/test tower/train/"
+  raw_test_data_dir: "data/raw/ldraw_models/mini-buildings/subsets/test tower/test/"
+  rotations: [0, 1, 2, 3]
+  base_path: "data/processed/mini-buildings/datasets/tower"
+
+  subsets:
+    subset1:
+      iteration:
+        channel_shape: [30, 15, 30]
+        group_shape: [5, 5, 5]
+        shape_top_ext: 2
+        height: 3
+      data:
+        train_path: "data/processed/mini-buildings/datasets/tower/train_set1.dataset"
+        test_path: "data/processed/mini-buildings/datasets/tower/test_set1.dataset"
+      bricks: ["3004", "3005", "54200"]
+    subset2:
+      iteration:
+        channel_shape: [18, 9, 18]
+        group_shape: [3, 3, 3]
+        shape_top_ext: 0
+        height: 1
+      data:
+        train_path: "data/processed/mini-buildings/datasets/tower/train_set2.dataset"
+        test_path: "data/processed/mini-buildings/datasets/tower/test_set2.dataset"
+      bricks: ["3024", "3023"]
+
+  misc:
+    seed: 42

@@ -27,9 +27,9 @@ def find_next_pos_to_cover(gc, bc, analyzed, height_map):
 
 def place_brick(brick_id, rotation, pos, bc):
     new_pos = pos
-    if brick_id == "3004" and rotation == 180:
+    if brick_id in ["3004", "3023"] and rotation == 180:
         new_pos = pos - np.array([1, 0, 0])
-    if brick_id == "3004" and rotation == 270:
+    if brick_id in ["3004", "3023"] and rotation == 270:
         new_pos = pos - np.array([0, 0, 1])  
     new_brick = LegoBrick(id=brick_id, 
                           mesh_position=bu_to_mesh(new_pos), 

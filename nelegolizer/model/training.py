@@ -40,7 +40,7 @@ def train_model(model, train_dataset, val_dataset, epochs=10, batch_size=16, lr=
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=1e-2)
 
     for epoch in range(epochs):
         model.train()

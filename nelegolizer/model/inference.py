@@ -2,27 +2,7 @@ import torch
 from torch import nn
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#import torch
-#from nelegolizer.model.cnn import LegoNet
-#from nelegolizer.data.dataset import preprocess_input
 
-#def load_model(model_path: str, device="cpu"):
-#    model = LegoNet()
-#    model.load_state_dict(torch.load(model_path, map_location=device))
-#    model.eval()
-#    return model
-
-#def predict(model, input_data):
-#    tensor = preprocess_input(input_data)
-#    with torch.no_grad():
-#        output = model(tensor)
-#    return output.argmax(dim=1).item()
-
-#def load_model(model: nn.Module, model_path: str, device="cpu"):
-#    model = ge
-#    model.load_state_dict(torch.load(model_path, map_location=device))
-#    model.eval()
-#    return model
 
 def predict(model, grid1, grid2, device=None):
     """

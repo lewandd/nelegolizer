@@ -354,13 +354,13 @@ class Test_from_mesh(unittest.TestCase):
 
 class Test_conversions(unittest.TestCase):
     def test_ok_bu_to_vu(self):
-        bu = np.array([2, 4, 0])
-        expected_vu = np.array([16, 32, 0])
+        bu = np.array([1, 1, 2])
+        expected_vu = np.array([5, 2, 10])
         self.assertTrue(np.all(bu_to_vu(bu) == expected_vu))
 
     def test_ok_vu_to_bu(self):
-        vu = np.array([0, 16, 8])
-        expected_bu = np.array([0, 2, 1])
+        vu = np.array([5, 2, 10])
+        expected_bu = np.array([1, 1, 2])
         self.assertTrue(np.all(vu_to_bu(vu) == expected_bu))
 
     def test_error_vu_to_bu(self):

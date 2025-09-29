@@ -1,13 +1,13 @@
 from nelegolizer.model.evaluation import compute_iou
 import argparse
-from nelegolizer.data import initilize_parts, LDrawFile, BrickCoverage, GeometryCoverage, LegoBrick
+from nelegolizer.data import initilize_parts, LDrawFile, BrickCoverage, GeometryCoverage, LegoBrick, LDrawModel
 from typing import List
 import numpy as np
 import nelegolizer.utils.brick as utils_brick
 
 def load_bricks(path: str) -> List[LegoBrick]:
     ldf = LDrawFile.load(path)
-    lbm = ldf.models[0]
+    lbm = LDrawModel.merge_multiple_models(ldf.models)
     return lbm.as_bricks()
 
 

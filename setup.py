@@ -8,7 +8,7 @@ with open('LICENSE') as f:
 
 setup(
     name='nelegolizer',
-    version='0.1.0',
+    version='0.2.0',
     python_requires='>3.8.0',
     description=('Python package using neural network to'
                  ' transform 3D object into a LEGO layout'),
@@ -17,6 +17,6 @@ setup(
     author_email='lewandd9@gmail.com',
     url='https://github.com/lewandd/nelegolizer',
     license=license,
-    install_requires=['numpy', 'pandas', 'pyvista', 'torch', 'pyyaml', 'tqdm'],
+    install_requires=['numpy', 'pandas', 'pyvista', 'torch', 'PyYaml', 'tqdm', 'pytest', 'flake8'],
     packages=find_packages()
 )
