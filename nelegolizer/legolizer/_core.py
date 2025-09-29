@@ -8,7 +8,7 @@ from ..utils import voxelization as utils_voxelization
 from ..utils import grid as utils_grid
 from .iterator import find_next_pos_to_cover, make_brick_variants, place_brick
 import yaml
-from ..paths import MODEL555CONFIG, MODEL555
+from ..paths import DEFAULT_CONFIG
 from ..model.inference import predict
 from ..model.registry import get_model
 from ..model.cnn import *
@@ -24,7 +24,7 @@ def load_config(path: str):
     with open(path) as f:
         return yaml.safe_load(f)
 
-def legolize_from_mpd(filepath: str, legolize_config_path: str, visualize: bool = True) -> List[LegoBrick]:
+def legolize_from_mpd(filepath: str, legolize_config_path: str = DEFAULT_CONFIG, visualize: bool = True) -> List[LegoBrick]:
     # load mpd file
     ldf = LDrawFile.load(filepath)
     lbm = LDrawModel.merge_multiple_models(ldf.models)
@@ -127,7 +127,7 @@ def legolize_from_mpd(filepath: str, legolize_config_path: str, visualize: bool 
 
     return bricks
 
-def legolize(mesh: Union[str, pv.PolyData], legolize_config_path: str, visualize: bool = True) -> List[LegoBrick]:
+def legolize(mesh: Union[str, pv.PolyData], legolize_config_path: str = DEFAULT_CONFIG, visualize: bool = True) -> List[LegoBrick]:
     initilize_parts()
 
     # prepare input data
