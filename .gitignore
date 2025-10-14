@@ -5,7 +5,9 @@ data/generated/n111/*
 
 .venv/
 .vscode
-data/processed/
+data/processed/mini-buildings/datasets
+data/processed/primitive stable/datasets
+data/processed/primitive unstable/datasets
 
 # Test Output
 tests/integration/fixtures/legolized_cone.mpd
