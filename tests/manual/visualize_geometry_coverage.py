@@ -12,7 +12,7 @@ import numpy as np
 initilize_parts()
 
 #filename = "fixtures/church.mpd"
-filename = "fixtures/impossible_trophy.mpd"
+filename = "fixtures/church.mpd"
 
 ldf = LDrawFile.load(filename)
 ldm = ldf.models[0]
@@ -56,21 +56,21 @@ print(f"geometry ext voxel shape {geometry.ext_voxel_grid.shape}")
 mesh = pv.MultiBlock([brick.mesh for brick in bricks]).combine()
 
 bricks = uvox.from_grid(geometry.brick_grid, voxel_mesh_shape=BU)
-#voxels = uvox.from_grid(bc.ext_voxel_grid, voxel_mesh_shape=const.VOXEL_MESH_SHAPE)
-voxels = uvox.from_grid(geometry.ext_voxel_grid, voxel_mesh_shape=VU)
-plotter = pv.Plotter(shape=(1, 3))
+voxels = uvox.from_grid(geometry.voxel_grid, voxel_mesh_shape=VU)
+ext_voxels = uvox.from_grid(geometry.ext_voxel_grid, voxel_mesh_shape=VU)
+plotter = pv.Plotter(shape=(1, 2))
 
 plotter.subplot(0, 0)
-plotter.add_title("mesh", 8)
-plotter.add_mesh(mesh)
+plotter.add_title("voxel grid", 8)
+plotter.add_mesh(voxels, show_edges=True, color="white")
+
+#plotter.subplot(0, 1)
+#plotter.add_title("brick occupancy", 8)
+#plotter.add_mesh(bricks, show_edges=True, color="white")
 
 plotter.subplot(0, 1)
-plotter.add_title("brick occupancy", 8)
-plotter.add_mesh(bricks, show_edges=True, color="white")
-
-plotter.subplot(0, 2)
-plotter.add_title("brick voxel occupancy", 8)
-plotter.add_mesh(voxels, show_edges=True, color="white")
+plotter.add_title("ext voxel grid", 8)
+plotter.add_mesh(ext_voxels, show_edges=True, color="white")
 
 
 #plotter.add_mesh(voxels, show_edges=True, color="white")

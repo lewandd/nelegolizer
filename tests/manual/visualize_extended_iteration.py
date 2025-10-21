@@ -7,7 +7,7 @@ import nelegolizer.utils.voxelization as uvox
 from nelegolizer.utils.conversion import bu_to_mesh, ext_bu_to_vu
 from nelegolizer.constants import VU, BU
 from nelegolizer.legolizer.iterator import find_next_pos_to_cover, place_brick, make_brick_variants
-from nelegolizer.model.dataset_generation import get_label
+from nelegolizer.model.dataset_generation import get_brick_id_rotation
 import yaml
 
 initilize_parts()
@@ -27,7 +27,7 @@ for brick in bricks:
     print(f"{brick.id} position {brick.position}")
 
 # load config
-with open("../../configs/datasets/smountain1.dataset.yaml") as f:
+with open("../../configs/datasets/church.dataset.yaml") as f:
     config = yaml.safe_load(f)
 
 filled_bc = BrickCoverage.from_bricks(bricks, bottom_extension=3, top_extension=4, side_extension=2)
@@ -35,8 +35,11 @@ interior_voxel_grid = filled_bc.voxel_grid[10:-10, 8:-6, 10:-10]
 gc = GeometryCoverage(interior_voxel_grid, bottom_extension=3, top_extension=4, side_extension=2)
 training_bc = BrickCoverage(gc.interior_shape, bottom_extension=3, top_extension=4, side_extension=2)
 
-analyzed = {subset: np.zeros_like(training_bc.brick_grid) for subset in config['dataset']['subsets']}
-ntcs = find_next_pos_to_cover(gc, training_bc, analyzed, config)
+#analyzed = {subset: np.zeros_like(training_bc.brick_grid) for subset in config['dataset']['subsets']}
+height_map = {net: conf['iteration']['height'] for net, conf in config['dataset']['subsets'].items()}
+analyzed = {net: np.zeros_like(training_bc.brick_grid) for net in config['dataset']['subsets']}
+#ntcs = find_next_pos_to_cover(gc, training_bc, analyzed, config)
+ntcs = find_next_pos_to_cover(gc, training_bc, analyzed, height_map)
 num_found = 0
 num_all = 0
 
@@ -64,17 +67,20 @@ while any(x is not None for x in ntcs.values()):
     #print(f"Looked at {looking_pos} location for a brick")
 
     placed = False
-    brick_variants = make_brick_variants(placement_pos, subset_used, config)
+    #brick_variants = make_brick_variants(placement_pos, subset_used, config)
+    brick_variants = make_brick_variants(placement_pos, config['dataset']['subsets'][subset_used]['bricks'])
     
     if any(training_bc.is_placement_available(b) for b in brick_variants):
-        label = get_label(filled_bc, looking_pos, placement_pos, config, subset_used, bricks)
-        if label != 0:
+        brick_id, rotation = label = get_brick_id_rotation(filled_bc, looking_pos, placement_pos, config, subset_used, bricks)
+        if brick_id != "None":
             #placed = place_brick(label, placement_pos, network_type, training_bc)
-            placed = place_brick(label, placement_pos, config, subset_used, training_bc)
+            placed = place_brick(brick_id, rotation, placement_pos, training_bc)
+            #placed = place_brick(label, placement_pos, config, subset_used, training_bc)
 
     num_all += 1
     analyzed[subset_used][x, y, z] = True
-    ntcs = find_next_pos_to_cover(gc, training_bc, analyzed, config)
+    #ntcs = find_next_pos_to_cover(gc, training_bc, analyzed, config)
+    ntcs = find_next_pos_to_cover(gc, training_bc, analyzed, height_map)
 
     # 30 15 30 i 18 9 18
 

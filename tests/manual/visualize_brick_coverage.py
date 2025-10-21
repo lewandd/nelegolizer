@@ -11,7 +11,7 @@ import copy
 initilize_parts()
 
 #filename = "fixtures/impossible_trophy.mpd"
-filename = "fixtures/feeder.ldr"
+filename = "fixtures/church.mpd"
 #filename = "fixtures/simple_mountain.mpd"
 
 ldf = LDrawFile.load(filename)
@@ -82,43 +82,42 @@ for brick in bricks:
 #bo.brick_grid[3, 0:2, 3] = True
 
 mesh = pv.MultiBlock([brick.mesh for brick in bricks]).combine()
-voxels = uvox.from_grid(bo.ext_voxel_grid, voxel_mesh_shape=VU)
-plotter = pv.Plotter(shape=(1, 3))
+voxels = uvox.from_grid(bo.voxel_grid, voxel_mesh_shape=VU)
+ext_voxels = uvox.from_grid(bo.ext_voxel_grid, voxel_mesh_shape=VU)
+plotter = pv.Plotter(shape=(1, 2))
 
 plotter.subplot(0, 0)
-plotter.add_title("mesh", 8)
-plotter.add_mesh(mesh)
+plotter.add_title("voxel grid", 8)
+plotter.add_mesh(voxels, show_edges=True, color="white")
+
+#plotter.subplot(0, 1)
+#plotter.add_title("BU coverage", 8)
+
+#bricks = uvox.from_grid(bo.brick_grid, voxel_mesh_shape=BU)
+
+#try:
+#    bottom_studs = uvox.from_grid(bo.bottom_available_grid, voxel_mesh_shape=BU)
+#    plotter.add_mesh(bottom_studs, show_edges=True, color="orange", opacity=0.5)
+#except TypeError:
+#    pass
+
+#try:
+#    bottom3_studs = uvox.from_grid(bo.bottom3_available_grid, voxel_mesh_shape=BU)
+#    plotter.add_mesh(bottom3_studs, show_edges=True, color="yellow", opacity=0.5)
+#except TypeError:
+#    pass
+
+#try:
+#    top_studs = uvox.from_grid(bo.top_available_grid, voxel_mesh_shape=BU)
+#    plotter.add_mesh(top_studs, show_edges=True, color="green", opacity=0.5)
+#except TypeError:
+#    pass
+
+#plotter.add_mesh(bricks, show_edges=True, color="white")
 
 plotter.subplot(0, 1)
-plotter.add_title("BU coverage", 8)
-
-bricks = uvox.from_grid(bo.brick_grid, voxel_mesh_shape=BU)
-
-try:
-    bottom_studs = uvox.from_grid(bo.bottom_available_grid, voxel_mesh_shape=BU)
-    plotter.add_mesh(bottom_studs, show_edges=True, color="orange", opacity=0.5)
-except TypeError:
-    pass
-
-try:
-    bottom3_studs = uvox.from_grid(bo.bottom3_available_grid, voxel_mesh_shape=BU)
-    plotter.add_mesh(bottom3_studs, show_edges=True, color="yellow", opacity=0.5)
-except TypeError:
-    pass
-
-try:
-    top_studs = uvox.from_grid(bo.top_available_grid, voxel_mesh_shape=BU)
-    plotter.add_mesh(top_studs, show_edges=True, color="green", opacity=0.5)
-except TypeError:
-    pass
-
-plotter.add_mesh(bricks, show_edges=True, color="white")
-
-
-
-plotter.subplot(0, 2)
 plotter.add_title("extended voxel grid", 8)
-plotter.add_mesh(voxels, show_edges=False, color="white")
+plotter.add_mesh(ext_voxels, show_edges=True, color="white")
 
 
 #plotter.add_mesh(voxels, show_edges=True, color="white")
