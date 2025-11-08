@@ -13,7 +13,7 @@ from nelegolizer.utils.conversion import bu_to_vu, vu_to_bu
 class Test_rotate_grid(unittest.TestCase):
     def test_grid111_rotate_0(self):
         grid111 = np.array([[[True]]])
-        grid111_rot = np.array([[[False]]])
+        grid111_rot = np.array([[[True]]])
         self.assertTrue(np.all(utils_grid.rotate(grid=grid111, degrees=0) == grid111_rot))
 
     def test_grid111_rotate_90(self):
