@@ -2,7 +2,7 @@
 
 # NeLegolizer 🧱
 
-## Overwiew 
+## Overview 
 **Nelegolizer** is a project focused on transforming 3D objects into LEGO-like models using neural networks. It voxelizes 3D meshes, analyzes them through convolutional neural networks, and generates consistent LEGO brick representations (including export in the LDraw format).
 
 The name **nelegolizer** combines **neural networks** and **legolization**, where *legolization* is a term describing the process of converting data into LEGO-like representations.
