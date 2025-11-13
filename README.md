@@ -7,6 +7,8 @@
 
 The name **nelegolizer** combines **neural networks** and **legolization**, where *legolization* is a term describing the process of converting data into LEGO-like representations.
 
+> ⚠️ This project is currently a **work in progress**. Some features may be missing, unstable, or under active development.
+
 ## How It Differs from Other Approaches
 
 Traditional LEGO builders rely on fixed rules or heuristic algorithms to decompose 3D shapes into LEGO bricks. Such approaches can produce reasonable results but fail to capture **context-dependent building styles** or **subtle design preferences** that human builders naturally apply.
